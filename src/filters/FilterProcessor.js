@@ -1,3 +1,5 @@
+import FileToCanvas from "../utils/FileToCanvas";
+
 export default class FilterProcessor {
     #listProps = [];
     #queue = {};
@@ -15,24 +17,14 @@ export default class FilterProcessor {
     }
 
     async run(fileList, config) {
-         var result = await Promise.all(fileList.map(async (file) => {
-            const url = URL.createObjectURL(file);
-            const img = new Image();
-            img.src = url;
-            await img.decode();
-            const width = img.width;
-            const height = img.height;
-            var canvas = new OffscreenCanvas(width, height);
-            canvas.getContext("2d").drawImage(img, 0, 0);
-            URL.revokeObjectURL(url);
-
-            return config.reduce((canvas, filterConfig) => {
-                const filter = this.findFilter(filterConfig.name)
-                return Object.assign(new filter(), filterConfig).run(canvas);
-            }, canvas.getContext("2d"));            
+         return await Promise.all(fileList.map(async (file) => {
+            let canvas = await FileToCanvas(file);
+            for (let filterConfig of config) {
+                let filter = this.findFilter(filterConfig.name);
+                canvas = await Object.assign(new filter(), filterConfig).run(canvas);
+            }
+            return canvas;
         } ));
-
-        return result
     }
 
     queue() {

@@ -10,7 +10,7 @@ export default class ConvertFilter extends BasicFilter {
 
     targetFormat = "jpg";
 
-    run (canvas) {
+    async run (canvas) {
       return canvas;
     }
 }

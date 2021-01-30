@@ -57,7 +57,7 @@
               <b-card-header header-tag="header">
                 <b-row align-v="center">
                   <b-col cols="6" md="4"
-                    ><b-badge>#{{ index }}</b-badge></b-col
+                    ><b-badge>#{{ index + 1 }}</b-badge></b-col
                   >
                   <b-col cols="6" md="4">{{ filter.name }}</b-col>
                   <b-col cols="6" md="4">
