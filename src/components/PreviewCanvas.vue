@@ -12,7 +12,7 @@
     </b-form-group>
     Width: {{ width }} px, Height: {{ height }} px
     <b-overlay :show="showProcessIndicator" class="d-inline-block">
-        <canvas id="canvas" ref="canvas" :width="width" :height="height" />
+      <canvas id="canvas" ref="canvas" :width="width" :height="height" />
     </b-overlay>
   </div>
 </template>
@@ -30,42 +30,47 @@ export default {
       width: 0,
       height: 0,
       updateTimeout: 0,
-      showProcessIndicator: false
+      showProcessIndicator: false,
     };
   },
   methods: {
-    updateCanvas: function() {
+    updateCanvas: function () {
       this.showProcessIndicator = true;
       clearTimeout(this.updateTimeout);
       this.updateTimeout = setTimeout(async () => {
-        const sourceCanvas = await this.$store.dispatch("runFilterProcessorForOne", this.$store.state.showFileIndex);
+        const sourceCanvas = await this.$store.dispatch(
+          "runFilterProcessorForOne",
+          this.$store.state.showFileIndex
+        );
         const canvas = this.$refs.canvas;
         canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
         this.width = sourceCanvas.canvas.width;
         this.height = sourceCanvas.canvas.height;
-        this.$nextTick(() => canvas.getContext("2d").drawImage(sourceCanvas.canvas, 0, 0))
+        this.$nextTick(() =>
+          canvas.getContext("2d").drawImage(sourceCanvas.canvas, 0, 0)
+        );
         this.showProcessIndicator = false;
-      }, 200)
-    }
+      }, 200);
+    },
   },
   watch: {
-  "$store.state.filterList": {
-    handler:  async function() {
-      await this.updateCanvas();
+    "$store.state.filterList": {
+      handler: async function () {
+        await this.updateCanvas();
+      },
+      deep: true,
     },
-    deep: true
-  },
-  "$store.state.showFileIndex" : {
-    handler: async function() {
-      //setTimeout(() => this.updateCanvas(), 500);
-      await this.updateCanvas();
+    "$store.state.showFileIndex": {
+      handler: async function () {
+        //setTimeout(() => this.updateCanvas(), 500);
+        await this.updateCanvas();
+      },
+      deep: true,
     },
-    deep: true
-  },
   },
   //updated: function() {
   //  this.updateCanvas();
- // }
+  // }
 };
 </script>
 
