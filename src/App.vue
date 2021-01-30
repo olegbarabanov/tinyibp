@@ -66,9 +66,11 @@
                       v-b-tooltip
                       size="sm"
                       :title="$t('helper.tooltip.draggable')"
-                      ><b-icon icon="hand-index"></b-icon> </b-button
-                  >
-                  <b-button size="sm"><b-icon icon="trash-fill" aria-hidden="true"></b-icon></b-button>
+                      ><b-icon icon="hand-index"></b-icon>
+                    </b-button>
+                    <b-button size="sm"
+                      ><b-icon icon="trash-fill" aria-hidden="true"></b-icon
+                    ></b-button>
                   </b-col>
                 </b-row>
               </b-card-header>
@@ -95,14 +97,14 @@
 import { mapState, mapActions } from "vuex";
 import draggable from "vuedraggable";
 import previewCanvas from "./components/PreviewCanvas.vue";
-import appendFile from "./components/AppendFile.vue"
+import appendFile from "./components/AppendFile.vue";
 
 export default {
   name: "App",
   components: {
     draggable,
     previewCanvas,
-    appendFile
+    appendFile,
   },
   methods: {
     ...mapActions(["initFilter"]),
