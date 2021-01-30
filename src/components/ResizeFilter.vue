@@ -4,14 +4,14 @@
     <b-form-input
       v-model="settings.resizeToX"
       type="number"
-      min="1"
+      min="0"
     ></b-form-input>
 
     <label for="input-live">Новая высота (Y) в пикселях:</label>
     <b-form-input
       v-model="settings.resizeToY"
       type="number"
-      min="1"
+      min="0"
     ></b-form-input>
   </b-form>
 </template>

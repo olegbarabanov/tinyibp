@@ -22,7 +22,7 @@ export default class BasicFilter {
         return this.#vueComponent;
     }
 
-    run (canvas) {
+    async run (canvas) {
         return canvas;
     }
 }

@@ -12,7 +12,7 @@
     </b-form-group>
     Width: {{ width }} px, Height: {{ height }} px
     <b-overlay :show="showProcessIndicator" class="d-inline-block">
-      <canvas id="canvas" ref="canvas" :width="width" :height="height" />
+      <canvas class="mw-100" id="canvas" ref="canvas" :width="width" :height="height" />
     </b-overlay>
   </div>
 </template>
@@ -44,10 +44,10 @@ export default {
         );
         const canvas = this.$refs.canvas;
         canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
-        this.width = sourceCanvas.canvas.width;
-        this.height = sourceCanvas.canvas.height;
+        this.width = sourceCanvas.width;
+        this.height = sourceCanvas.height;
         this.$nextTick(() =>
-          canvas.getContext("2d").drawImage(sourceCanvas.canvas, 0, 0)
+          canvas.getContext("2d").drawImage(sourceCanvas, 0, 0)
         );
         this.showProcessIndicator = false;
       }, 200);

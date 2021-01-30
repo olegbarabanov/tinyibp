@@ -3,11 +3,12 @@ import BasicFilter from "./BasicFilter"
 export default class SaturateFilter extends BasicFilter {
     level = 100;
 
-    run (canvas) {
-      const oldFilter = canvas.filter;
-      canvas.filter = `saturate(${this.level * 0.01})`;
-      canvas.drawImage(canvas.canvas, 0, 0);
-      canvas.filter = oldFilter;
+    async run (canvas) {
+      const canvasCtx = canvas.getContext("2d");
+      const oldFilter = canvasCtx.filter;
+      canvasCtx.filter = `saturate(${this.level * 0.01})`;
+      canvasCtx.drawImage(canvas, 0, 0);
+      canvasCtx.filter = oldFilter;
       return canvas;
     }
 }

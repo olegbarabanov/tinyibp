@@ -3,11 +3,12 @@ import BasicFilter from "./BasicFilter"
 export default class ContrastFilter extends BasicFilter {
     level = 100;
 
-    run (canvas) {
-      const oldFilter = canvas.filter;
-      canvas.filter = `contrast(${this.level * 0.01})`;
-      canvas.drawImage(canvas.canvas, 0, 0);
-      canvas.filter = oldFilter;
-      return canvas;
+    async run (canvas) {
+      const canvasCtx = canvas.getContext("2d");
+      const oldFilter = canvasCtx.filter;
+      canvasCtx.filter = `contrast(${this.level * 0.01})`;
+      canvasCtx.drawImage(canvas, 0, 0);
+      canvasCtx.filter = oldFilter;
+      return canvasCtx;
     }
 }

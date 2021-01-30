@@ -15,6 +15,7 @@ import GrayscaleFilter from "./components/GrayscaleFilter.vue"
 import OpacityFilter from "./components/OpacityFilter";
 import SaturateFilter from "./components/SaturateFilter";
 import BlurFilter from "./components/BlurFilter";
+import OverlayFilter from "./components/OverlayFilter";
 
 
 Vue.config.productionTip = false;
@@ -30,6 +31,7 @@ Vue.component("GrayscaleFilter", GrayscaleFilter);
 Vue.component("OpacityFilter", OpacityFilter);
 Vue.component("SaturateFilter", SaturateFilter);
 Vue.component("BlurFilter", BlurFilter);
+Vue.component("OverlayFilter", OverlayFilter);
 
 const filterProcessor = new FilterProcessor();
 SUPPORT_FILTERS.map((filter) => {filterProcessor.registerFilter(filter)});
