@@ -16,7 +16,7 @@
         v-on:click="$store.commit('showFile', file.symbolIndex)"
         class="d-flex justify-content-between align-items-center"
         >{{ file.name }}
-        <b-button size="sm"><b-icon icon="trash-fill" aria-hidden="true" v-on:click="$store.commit('deleteFile', file.symbolIndex)"></b-icon></b-button>
+        <b-button size="sm"><b-icon icon="trash-fill" aria-hidden="true" v-on:click.stop="$store.commit('deleteFile', file.symbolIndex)"></b-icon></b-button>
                 
       </b-list-group-item>
     </b-list-group>
