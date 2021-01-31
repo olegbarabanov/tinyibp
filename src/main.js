@@ -67,6 +67,7 @@ const store = new Vuex.Store({
     deleteFile(state, indexSymbol) {
       const index = state.fileList.findIndex(file => file.symbolIndex === indexSymbol);
       if (index !== false) state.fileList.splice(index, 1);
+      if (state.showFileIndex === indexSymbol) state.showFileIndex = null;
     },
     showFile(state, indexSymbol) {
       state.showFileIndex = indexSymbol;
@@ -97,7 +98,7 @@ const store = new Vuex.Store({
   }
 
 });
-console.log(store);
+
 new Vue({
   i18n,
   store,

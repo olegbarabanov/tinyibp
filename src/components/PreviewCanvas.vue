@@ -35,6 +35,12 @@ export default {
   },
   methods: {
     updateCanvas: function () {
+      const canvas = this.$refs.canvas;
+      console.log('index', this.$store.state.showFileIndex);
+      if (!this.$store.state.showFileIndex) {
+        canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+        return;
+      }
       this.showProcessIndicator = true;
       clearTimeout(this.updateTimeout);
       this.updateTimeout = setTimeout(async () => {
@@ -42,7 +48,6 @@ export default {
           "runFilterProcessorForOne",
           this.$store.state.showFileIndex
         );
-        const canvas = this.$refs.canvas;
         canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
         this.width = sourceCanvas.width;
         this.height = sourceCanvas.height;
@@ -60,13 +65,9 @@ export default {
       },
       deep: true,
     },
-    "$store.state.showFileIndex": {
-      handler: async function () {
-        //setTimeout(() => this.updateCanvas(), 500);
+    "$store.state.showFileIndex": async function () {
         await this.updateCanvas();
-      },
-      deep: true,
-    },
+    }
   },
   //updated: function() {
   //  this.updateCanvas();
