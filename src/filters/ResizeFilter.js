@@ -15,14 +15,11 @@ export default class ResizeFilter extends BasicFilter {
       if (x === 0 && y === 0) {
         return canvas;
       } else if (x === 0) {
-        console.log('x === 0');
         newWidth = deltaY * canvas.width;
       } else if (y === 0) {
-        console.log('y === 0');
         newHeight = deltaX * canvas.height;
       }
-//      canvas.width = newWidth;
-//      canvas.height = newHeight;
+
       const newCanvas = new OffscreenCanvas(newWidth, newHeight);
       newCanvas.getContext("2d").drawImage(canvas,0,0,canvas.width,canvas.height,0,0,newWidth,newHeight);
       return newCanvas;
