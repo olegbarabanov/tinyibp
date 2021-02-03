@@ -36,7 +36,7 @@ export default {
   methods: {
     updateCanvas: function () {
       const canvas = this.$refs.canvas;
-      console.log('index', this.$store.state.showFileIndex);
+
       if (!this.$store.state.showFileIndex) {
         canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
         return;
