@@ -2,8 +2,8 @@
 
 <template>
   <div id="app">
-    <b-container fluid class="vh-100">
-      <b-row>
+    <b-container fluid class="vh-100 p-0">
+      <b-row no-gutters>
         <b-col>
           <b-navbar toggleable="lg" type="dark" variant="info">
             <b-navbar-brand href="#"
@@ -28,7 +28,7 @@
           </b-navbar>
         </b-col>
       </b-row>
-      <b-row align-v="stretch">
+      <b-row align-v="stretch" no-gutters>
         <b-col md="3">
           <append-file></append-file>
         </b-col>
