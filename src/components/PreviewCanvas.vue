@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="preview">
     <b-form-group label="Button style radios" v-slot="{ ariaDescribedby }">
       <b-form-radio-group
         id="btn-radios-1"
@@ -76,4 +76,8 @@ export default {
 </script>
 
 <style>
+div.preview {
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2 2"><path d="M1 2V0h1v1H0v1z" fill-opacity=".15"/></svg>');
+  background-size: 50px;
+}
 </style>

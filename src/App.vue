@@ -2,7 +2,7 @@
 
 <template>
   <div id="app">
-    <b-container fluid class="vh-100 p-0">
+    <b-container fluid class="vh-100 p-0 d-flex flex-column">
       <b-row no-gutters>
         <b-col>
           <b-navbar toggleable="lg" type="dark" variant="info">
