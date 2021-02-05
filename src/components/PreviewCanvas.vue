@@ -11,7 +11,7 @@
       ></b-form-radio-group>
     </b-form-group>
     Width: {{ width }} px, Height: {{ height }} px
-    <b-overlay :show="showProcessIndicator" class="d-inline-block">
+    <b-overlay :show="showProcessIndicator" class="d-flex flex-grow-1 align-items-center justify-content-center">
       <canvas class="mw-100" id="canvas" ref="canvas" :width="width" :height="height" />
     </b-overlay>
   </div>
