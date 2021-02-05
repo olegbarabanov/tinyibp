@@ -28,7 +28,7 @@
           </b-navbar>
         </b-col>
       </b-row>
-      <b-row align-v="stretch" no-gutters>
+      <b-row align-v="stretch" no-gutters class="flex-grow-1">
         <b-col md="3">
           <append-file></append-file>
         </b-col>
