@@ -1,5 +1,5 @@
 <template>
-  <div class="preview h-100">
+  <div class="preview h-100 d-flex flex-column">
     <b-form-group label="Button style radios" v-slot="{ ariaDescribedby }">
       <b-form-radio-group
         id="btn-radios-1"
