@@ -1,7 +1,10 @@
+<i18n src="../common/locales.json"></i18n>
+
 <template>
   <div class="preview h-100 d-flex flex-column">
-    <b-form-group label="Button style radios" v-slot="{ ariaDescribedby }">
+    <b-form-group v-slot="{ ariaDescribedby }">
       <b-form-radio-group
+        label="Individual radios"
         id="btn-radios-1"
         v-model="selected"
         :options="options"
@@ -21,11 +24,10 @@
 export default {
   data() {
     return {
-      selected: "original-preview",
+      selected: "result-preview",
       options: [
-        { text: "no-preview", value: "no-preview" },
-        { text: "original-preview", value: "original-preview" },
-        { text: "result-preview", value: "result-preview" },
+        { value: "original-preview", text: this.$t("preview.button.viewselector.originalview") },
+        { value: "result-preview", text: this.$t("preview.button.viewselector.resultview") },
       ],
       width: 0,
       height: 0,
@@ -46,7 +48,8 @@ export default {
       this.updateTimeout = setTimeout(async () => {
         const sourceCanvas = await this.$store.dispatch(
           "runFilterProcessorForOne",
-          this.$store.state.showFileIndex
+          {symbolIndex: this.$store.state.showFileIndex,
+          ignoreFilter: this.selected === "original-preview"}
         );
         canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
         this.width = sourceCanvas.width;
@@ -67,7 +70,10 @@ export default {
     },
     "$store.state.showFileIndex": async function () {
         await this.updateCanvas();
-    }
+    },
+    "selected": async function () {
+        await this.updateCanvas();
+    },
   },
   //updated: function() {
   //  this.updateCanvas();
