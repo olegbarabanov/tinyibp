@@ -1,12 +1,15 @@
+<i18n src="../common/locales.json"></i18n>
+
 <template>
   <b-form @submit.stop.prevent>
     <b-form-file
       v-model="fileList"
-      placeholder="Choose a file or drop it here..."
-      drop-placeholder="Drop file here..."
+      :placeholder="$t('helper.tooltip.uploadfile.placeholder')"
+      :drop-placeholder="$t('helper.tooltip.uploadfile.dropplaceholder')"
       accept="image/*"
       multiple
       ref="form-file"
+      class="text-left"
     ></b-form-file>
     <b-list-group>
       <b-list-group-item
@@ -17,7 +20,6 @@
         class="d-flex justify-content-between align-items-center"
         >{{ file.name }}
         <b-button size="sm"><b-icon icon="trash-fill" aria-hidden="true" v-on:click.stop="$store.commit('deleteFile', file.symbolIndex)"></b-icon></b-button>
-                
       </b-list-group-item>
     </b-list-group>
   </b-form>
@@ -43,7 +45,7 @@ export default {
     globalUrlFileList: function () {
       return this.globalFileList.map((file) => URL.createObjectURL(file));
     },
-  },
+  }
 };
 </script>
 

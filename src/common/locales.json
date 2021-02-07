@@ -3,6 +3,8 @@
         "hello": "Photo batch",
         "chooselang": "Choose lang",
         "helper.tooltip.draggable": "Drag to change the order of actions",
+        "helper.tooltip.uploadfile.placeholder": "Choose a file or drop it here...",
+        "helper.tooltip.uploadfile.dropplaceholder": "Drop file here...",
         "button.addeventhandler": "Add handler",
         "button.event.download": "Download"
     },
@@ -10,6 +12,8 @@
         "hello": "Фото обработчик",
         "chooselang": "Выбрать язык",
         "helper.tooltip.draggable": "Зажмите и перетаскивайте для изменения порядка действий",
+        "helper.tooltip.uploadfile.placeholder": "Загрузить изображения",
+        "helper.tooltip.uploadfile.dropplaceholder": "Загрузить сюда...",
         "button.addeventhandler": "Добавить действие",
         "button.event.download": "Скачать результат"
     }
