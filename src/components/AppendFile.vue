@@ -10,6 +10,8 @@
       multiple
       ref="form-file"
       class="text-left"
+      v-b-tooltip
+      :title="$t('helper.tooltip.uploadfile.description')"
     ></b-form-file>
     <b-list-group>
       <b-list-group-item
