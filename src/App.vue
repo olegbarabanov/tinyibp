@@ -83,8 +83,8 @@
             </b-card>
           </draggable>
           <b-dropdown block :text="$t('button.event.download')" class="m-2">
-            <b-dropdown-item href="#">-</b-dropdown-item>
-            <b-dropdown-item href="#">-</b-dropdown-item>
+            <b-dropdown-item v-on:click="$store.dispatch('downloadImages')">Скачать все файлы</b-dropdown-item>
+            <b-dropdown-item v-on:click="$store.dispatch('downloadImages', 'zip')">Скачать как ZIP</b-dropdown-item>
           </b-dropdown>
         </b-col>
       </b-row>
