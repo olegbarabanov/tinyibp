@@ -16,6 +16,8 @@ import OpacityFilter from "./components/OpacityFilter";
 import SaturateFilter from "./components/SaturateFilter";
 import BlurFilter from "./components/BlurFilter";
 import OverlayFilter from "./components/OverlayFilter";
+import JSZip from "jszip";
+import FileSaver from "file-saver";
 
 
 Vue.config.productionTip = false;
@@ -86,6 +88,22 @@ const store = new Vuex.Store({
       const newFileList = store.getters.fileList.filter(file => file.symbolIndex === symbolIndex);
       const result = await filterProcessor.run(newFileList, store.getters.filterList);
       return result.shift();
+    },
+    async downloadImages (store, method = "common") {
+      var zip = new JSZip();
+      console.log(zip);
+      if (method === "common") {
+        await Promise.all(store.getters.fileList.map(async (file) => {
+          const result = await filterProcessor.run([file], store.getters.filterList);
+          const blob = await result[0].convertToBlob({
+            type: "image/jpeg",
+            quality: 0.95
+          });
+
+          FileSaver.saveAs(blob, "file.jpg");
+        }));
+        return true;
+      }
     }
   },
   getters: {
