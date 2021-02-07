@@ -84,9 +84,9 @@ const store = new Vuex.Store({
     runFilterProcessor(store) {
       return filterProcessor.run(store.getters.fileList, store.getters.filterList);
     },
-    async runFilterProcessorForOne (store, symbolIndex) {
+    async runFilterProcessorForOne (store, {symbolIndex, ignoreFilter = false}) {
       const newFileList = store.getters.fileList.filter(file => file.symbolIndex === symbolIndex);
-      const result = await filterProcessor.run(newFileList, store.getters.filterList);
+      const result = await filterProcessor.run(newFileList, ignoreFilter ? [] : store.getters.filterList);
       return result.shift();
     },
     async downloadImages (store, method = "common") {
