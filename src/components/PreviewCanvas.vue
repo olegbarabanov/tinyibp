@@ -4,7 +4,6 @@
   <div class="preview h-100 d-flex flex-column border border-left border-right">
     <b-form-group v-slot="{ ariaDescribedby }">
       <b-form-radio-group
-        label="Individual radios"
         id="btn-radios-1"
         v-model="selected"
         :options="options"
