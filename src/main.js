@@ -128,4 +128,6 @@ new Vue({
 
 // ---- INIT ---
 
+console.log(store);
+
 store.commit("setlang", navigator.language.substr(0, 2).toLowerCase());
