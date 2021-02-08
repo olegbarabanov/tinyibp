@@ -23,6 +23,7 @@ export default class OverlayFilter extends BasicFilter {
 
     async run (canvas) {
       const canvasCtx = canvas.getContext("2d");
+      if (!this.image) return canvas;
       const image = await FileToCanvas(this.image);
       const margin = parseInt(this.margin);
       switch (this.position){
