@@ -17,7 +17,8 @@
         "filter.opacityfilter.name": "Grayscale level",
         "filter.saturatefilter.name": "Saturate",
         "filter.blurfilter.name": "Blur",
-        "filter.overlayfilter.name": "Overlay"
+        "filter.overlayfilter.name": "Overlay",
+        "helper.tooltip.uploadfile.browsebutton": "Browse"
     },
     "ru": {
         "hello": "Фото обработчик",
@@ -37,6 +38,7 @@
         "filter.opacityfilter.name": "Уровень прозрачного",
         "filter.saturatefilter.name": "Уровень насыщенности",
         "filter.blurfilter.name": "Размытие изображения",
-        "filter.overlayfilter.name": "Наложение изображения"
+        "filter.overlayfilter.name": "Наложение изображения",
+        "helper.tooltip.uploadfile.browsebutton": "Загрузка"
     }
 }
