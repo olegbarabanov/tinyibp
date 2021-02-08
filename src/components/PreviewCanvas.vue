@@ -1,7 +1,7 @@
 <i18n src="../common/locales.json"></i18n>
 
 <template>
-  <div class="preview h-100 d-flex flex-column">
+  <div class="preview h-100 d-flex flex-column border border-left border-right">
     <b-form-group v-slot="{ ariaDescribedby }">
       <b-form-radio-group
         label="Individual radios"
@@ -14,8 +14,8 @@
       ></b-form-radio-group>
     </b-form-group>
     Width: {{ width }} px, Height: {{ height }} px
-    <b-overlay :show="showProcessIndicator" class="d-flex flex-grow-1 align-items-center justify-content-center">
-      <canvas class="mw-100" id="canvas" ref="canvas" :width="width" :height="height" />
+    <b-overlay :show="showProcessIndicator" class="d-flex flex-grow-1 align-items-center justify-content-center overflow-auto p-1">
+      <canvas class="mw-100 mh-100" id="canvas" ref="canvas" :width="width" :height="height" />
     </b-overlay>
   </div>
 </template>

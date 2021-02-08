@@ -1,7 +1,7 @@
 <i18n src="../common/locales.json"></i18n>
 
 <template>
-  <b-form @submit.stop.prevent>
+  <b-form @submit.stop.prevent class="mh-100 d-flex flex-column">
     <b-form-file
       v-model="fileList"
       :placeholder="$t('helper.tooltip.uploadfile.placeholder')"
@@ -13,7 +13,7 @@
       v-b-tooltip
       :title="$t('helper.tooltip.uploadfile.description')"
     ></b-form-file>
-    <b-list-group>
+    <b-list-group class="overflow-auto">
       <b-list-group-item
         v-for="file in globalFileList"
         v-bind:key="file.symbolIndex"
