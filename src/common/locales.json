@@ -9,7 +9,15 @@
         "button.addeventhandler": "Add handler",
         "button.event.download": "Download",
         "preview.button.viewselector.originalview": "Source image",
-        "preview.button.viewselector.resultview": "Result image"
+        "preview.button.viewselector.resultview": "Result image",
+        "filter.contrastfilter.name": "Contrast",
+        "filter.resizefilter.name": "Resize",
+        "filter.convertfilter.name": "Convert",
+        "filter.grayscalefilter.name": "Grayscale level",
+        "filter.opacityfilter.name": "Grayscale level",
+        "filter.saturatefilter.name": "Saturate",
+        "filter.blurfilter.name": "Blur",
+        "filter.overlayfilter.name": "Overlay"
     },
     "ru": {
         "hello": "Фото обработчик",
@@ -21,6 +29,14 @@
         "button.addeventhandler": "Добавить действие",
         "button.event.download": "Скачать результат",
         "preview.button.viewselector.originalview": "Исходное изображение",
-        "preview.button.viewselector.resultview": "Конечное изображение"
+        "preview.button.viewselector.resultview": "Конечное изображение",
+        "filter.contrastfilter.name": "Контраст",
+        "filter.resizefilter.name": "Размер изображения",
+        "filter.convertfilter.name": "Формат изображения",
+        "filter.grayscalefilter.name": "Обесцвечивание",
+        "filter.opacityfilter.name": "Уровень прозрачного",
+        "filter.saturatefilter.name": "Уровень насыщенности",
+        "filter.blurfilter.name": "Размытие изображения",
+        "filter.overlayfilter.name": "Наложение изображения"
     }
 }
