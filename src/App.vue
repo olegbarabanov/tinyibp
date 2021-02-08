@@ -44,7 +44,7 @@
                 v-for="filter in registeredFilters"
                 v-bind:key="filter"
                 v-on:click="initFilter(filter)"
-                >{{ filter }}</b-dropdown-item
+                >{{ $t(`filter.${filter.toLowerCase()}.name`) }}</b-dropdown-item
               >
             </b-dropdown>
 
@@ -64,7 +64,7 @@
                     <b-col cols="1"
                       ><b-badge>#{{ index + 1 }}</b-badge></b-col
                     >
-                    <b-col cols="7">{{ filter.name }}</b-col>
+                    <b-col cols="7">{{ $t(`filter.${filter.name.toLowerCase()}.name`) }}</b-col>
                     <b-col cols="4">
                       <b-button
                         class="handle"
