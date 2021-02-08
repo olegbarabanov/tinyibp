@@ -61,19 +61,19 @@
               >
                 <b-card-header header-tag="header">
                   <b-row align-v="center" class="flex-nowrap">
-                    <b-col cols="1"
-                      ><b-badge>#{{ index + 1 }}</b-badge></b-col
-                    >
-                    <b-col cols="7">{{ $t(`filter.${filter.name.toLowerCase()}.name`) }}</b-col>
-                    <b-col cols="4">
+                    <b-col cols="3"
+                      >
                       <b-button
-                        class="handle"
+                        class="handle m-1"
                         v-b-tooltip
                         size="sm"
                         :title="$t('helper.tooltip.draggable')"
-                        ><b-icon icon="hand-index"></b-icon>
-                      </b-button>
-                      <b-button size="sm" v-on:click="$store.commit('removeFilter', index)"
+                        >#{{ index + 1 }} <b-icon icon="hand-index"></b-icon>
+                      </b-button></b-col
+                    >
+                    <b-col cols="6">{{ $t(`filter.${filter.name.toLowerCase()}.name`) }}</b-col>
+                    <b-col cols="3">
+                      <b-button class="m-1" size="sm" v-on:click="$store.commit('removeFilter', index)"
                         ><b-icon icon="trash-fill" aria-hidden="true"></b-icon
                       ></b-button>
                     </b-col>
