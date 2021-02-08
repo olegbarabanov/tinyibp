@@ -12,6 +12,7 @@
       class="text-left"
       v-b-tooltip
       :title="$t('helper.tooltip.uploadfile.description')"
+      :browse-text="$t('helper.tooltip.uploadfile.browsebutton')"
     ></b-form-file>
     <b-list-group class="overflow-auto">
       <b-list-group-item
