@@ -24,15 +24,19 @@ export default {
   data() {
     return {
       selected: "result-preview",
-      options: [
-        { value: "original-preview", text: this.$t("preview.button.viewselector.originalview") },
-        { value: "result-preview", text: this.$t("preview.button.viewselector.resultview") },
-      ],
       width: 0,
       height: 0,
       updateTimeout: 0,
       showProcessIndicator: false,
     };
+  },
+  computed: {
+    options: function() {
+      return [
+        { value: "original-preview", text: this.$t("preview.button.viewselector.originalview") },
+        { value: "result-preview", text: this.$t("preview.button.viewselector.resultview") },
+      ]
+    }
   },
   methods: {
     updateCanvas: function () {
