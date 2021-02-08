@@ -17,7 +17,7 @@
       <b-list-group-item
         v-for="file in globalFileList"
         v-bind:key="file.symbolIndex"
-        action
+        :active="$store.state.showFileIndex === file.symbolIndex"
         v-on:click="$store.commit('showFile', file.symbolIndex)"
         class="d-flex justify-content-between align-items-center"
         >{{ file.name }}
