@@ -60,12 +60,12 @@
                 :key="index"
               >
                 <b-card-header header-tag="header">
-                  <b-row align-v="center">
-                    <b-col cols="6" md="4"
+                  <b-row align-v="center" class="flex-nowrap">
+                    <b-col cols="1"
                       ><b-badge>#{{ index + 1 }}</b-badge></b-col
                     >
-                    <b-col cols="6" md="4">{{ filter.name }}</b-col>
-                    <b-col cols="6" md="4">
+                    <b-col cols="7">{{ filter.name }}</b-col>
+                    <b-col cols="4">
                       <b-button
                         class="handle"
                         v-b-tooltip
@@ -104,7 +104,6 @@
 </template>
 
 <script>
-//import HelloWorld from "./components/HelloWorld.vue";
 import { mapState, mapActions } from "vuex";
 import draggable from "vuedraggable";
 import previewCanvas from "./components/PreviewCanvas.vue";
