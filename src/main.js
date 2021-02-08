@@ -59,6 +59,9 @@ const store = new Vuex.Store({
       state.user.lang = lang;
       i18n.locale = lang;
     },
+    removeFilter(state, index) {
+      state.filterList.splice(index, 1);
+    },
     setFilter(state, filter) {
       state.filterList.push(filter);
     },
