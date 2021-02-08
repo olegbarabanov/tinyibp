@@ -73,7 +73,7 @@
                         :title="$t('helper.tooltip.draggable')"
                         ><b-icon icon="hand-index"></b-icon>
                       </b-button>
-                      <b-button size="sm"
+                      <b-button size="sm" v-on:click="$store.commit('removeFilter', index)"
                         ><b-icon icon="trash-fill" aria-hidden="true"></b-icon
                       ></b-button>
                     </b-col>
