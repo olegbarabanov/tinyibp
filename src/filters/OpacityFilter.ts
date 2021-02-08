@@ -3,7 +3,7 @@ import BasicFilter from "./BasicFilter"
 export default class OpacityFilter extends BasicFilter {
     level = 0;
 
-    async run (canvas) {
+    async run (canvas: any) {
       const canvasCtx = canvas.getContext("2d");
       const oldFilter = canvasCtx.filter;
       canvasCtx.filter = `opacity(${this.level * 0.01})`;

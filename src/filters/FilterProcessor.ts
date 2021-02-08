@@ -1,10 +1,10 @@
 import FileToCanvas from "../utils/FileToCanvas";
 
 export default class FilterProcessor {
-    #listProps = [];
+    #listProps: Array<any> = [];
     #queue = {};
     
-    registerFilter(filter) {
+    registerFilter(filter: any) {
         this.#listProps.push(filter);
     }
 
@@ -12,12 +12,12 @@ export default class FilterProcessor {
         return this.#listProps;
     }
 
-    findFilter(name = String) {
+    findFilter(name:String) {
         return this.#listProps.find(e => e.name === name);
     }
 
-    async run(fileList, config) {
-         return await Promise.all(fileList.map(async (file) => {
+    async run(fileList: any, config: any) {
+         return await Promise.all(fileList.map(async (file: any) => {
             let canvas = await FileToCanvas(file);
             for (let filterConfig of config) {
                 let filter = this.findFilter(filterConfig.name);

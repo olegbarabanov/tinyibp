@@ -4,7 +4,7 @@ export default class ResizeFilter extends BasicFilter {
     resizeToX = 0;
     resizeToY = 0;
 
-    async run (canvas) {
+    async run (canvas: any) {
       const x = Number(this.resizeToX);
       const y = Number(this.resizeToY);
       const deltaX = x / canvas.width;
@@ -21,7 +21,10 @@ export default class ResizeFilter extends BasicFilter {
       }
 
       const newCanvas = new OffscreenCanvas(newWidth, newHeight);
-      newCanvas.getContext("2d").drawImage(canvas,0,0,canvas.width,canvas.height,0,0,newWidth,newHeight);
+
+      /*BUG -- getContext can return NULL; */
+      newCanvas.getContext("2d")?.drawImage(canvas,0,0,canvas.width,canvas.height,0,0,newWidth,newHeight);
+
       return newCanvas;
     }
 }

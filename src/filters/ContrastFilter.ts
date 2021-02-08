@@ -1,14 +1,14 @@
 import BasicFilter from "./BasicFilter"
 
-export default class GrayscaleFilter extends BasicFilter {
+export default class ContrastFilter extends BasicFilter {
     level = 100;
 
-    async run (canvas) {
+    async run (canvas: any) {
       const canvasCtx = canvas.getContext("2d");
       const oldFilter = canvasCtx.filter;
-      canvasCtx.filter = `grayscale(${this.level * 0.01})`;
+      canvasCtx.filter = `contrast(${this.level * 0.01})`;
       canvasCtx.drawImage(canvas, 0, 0);
       canvasCtx.filter = oldFilter;
-      return canvas;
+      return canvasCtx;
     }
 }

@@ -1,12 +1,13 @@
 import BasicFilter from "./BasicFilter"
 
-export default class SaturateFilter extends BasicFilter {
-    level = 100;
+export default class BlurFilter extends BasicFilter {
+    level = 0;
 
-    async run (canvas) {
+    async run (canvas: any) {
       const canvasCtx = canvas.getContext("2d");
+      
       const oldFilter = canvasCtx.filter;
-      canvasCtx.filter = `saturate(${this.level * 0.01})`;
+      canvasCtx.filter = `blur(${this.level}px)`;
       canvasCtx.drawImage(canvas, 0, 0);
       canvasCtx.filter = oldFilter;
       return canvas;
