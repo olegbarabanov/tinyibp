@@ -39,54 +39,63 @@
 
         <b-col md="3" class="mh-100">
           <div class="d-flex flex-column mh-100">
-              <b-dropdown block :text="$t('button.addeventhandler')" class="m-2">
-                <b-dropdown-item
-                  v-for="filter in registeredFilters"
-                  v-bind:key="filter"
-                  v-on:click="initFilter(filter)"
-                  >{{ filter }}</b-dropdown-item
-                >
-              </b-dropdown>
-
-              <draggable
-                tag="div"
-                :list="filterList"
-                class="list-group overflow-auto"
-                handle=".handle"
+            <b-dropdown block :text="$t('button.addeventhandler')" class="m-2">
+              <b-dropdown-item
+                v-for="filter in registeredFilters"
+                v-bind:key="filter"
+                v-on:click="initFilter(filter)"
+                >{{ filter }}</b-dropdown-item
               >
-                <b-card no-body v-for="(filter, index) in filterList" :key="index">
-                  <b-card-header header-tag="header">
-                    <b-row align-v="center">
-                      <b-col cols="6" md="4"
-                        ><b-badge>#{{ index + 1 }}</b-badge></b-col
-                      >
-                      <b-col cols="6" md="4">{{ filter.name }}</b-col>
-                      <b-col cols="6" md="4">
-                        <b-button
-                          class="handle"
-                          v-b-tooltip
-                          size="sm"
-                          :title="$t('helper.tooltip.draggable')"
-                          ><b-icon icon="hand-index"></b-icon>
-                        </b-button>
-                        <b-button size="sm"
-                          ><b-icon icon="trash-fill" aria-hidden="true"></b-icon
-                        ></b-button>
-                      </b-col>
-                    </b-row>
-                  </b-card-header>
-                  <b-card-body>
-                    <component
-                      v-bind:settings="filter"
-                      v-bind:is="filter.name"
-                    ></component>
-                  </b-card-body>
-                </b-card>
-              </draggable>
-              <b-dropdown block :text="$t('button.event.download')" class="m-2">
-                <b-dropdown-item v-on:click="$store.dispatch('downloadImages')">Скачать все файлы</b-dropdown-item>
-                <b-dropdown-item v-on:click="$store.dispatch('downloadImages', 'zip')">Скачать как ZIP</b-dropdown-item>
-              </b-dropdown>
+            </b-dropdown>
+
+            <draggable
+              tag="div"
+              :list="filterList"
+              class="list-group overflow-auto"
+              handle=".handle"
+            >
+              <b-card
+                no-body
+                v-for="(filter, index) in filterList"
+                :key="index"
+              >
+                <b-card-header header-tag="header">
+                  <b-row align-v="center">
+                    <b-col cols="6" md="4"
+                      ><b-badge>#{{ index + 1 }}</b-badge></b-col
+                    >
+                    <b-col cols="6" md="4">{{ filter.name }}</b-col>
+                    <b-col cols="6" md="4">
+                      <b-button
+                        class="handle"
+                        v-b-tooltip
+                        size="sm"
+                        :title="$t('helper.tooltip.draggable')"
+                        ><b-icon icon="hand-index"></b-icon>
+                      </b-button>
+                      <b-button size="sm"
+                        ><b-icon icon="trash-fill" aria-hidden="true"></b-icon
+                      ></b-button>
+                    </b-col>
+                  </b-row>
+                </b-card-header>
+                <b-card-body>
+                  <component
+                    v-bind:settings="filter"
+                    v-bind:is="filter.name"
+                  ></component>
+                </b-card-body>
+              </b-card>
+            </draggable>
+            <b-dropdown block :text="$t('button.event.download')" class="m-2">
+              <b-dropdown-item v-on:click="$store.dispatch('downloadImages')"
+                >Скачать все файлы</b-dropdown-item
+              >
+              <b-dropdown-item
+                v-on:click="$store.dispatch('downloadImages', 'zip')"
+                >Скачать как ZIP</b-dropdown-item
+              >
+            </b-dropdown>
           </div>
         </b-col>
       </b-row>
