@@ -12,10 +12,10 @@ import ResizeFilter from "./components/ResizeFilter.vue"
 import ContrastFilter from "./components/ContrastFilter.vue"
 import ConvertFilter from "./components/ConvertFilter.vue"
 import GrayscaleFilter from "./components/GrayscaleFilter.vue"
-import OpacityFilter from "./components/OpacityFilter";
-import SaturateFilter from "./components/SaturateFilter";
-import BlurFilter from "./components/BlurFilter";
-import OverlayFilter from "./components/OverlayFilter";
+import OpacityFilter from "./components/OpacityFilter.vue";
+import SaturateFilter from "./components/SaturateFilter.vue";
+import BlurFilter from "./components/BlurFilter.vue";
+import OverlayFilter from "./components/OverlayFilter.vue";
 import JSZip from "jszip";
 import FileSaver from "file-saver";
 
@@ -55,7 +55,7 @@ const store = new Vuex.Store({
     };
   },
   mutations: {
-    setlang(state, lang = "en") {
+    setlang(state: any, lang = "en") {
       state.user.lang = lang;
       i18n.locale = lang;
     },
@@ -70,7 +70,7 @@ const store = new Vuex.Store({
       state.fileList.push(file);
     },
     deleteFile(state, indexSymbol) {
-      const index = state.fileList.findIndex(file => file.symbolIndex === indexSymbol);
+      const index = state.fileList.findIndex((file: any) => file.symbolIndex === indexSymbol);
       if (index !== false) state.fileList.splice(index, 1);
       if (state.showFileIndex === indexSymbol) state.showFileIndex = null;
     },
@@ -88,15 +88,15 @@ const store = new Vuex.Store({
       return filterProcessor.run(store.getters.fileList, store.getters.filterList);
     },
     async runFilterProcessorForOne (store, {symbolIndex, ignoreFilter = false}) {
-      const newFileList = store.getters.fileList.filter(file => file.symbolIndex === symbolIndex);
+      const newFileList = store.getters.fileList.filter((file: any) => file.symbolIndex === symbolIndex);
       const result = await filterProcessor.run(newFileList, ignoreFilter ? [] : store.getters.filterList);
       return result.shift();
     },
     async downloadImages (store, method = "common") {
+      /*
       var zip = new JSZip();
-      console.log(zip);
       if (method === "common") {
-        await Promise.all(store.getters.fileList.map(async (file) => {
+        await Promise.all(store.getters.fileList.map(async (file: any) => {
           const result = await filterProcessor.run([file], store.getters.filterList);
           const blob = await result[0].convertToBlob({
             type: "image/jpeg",
@@ -107,6 +107,7 @@ const store = new Vuex.Store({
         }));
         return true;
       }
+      */
     }
   },
   getters: {

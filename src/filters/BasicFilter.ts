@@ -3,7 +3,7 @@ export default class BasicFilter {
     #vueComponent = String;
 
     static create() {
-        return new self;
+        return new this;
     }
 
     static getBasicProperty() {
@@ -22,7 +22,7 @@ export default class BasicFilter {
         return this.#vueComponent;
     }
 
-    async run (canvas) {
+    async run (canvas: any) {
         return canvas;
     }
 }
