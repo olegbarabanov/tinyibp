@@ -93,12 +93,11 @@ const store = new Vuex.Store({
       return result.shift();
     },
     async downloadImages (store, method = "common") {
-      /*
-      var zip = new JSZip();
+      //var zip = new JSZip();
       if (method === "common") {
         await Promise.all(store.getters.fileList.map(async (file: any) => {
           const result = await filterProcessor.run([file], store.getters.filterList);
-          const blob = await result[0].convertToBlob({
+          const blob = await (result[0] as any).convertToBlob({
             type: "image/jpeg",
             quality: 0.95
           });
@@ -107,7 +106,6 @@ const store = new Vuex.Store({
         }));
         return true;
       }
-      */
     }
   },
   getters: {
