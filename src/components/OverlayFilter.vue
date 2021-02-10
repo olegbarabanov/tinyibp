@@ -13,14 +13,16 @@
 </template>
 
 <script>
-export default {
+import Vue from 'vue'
+
+export default Vue.extend({
   props: ["settings"],
   data() {
     return {
       supportPositions: Object.entries(this.settings.supportPositions).map(([position, index]) => {return {"text": position, "value": index}}),
     }
   },
-};
+})
 </script>
 
 <style>

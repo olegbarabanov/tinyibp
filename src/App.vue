@@ -103,15 +103,15 @@
   </div>
 </template>
 
-<script>
-/*import Vue from 'vue'
-import Component from 'vue-class-component'*/
+<script lang="ts">
+import Vue from 'vue'
+import Component from 'vue-class-component'
 import { mapState, mapActions } from "vuex";
 import draggable from "vuedraggable";
 import previewCanvas from "./components/PreviewCanvas.vue";
 import appendFile from "./components/AppendFile.vue";
 
-export default {
+@Component({
   name: "App",
   components: {
     draggable,
@@ -145,8 +145,9 @@ export default {
         },
       ],
     };
-  },
-};
+  }
+})
+export default class extends Vue {}
 
 
 /*

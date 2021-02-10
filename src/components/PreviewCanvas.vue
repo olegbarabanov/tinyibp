@@ -19,15 +19,17 @@
   </div>
 </template>
 
-<script>
-export default {
+<script lang="ts">
+import Vue from 'vue'
+
+export default Vue.extend({
   data() {
     return {
-      selected: "result-preview",
-      width: 0,
-      height: 0,
-      updateTimeout: 0,
-      showProcessIndicator: false,
+      selected: "result-preview" as string,
+      width: 0 as number,
+      height: 0 as number,
+      updateTimeout: 0 as any,
+      showProcessIndicator: false as boolean,
     };
   },
   computed: {
@@ -40,25 +42,25 @@ export default {
   },
   methods: {
     updateCanvas: function () {
-      const canvas = this.$refs.canvas;
+      const canvas = this.$refs.canvas as HTMLCanvasElement;
 
       if (!this.$store.state.showFileIndex) {
-        canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+        canvas.getContext("2d")?.clearRect(0, 0, canvas.width, canvas.height);
         return;
       }
       this.showProcessIndicator = true;
-      clearTimeout(this.updateTimeout);
-      this.updateTimeout = setTimeout(async () => {
+      window.clearTimeout(this.updateTimeout);
+      this.updateTimeout = window.setTimeout(async () => {
         const sourceCanvas = await this.$store.dispatch(
           "runFilterProcessorForOne",
           {symbolIndex: this.$store.state.showFileIndex,
           ignoreFilter: this.selected === "original-preview"}
         );
-        canvas.getContext("2d").clearRect(0, 0, canvas.width, canvas.height);
+        canvas.getContext("2d")?.clearRect(0, 0, canvas.width, canvas.height);
         this.width = sourceCanvas.width;
         this.height = sourceCanvas.height;
         this.$nextTick(() =>
-          canvas.getContext("2d").drawImage(sourceCanvas, 0, 0)
+          canvas.getContext("2d")?.drawImage(sourceCanvas, 0, 0)
         );
         this.showProcessIndicator = false;
       }, 200);
@@ -81,7 +83,8 @@ export default {
   //updated: function() {
   //  this.updateCanvas();
   // }
-};
+})
+
 </script>
 
 <style>

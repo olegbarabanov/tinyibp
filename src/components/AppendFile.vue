@@ -29,7 +29,9 @@
 </template>
 
 <script>
-export default {
+import Vue from 'vue'
+
+export default Vue.extend({
   data() {
     return {
       fileList: [],
@@ -49,7 +51,7 @@ export default {
       return this.globalFileList.map((file) => URL.createObjectURL(file));
     },
   }
-};
+});
 </script>
 
 <style>
