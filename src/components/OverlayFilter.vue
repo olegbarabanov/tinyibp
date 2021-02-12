@@ -12,7 +12,7 @@
   </b-form>
 </template>
 
-<script>
+<script lang="ts">
 import Vue from 'vue'
 import {supportPositions} from "../filters/OverlayFilter"
 
