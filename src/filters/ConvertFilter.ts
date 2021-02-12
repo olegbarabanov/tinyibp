@@ -1,16 +1,21 @@
-import BasicFilter from "./BasicFilter"
+import AbstractFilter from "./AbstractFilter";
 
-export default class ConvertFilter extends BasicFilter {
-    supportFormat = {
+interface ITypeFormat {
+  [key: string]: string ;
+}
+
+export default class ConvertFilter extends AbstractFilter {
+
+    readonly supportFormat: ITypeFormat = {
       "webp" : "image/webp",
       "gif" : "image/gif",
       "png" : "image/png",
       "jpg" : "image/jpeg"
     }
 
-    targetFormat = "jpg";
+    targetFormat: string = "jpg";
 
-    async run (canvas: any) {
+    async run (canvas: OffscreenCanvas): Promise<OffscreenCanvas> {
       return canvas;
     }
 }

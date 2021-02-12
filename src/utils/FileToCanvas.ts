@@ -1,4 +1,4 @@
-export default async function FileToCanvas(file: any) {
+export default async function FileToCanvas(file: File): Promise<OffscreenCanvas> {
     const url = URL.createObjectURL(file);
     const img = new Image();
     img.src = url;
@@ -8,7 +8,10 @@ export default async function FileToCanvas(file: any) {
     var canvas = new OffscreenCanvas(width, height);
 
     /*BUG -- getContext can return NULL; */
-    canvas.getContext("2d")?.drawImage(img, 0, 0);
+    const canvasCtx = canvas.getContext("2d");
+    if (canvasCtx === null) throw new Error("unable to create canvas context");
+    canvasCtx.drawImage(img, 0, 0);
     URL.revokeObjectURL(url);
+    
     return canvas;
 }
