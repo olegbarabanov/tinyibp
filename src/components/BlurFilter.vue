@@ -19,8 +19,4 @@ import Vue from 'vue'
 export default Vue.extend({
   props: ['settings']
 })
-
 </script>
-
-<style>
-</style>

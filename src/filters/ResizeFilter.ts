@@ -1,12 +1,12 @@
-import BasicFilter from "./BasicFilter"
+import AbstractFilter from "./AbstractFilter"
 
-export default class ResizeFilter extends BasicFilter {
-    resizeToX = 0;
-    resizeToY = 0;
+export default class ResizeFilter extends AbstractFilter {
+    resizeToX: number = 0;
+    resizeToY: number = 0;
 
-    async run (canvas: any) {
-      const x = Number(this.resizeToX);
-      const y = Number(this.resizeToY);
+    async run (canvas: OffscreenCanvas): Promise<OffscreenCanvas> {
+      const x = this.resizeToX;
+      const y = this.resizeToY;
       const deltaX = x / canvas.width;
       const deltaY = y / canvas.height;
       var newHeight = y;
@@ -21,9 +21,10 @@ export default class ResizeFilter extends BasicFilter {
       }
 
       const newCanvas = new OffscreenCanvas(newWidth, newHeight);
-
+      const newCanvasCtx = newCanvas.getContext("2d");
+      if (newCanvasCtx === null) throw new Error("unable to create canvas context");
       /*BUG -- getContext can return NULL; */
-      newCanvas.getContext("2d")?.drawImage(canvas,0,0,canvas.width,canvas.height,0,0,newWidth,newHeight);
+      newCanvasCtx.drawImage(canvas,0,0,canvas.width,canvas.height,0,0,newWidth,newHeight);
 
       return newCanvas;
     }

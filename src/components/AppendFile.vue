@@ -22,37 +22,37 @@
         v-on:click="$store.commit('showFile', file.symbolIndex)"
         class="d-flex justify-content-between align-items-center"
         >{{ file.name }}
-        <b-button size="sm"><b-icon icon="trash-fill" aria-hidden="true" v-on:click.stop="$store.commit('deleteFile', file.symbolIndex)"></b-icon></b-button>
+        <b-button size="sm"
+          ><b-icon
+            icon="trash-fill"
+            aria-hidden="true"
+            v-on:click.stop="$store.commit('deleteFile', file.symbolIndex)"
+          ></b-icon
+        ></b-button>
       </b-list-group-item>
     </b-list-group>
   </b-form>
 </template>
 
-<script>
-import Vue from 'vue'
+<script lang="ts">
+import Vue from "vue";
 
 export default Vue.extend({
   data() {
     return {
-      fileList: [],
+      fileList: [] as Array<File>,
     };
   },
   watch: {
     fileList: function (newFileList) {
-      newFileList.map((file) => this.$store.commit("setFile", file));
-      this.$refs["form-file"].reset();
+      newFileList.forEach((file: File) => this.$store.commit("setFile", file));
+      (this.$refs["form-file"] as any).reset();
     },
   },
   computed: {
     globalFileList: function () {
       return this.$store.state.fileList;
     },
-    globalUrlFileList: function () {
-      return this.globalFileList.map((file) => URL.createObjectURL(file));
-    },
-  }
+  },
 });
 </script>
-
-<style>
-</style>

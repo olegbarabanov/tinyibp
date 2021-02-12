@@ -1,11 +1,12 @@
-import BasicFilter from "./BasicFilter"
+import AbstractFilter from "./AbstractFilter";
 
-export default class BlurFilter extends BasicFilter {
-    level = 0;
+export default class BlurFilter extends AbstractFilter {
+    level: number = 0;
 
-    async run (canvas: any) {
+    async run (canvas: OffscreenCanvas): Promise<OffscreenCanvas> {
       const canvasCtx = canvas.getContext("2d");
-      
+      if (canvasCtx === null) throw new Error("unable to create canvas context");
+
       const oldFilter = canvasCtx.filter;
       canvasCtx.filter = `blur(${this.level}px)`;
       canvasCtx.drawImage(canvas, 0, 0);

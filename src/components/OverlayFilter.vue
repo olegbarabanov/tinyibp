@@ -14,16 +14,14 @@
 
 <script>
 import Vue from 'vue'
+import {supportPositions} from "../filters/OverlayFilter"
 
 export default Vue.extend({
   props: ["settings"],
   data() {
     return {
-      supportPositions: Object.entries(this.settings.supportPositions).map(([position, index]) => {return {"text": position, "value": index}}),
+      supportPositions: Object.entries(supportPositions).filter(([position]) => isNaN(Number(position))).map(([position, index]) => {return {"text": position, "value": index}})
     }
   },
 })
 </script>
-
-<style>
-</style>
