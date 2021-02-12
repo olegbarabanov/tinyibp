@@ -46,7 +46,7 @@ const store = new Vuex.Store({
   state() {
     return {
       user: {
-        lang: String, // see ISO 639-1
+        lang: "en" as string, // see ISO 639-1
       },
       registeredFilters: filterProcessor.getAllFilters().map(filter => filter.name),
       filterList: [],

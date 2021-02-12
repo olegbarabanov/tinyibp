@@ -105,13 +105,12 @@
 
 <script lang="ts">
 import Vue from 'vue'
-import Component from 'vue-class-component'
 import { mapState, mapActions } from "vuex";
 import draggable from "vuedraggable";
 import previewCanvas from "./components/PreviewCanvas.vue";
 import appendFile from "./components/AppendFile.vue";
 
-@Component({
+export default Vue.extend({
   name: "App",
   components: {
     draggable,
@@ -147,8 +146,6 @@ import appendFile from "./components/AppendFile.vue";
     };
   }
 })
-export default class extends Vue {}
-
 
 /*
 import { Component, Vue } from 'vue-property-decorator';
