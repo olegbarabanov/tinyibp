@@ -1,6 +1,6 @@
-import AbstractFilter from "./AbstractFilter"
+import FilterInterface from "./FilterInterface";
 
-export default class OpacityFilter extends AbstractFilter {
+export default class OpacityFilter implements FilterInterface {
     level: number = 0;
 
     async run (canvas: OffscreenCanvas): Promise<OffscreenCanvas> {
