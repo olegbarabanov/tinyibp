@@ -1,5 +1,5 @@
 import FileToCanvas from "../utils/FileToCanvas";
-import AbstractFilter from "./AbstractFilter"
+import FilterInterface from "./FilterInterface";
 
 export enum supportPositions {
   TOP_LEFT,
@@ -14,7 +14,7 @@ export enum supportPositions {
   MOSAIC_FIT
 }
 
-export default class OverlayFilter extends AbstractFilter {
+export default class OverlayFilter implements FilterInterface {
     image?: File;
     position: number = 0; // Позиционирование
     margin: number = 0; //Отступ

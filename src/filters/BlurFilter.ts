@@ -1,6 +1,6 @@
-import AbstractFilter from "./AbstractFilter";
+import FilterInterface from "./FilterInterface";
 
-export default class BlurFilter extends AbstractFilter {
+export default class BlurFilter implements FilterInterface {
     level: number = 0;
 
     async run (canvas: OffscreenCanvas): Promise<OffscreenCanvas> {

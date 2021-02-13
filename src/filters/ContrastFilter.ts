@@ -1,6 +1,6 @@
-import AbstractFilter from "./AbstractFilter";
+import FilterInterface from "./FilterInterface";
 
-export default class ContrastFilter extends AbstractFilter {
+export default class ContrastFilter implements FilterInterface {
     level: number = 100;
 
     async run (canvas: OffscreenCanvas): Promise<OffscreenCanvas> {
