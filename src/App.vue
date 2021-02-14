@@ -69,7 +69,7 @@
                         v-b-tooltip
                         size="sm"
                         :title="$t('helper.tooltip.draggable')"
-                        >#{{ index + 1 }}
+                        >{{ index + 1 }}
                       </b-button></b-col
                     >
                     <b-col cols="6">{{ $t(`filter.${filter.name.toLowerCase()}.name`) }}</b-col>

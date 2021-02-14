@@ -20,15 +20,15 @@
         v-bind:key="index"
         :active="$store.state.showFileIndex === index"
         v-on:click="$store.commit('showFile', index)"
-        class="d-flex justify-content-between align-items-center"
+        class="d-flex justify-content-between align-items-center p-1"
         >{{ index + 1 }} - {{ file.name }}
-        <b-button size="sm"
-          ><b-icon
-            icon="trash-fill"
-            aria-hidden="true"
-            v-on:click.stop="$store.commit('deleteFile', index)"
-          ></b-icon
-        ></b-button>
+        <b-button 
+          aria-label="Close"
+          v-on:click.stop="$store.commit('deleteFile', index)"
+          class="close" 
+          >
+            <span aria-hidden="true">&times;</span>
+        </b-button>
       </b-list-group-item>
     </b-list-group>
   </b-form>
