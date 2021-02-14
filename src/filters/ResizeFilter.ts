@@ -1,6 +1,6 @@
-import FilterInterface from "./FilterInterface";
+import AbstractFilter from "./AbstractFilter";
 
-export default class ResizeFilter implements FilterInterface {
+export default class ResizeFilter extends AbstractFilter {
     resizeToX: number = 0;
     resizeToY: number = 0;
 

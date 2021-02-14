@@ -50,13 +50,13 @@
 
             <draggable
               tag="div"
-              :list="filterList"
+              :list="filterMaps"
               class="list-group overflow-auto"
               handle=".handle"
             >
               <b-card
                 no-body
-                v-for="(filter, index) in filterList"
+                v-for="(filter, index) in filterMaps"
                 :key="index"
               >
                 <b-card-header header-tag="header">
@@ -122,9 +122,9 @@ export default Vue.extend({
   },
   computed: {
     ...mapState(["registeredFilters"]),
-    filterList: {
+    filterMaps: {
       get() {
-        return this.$store.state.filterList;
+        return this.$store.state.filterMaps;
       },
       set() {
         this.$store.dispatch("setFilter");

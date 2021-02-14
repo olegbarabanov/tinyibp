@@ -1,6 +1,6 @@
 import FileToCanvas from "../utils/FileToCanvas";
 import FilterFactory from "./FilterFactory";
-import FilterInterface from "./FilterInterface";
+import FilterInterface, {FilterMap} from "./FilterInterface";
 
 export default class FilterProcessor {
     listProps: Array<FilterInterface> = [];
@@ -14,12 +14,14 @@ export default class FilterProcessor {
         return this.filterFactory;
     }
 
-    async run(file: File, config: any): Promise<OffscreenCanvas> {
+    async run(file: File, filterMaps: Array<FilterMap>): Promise<OffscreenCanvas> {
         let canvas = await FileToCanvas(file);
-        for (let filterConfig of config) {
-            let filter = this.getFilterFactory().findFilter(filterConfig.name);
-            if (!filter) throw new Error("filter not found");
-            canvas = await Object.assign(new filter(), filterConfig).run(canvas);
+        for (let map of filterMaps) {
+            let filterConstructor = this.getFilterFactory().findFilter(map.name);
+            if (!filterConstructor) throw new Error("filter not found");
+            const filter = new filterConstructor();
+            filter.setPropertyMap(map);
+            canvas = await filter.run(canvas);
         }
         return canvas;
     }

@@ -18,6 +18,7 @@ import BlurFilter from "./components/BlurFilter.vue";
 import OverlayFilter from "./components/OverlayFilter.vue";
 import JSZip from "jszip";
 import FileSaver from "file-saver";
+import { FilterMap } from "./filters/FilterInterface";
 
 
 Vue.config.productionTip = false;
@@ -36,6 +37,8 @@ Vue.component("BlurFilter", BlurFilter);
 Vue.component("OverlayFilter", OverlayFilter);
 
 const filterProcessor = new FilterProcessor();
+const DEFAULT_LANG = "en";
+
 SUPPORT_FILTERS.map((filter) => {filterProcessor.getFilterFactory().registerFilter(filter)});
 
 const i18n = new VueI18n({
@@ -46,57 +49,62 @@ const store = new Vuex.Store({
   state() {
     return {
       user: {
-        lang: "en" as string, // see ISO 639-1
+        lang: DEFAULT_LANG as string, // see ISO 639-1
       },
-      registeredFilters: filterProcessor.getFilterFactory().getFilterCollection().map(filter => filter.constructor.name),
-      filterList: [],
-      fileList: [],
-      showFileIndex: null
+      registeredFilters: filterProcessor.getFilterFactory().getFilterCollection().map(filter => filter.name),
+      filterMaps: [] as Array<FilterMap>,
+      fileList: [] as Array<File>,
+      showFileIndex: null as null | number
     };
   },
   mutations: {
-    setlang(state: any, lang: string = "en") {
+    setlang(state: any, lang: string = DEFAULT_LANG) {
       state.user.lang = lang;
       i18n.locale = lang;
     },
-    removeFilter(state, index) {
-      state.filterList.splice(index, 1);
+    removeFilter(state, index: number) {
+      state.filterMaps.splice(index, 1);
     },
-    setFilter(state, filter) {
-      state.filterList.push(filter);
+    setFilter(state, filter: FilterMap) {
+      state.filterMaps.push(filter);
     },
-    setFile(state, file) {
-      file.symbolIndex = Symbol("symbolIndex");
+    setFile(state, file: File) {
       state.fileList.push(file);
     },
-    deleteFile(state, indexSymbol) {
-      const index = state.fileList.findIndex((file: any) => file.symbolIndex === indexSymbol);
-      if (index !== false) state.fileList.splice(index, 1);
-      if (state.showFileIndex === indexSymbol) state.showFileIndex = null;
+    deleteFile(state, index: number) {
+      if (state.fileList[index] === undefined) return false;
+      state.fileList.splice(index, 1);
+      if (state.fileList.length === 0){
+        this.commit("showFile", null);
+      }else if (index >= state.fileList.length) {
+        this.commit("showFile", index - 1);
+      }
+      return true;
     },
-    showFile(state, indexSymbol) {
-      state.showFileIndex = indexSymbol;
+    showFile(state, index: number | null) {
+      state.showFileIndex = index;
     }
   },
   actions: {
     initFilter(store, name: string) {
       const filter = filterProcessor.getFilterFactory().findFilter(name);
       if (!filter) return false;
-      store.commit("setFilter", new filter);
+      console.log((new filter).getPropertyMap());
+      store.commit("setFilter", (new filter).getPropertyMap());
     },
     runFilterProcessor(store) {
-      return filterProcessor.run(store.getters.fileList, store.getters.filterList);
+      return filterProcessor.run(store.getters.fileList, store.getters.filterMaps);
     },
-    async runFilterProcessorForOne (store, {symbolIndex, ignoreFilter = false}) {
-      const newFileList = store.getters.fileList.filter((file: any) => file.symbolIndex === symbolIndex);
-      const result = await filterProcessor.run(newFileList, ignoreFilter ? [] : store.getters.filterList);
-      return result;
+    async runFilterProcessorForOne(store, {index, ignoreFilter = false}) {
+      const file = store.getters.fileList[index];
+      if (!file) return null;
+      return await filterProcessor.run(file, ignoreFilter ? [] : store.getters.filterMaps);
     },
     async downloadImages (store, method = "common") {
       //var zip = new JSZip();
       if (method === "common") {
         await Promise.all(store.getters.fileList.map(async (file: File) => {
-          const result = await filterProcessor.run(file, store.getters.filterList);
+          const result = await filterProcessor.run(file, store.getters.filterMaps);
           const blob = await (result as any).convertToBlob({
             type: "image/jpeg",
             quality: 0.95
@@ -109,8 +117,8 @@ const store = new Vuex.Store({
     }
   },
   getters: {
-    filterList: state => {
-      return state.filterList;
+    filterMaps: state => {
+      return state.filterMaps;
     },
     fileList: state => {
       return state.fileList;
@@ -126,7 +134,5 @@ new Vue({
 }).$mount("#app");
 
 // ---- INIT ---
-
-console.log(store);
 
 store.commit("setlang", navigator.language.substr(0, 2).toLowerCase());
