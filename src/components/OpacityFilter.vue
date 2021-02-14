@@ -1,6 +1,6 @@
 <template>
   <b-form @submit.stop.prevent>
-    <label for="range-1">Уровень прозрачности (в %)</label>
+    <label for="range-1">Прозрачности: {{ settings.level }} %</label>
     <b-form-input
       id="range-1"
       v-model="settings.level"
@@ -8,7 +8,6 @@
       min="0"
       max="100"
     ></b-form-input>
-    <div class="mt-2">Значение: {{ settings.level }} %</div>
   </b-form>
 </template>
 
