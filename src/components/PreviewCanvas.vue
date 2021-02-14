@@ -43,8 +43,7 @@ export default Vue.extend({
   methods: {
     updateCanvas: function () {
       const canvas = this.$refs.canvas as HTMLCanvasElement;
-
-      if (!this.$store.state.showFileIndex) {
+      if (this.$store.state.showFileIndex === null) {
         canvas.getContext("2d")?.clearRect(0, 0, canvas.width, canvas.height);
         return;
       }
@@ -53,7 +52,7 @@ export default Vue.extend({
       this.updateTimeout = window.setTimeout(async () => {
         const sourceCanvas = await this.$store.dispatch(
           "runFilterProcessorForOne",
-          {symbolIndex: this.$store.state.showFileIndex,
+          {index: this.$store.state.showFileIndex,
           ignoreFilter: this.selected === "original-preview"}
         );
         canvas.getContext("2d")?.clearRect(0, 0, canvas.width, canvas.height);
@@ -67,7 +66,7 @@ export default Vue.extend({
     },
   },
   watch: {
-    "$store.state.filterList": {
+    "$store.state.filterMaps": {
       handler: async function () {
         await this.updateCanvas();
       },

@@ -11,10 +11,10 @@ export default class FilterFactory {
     this.filterCollection.push(filter);
   }
 
-  findFilter(filterName: string) {
+  findFilter(filterName: string): FilterConstructor |null {
     return (
         this.filterCollection.find(
-          (filter: FilterConstructor) => filterName === filter.constructor.name
+          (filter: FilterConstructor) => filterName === filter.name
         ) ?? null
       );
   }

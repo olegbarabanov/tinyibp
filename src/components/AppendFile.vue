@@ -16,17 +16,17 @@
     ></b-form-file>
     <b-list-group class="overflow-auto">
       <b-list-group-item
-        v-for="file in globalFileList"
-        v-bind:key="file.symbolIndex"
-        :active="$store.state.showFileIndex === file.symbolIndex"
-        v-on:click="$store.commit('showFile', file.symbolIndex)"
+        v-for="(file, index) in globalFileList"
+        v-bind:key="index"
+        :active="$store.state.showFileIndex === index"
+        v-on:click="$store.commit('showFile', index)"
         class="d-flex justify-content-between align-items-center"
-        >{{ file.name }}
+        >{{ index }} - {{ file.name }}
         <b-button size="sm"
           ><b-icon
             icon="trash-fill"
             aria-hidden="true"
-            v-on:click.stop="$store.commit('deleteFile', file.symbolIndex)"
+            v-on:click.stop="$store.commit('deleteFile', index)"
           ></b-icon
         ></b-button>
       </b-list-group-item>
@@ -44,7 +44,7 @@ export default Vue.extend({
     };
   },
   watch: {
-    fileList: function (newFileList) {
+    fileList: function (newFileList: Array<File>) {
       newFileList.forEach((file: File) => this.$store.commit("setFile", file));
       (this.$refs["form-file"] as any).reset();
     },

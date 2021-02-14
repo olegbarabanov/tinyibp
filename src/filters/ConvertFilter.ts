@@ -1,10 +1,10 @@
-import FilterInterface from "./FilterInterface";
+import AbstractFilter from "./AbstractFilter";
 
 interface ITypeFormat {
   [key: string]: string ;
 }
 
-export default class ConvertFilter implements FilterInterface {
+export default class ConvertFilter  extends AbstractFilter {
 
     readonly supportFormat: ITypeFormat = {
       "webp" : "image/webp",
