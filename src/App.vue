@@ -58,22 +58,23 @@
                 no-body
                 v-for="(filter, index) in filterMaps"
                 :key="index"
+                
               >
-                <b-card-header header-tag="header">
+                <b-card-header header-tag="header" class="p-1 handle" header-bg-variant="gradient-dark" :title="$t('helper.tooltip.draggable')">
                   <b-row align-v="center" class="flex-nowrap">
                     <b-col cols="3"
                       >
                       <b-button
-                        class="handle m-1"
+                        class="m-1 p-1"
                         v-b-tooltip
                         size="sm"
                         :title="$t('helper.tooltip.draggable')"
-                        >#{{ index + 1 }} <b-icon icon="hand-index"></b-icon>
+                        >#{{ index + 1 }}
                       </b-button></b-col
                     >
                     <b-col cols="6">{{ $t(`filter.${filter.name.toLowerCase()}.name`) }}</b-col>
                     <b-col cols="3">
-                      <b-button class="m-1" size="sm" v-on:click="$store.commit('removeFilter', index)"
+                      <b-button class="m-1" variant="light" size="sm" v-on:click="$store.commit('removeFilter', index)"
                         ><b-icon icon="trash-fill" aria-hidden="true"></b-icon
                       ></b-button>
                     </b-col>
