@@ -21,7 +21,7 @@
         :active="$store.state.showFileIndex === index"
         v-on:click="$store.commit('showFile', index)"
         class="d-flex justify-content-between align-items-center"
-        >{{ index }} - {{ file.name }}
+        >{{ index + 1 }} - {{ file.name }}
         <b-button size="sm"
           ><b-icon
             icon="trash-fill"
