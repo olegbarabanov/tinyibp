@@ -11,7 +11,7 @@ export default abstract class AbstractFilter implements FilterInterface{
     }
 
     getPropertyMap(): FilterMap {
-        return Object.assign(this, this) as FilterMap;
+        return Object.assign({}, this) as FilterMap;
     }
 
     setPropertyMap(map: FilterMap): FilterInterface {
