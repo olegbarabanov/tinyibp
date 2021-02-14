@@ -12,7 +12,7 @@
         buttons
       ></b-form-radio-group>
     </b-form-group>
-    Width: {{ width }} px, Height: {{ height }} px
+    Size: {{ width }} x {{ height }} px
     <b-overlay :show="showProcessIndicator" class="d-flex flex-grow-1 align-items-center justify-content-center overflow-auto p-1">
       <canvas class="mw-100 mh-100" id="canvas" ref="canvas" :width="width" :height="height" />
     </b-overlay>
