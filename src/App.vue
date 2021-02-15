@@ -44,7 +44,9 @@
                 v-for="filter in registeredFilters"
                 v-bind:key="filter"
                 v-on:click="initFilter(filter)"
-                >{{ $t(`filter.${filter.toLowerCase()}.name`) }}</b-dropdown-item
+                >{{
+                  $t(`filter.${filter.toLowerCase()}.name`)
+                }}</b-dropdown-item
               >
             </b-dropdown>
 
@@ -58,12 +60,15 @@
                 no-body
                 v-for="(filter, index) in filterMaps"
                 :key="index"
-                
               >
-                <b-card-header header-tag="header" class="p-1 handle" header-bg-variant="gradient-dark" :title="$t('helper.tooltip.draggable')">
+                <b-card-header
+                  header-tag="header"
+                  class="handle"
+                  header-bg-variant="gradient-dark"
+                  :title="$t('helper.tooltip.draggable')"
+                >
                   <b-row align-v="center" class="flex-nowrap">
-                    <b-col cols="3"
-                      >
+                    <b-col cols="3">
                       <b-button
                         class="m-1 p-1"
                         v-b-tooltip
@@ -72,11 +77,17 @@
                         >{{ index + 1 }}
                       </b-button></b-col
                     >
-                    <b-col cols="6">{{ $t(`filter.${filter.name.toLowerCase()}.name`) }}</b-col>
+                    <b-col cols="6">{{
+                      $t(`filter.${filter.name.toLowerCase()}.name`)
+                    }}</b-col>
                     <b-col cols="3">
-                      <b-button class="m-1" variant="light" size="sm" v-on:click="$store.commit('removeFilter', index)"
-                        ><b-icon icon="trash-fill" aria-hidden="true"></b-icon
-                      ></b-button>
+                      <b-button
+                        aria-label="Close"
+                        v-on:click="$store.commit('removeFilter', index)"
+                        class="close"
+                      >
+                        <span aria-hidden="true">&times;</span>
+                      </b-button>
                     </b-col>
                   </b-row>
                 </b-card-header>
@@ -105,7 +116,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from "vue";
 import { mapState, mapActions } from "vuex";
 import draggable from "vuedraggable";
 import previewCanvas from "./components/PreviewCanvas.vue";
@@ -145,8 +156,8 @@ export default Vue.extend({
         },
       ],
     };
-  }
-})
+  },
+});
 
 /*
 import { Component, Vue } from 'vue-property-decorator';
