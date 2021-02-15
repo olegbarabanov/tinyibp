@@ -19,6 +19,7 @@ import OverlayFilter from "./components/OverlayFilter.vue";
 import JSZip from "jszip";
 import FileSaver from "file-saver";
 import { FilterMap } from "./filters/FilterInterface";
+import CropFilter from "./components/CropFilter.vue";
 
 
 Vue.config.productionTip = false;
@@ -35,6 +36,7 @@ Vue.component("OpacityFilter", OpacityFilter);
 Vue.component("SaturateFilter", SaturateFilter);
 Vue.component("BlurFilter", BlurFilter);
 Vue.component("OverlayFilter", OverlayFilter);
+Vue.component("CropFilter", CropFilter);
 
 const filterProcessor = new FilterProcessor();
 const DEFAULT_LANG = "en";

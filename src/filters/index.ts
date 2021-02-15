@@ -6,6 +6,7 @@ import OpacityFilter from "./OpacityFilter";
 import SaturateFilter from "./SaturateFilter";
 import BlurFilter from "./BlurFilter";
 import OverlayFilter from "./OverlayFilter";
+import CropFilter from "./CropFilter";
 
 const SUPPORT_FILTERS = [
   ContrastFilter,
@@ -16,6 +17,7 @@ const SUPPORT_FILTERS = [
   SaturateFilter,
   BlurFilter,
   OverlayFilter,
+  CropFilter
 ];
 
 export default SUPPORT_FILTERS;
