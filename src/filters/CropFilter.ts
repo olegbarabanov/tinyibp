@@ -72,7 +72,6 @@ export default class CropFilter extends AbstractFilter {
     const sH = Math.min(oldCanvas.height, height);
     const dW = sW;
     const dH = sH;
-    console.log(width, height);
 
     switch (this.position) {
       case supportPositions.TOP_LEFT:
