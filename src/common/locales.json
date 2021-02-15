@@ -18,6 +18,7 @@
         "filter.saturatefilter.name": "Saturate",
         "filter.blurfilter.name": "Blur",
         "filter.overlayfilter.name": "Overlay",
+        "filter.cropfilter.name": "Crop",
         "helper.tooltip.uploadfile.browsebutton": "Browse"
     },
     "ru": {
@@ -32,13 +33,14 @@
         "preview.button.viewselector.originalview": "Исходное изображение",
         "preview.button.viewselector.resultview": "Конечное изображение",
         "filter.contrastfilter.name": "Контраст",
-        "filter.resizefilter.name": "Размер изображения",
-        "filter.convertfilter.name": "Формат изображения",
+        "filter.resizefilter.name": "Размер",
+        "filter.convertfilter.name": "Формат",
         "filter.grayscalefilter.name": "Обесцвечивание",
-        "filter.opacityfilter.name": "Уровень прозрачного",
-        "filter.saturatefilter.name": "Уровень насыщенности",
-        "filter.blurfilter.name": "Размытие изображения",
-        "filter.overlayfilter.name": "Наложение изображения",
+        "filter.opacityfilter.name": "Прозрачность",
+        "filter.saturatefilter.name": "Насыщенность",
+        "filter.blurfilter.name": "Размытие",
+        "filter.overlayfilter.name": "Наложение",
+        "filter.cropfilter.name": "Кадрирование",
         "helper.tooltip.uploadfile.browsebutton": "Загрузка"
     }
 }
