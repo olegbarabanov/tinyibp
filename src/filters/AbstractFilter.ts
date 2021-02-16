@@ -1,11 +1,9 @@
 import FilterInterface, {FilterMap} from "./FilterInterface";
 
 export default abstract class AbstractFilter implements FilterInterface{
+    abstract readonly name: string = "";
 
     abstract run(canvas: OffscreenCanvas): Promise<OffscreenCanvas>
-
-    readonly name: string = "";
-
     getPropertyMap(): FilterMap {
         return Object.assign({}, this) as FilterMap;
     }

@@ -45,7 +45,7 @@
                 v-bind:key="filter"
                 v-on:click="initFilter(filter)"
                 >{{
-                  $t(`filter.${filter.toLowerCase()}.name`)
+                  $t(`filter.${filter}.name`)
                 }}</b-dropdown-item
               >
             </b-dropdown>
@@ -78,7 +78,7 @@
                       </b-button></b-col
                     >
                     <b-col cols="6">{{
-                      $t(`filter.${filter.name.toLowerCase()}.name`)
+                      $t(`filter.${filter.name}.name`)
                     }}</b-col>
                     <b-col cols="3">
                       <b-button
@@ -94,7 +94,7 @@
                 <b-card-body>
                   <component
                     v-bind:settings="filter"
-                    v-bind:is="filter.name"
+                    v-bind:is="filter.name.charAt(0).toUpperCase() + filter.name.slice(1) + 'Filter'"
                   ></component>
                 </b-card-body>
               </b-card>

@@ -53,7 +53,7 @@ const store = new Vuex.Store({
       user: {
         lang: DEFAULT_LANG as string, // see ISO 639-1
       },
-      registeredFilters: filterProcessor.getFilterFactory().getFilterCollection().map(filter => filter.name),
+      registeredFilters: filterProcessor.getFilterFactory().getFilterCollection().map(filter => (new filter).name),
       filterMaps: [] as Array<FilterMap>,
       fileList: [] as Array<File>,
       showFileIndex: null as null | number
@@ -91,7 +91,6 @@ const store = new Vuex.Store({
     initFilter(store, name: string) {
       const filter = filterProcessor.getFilterFactory().findFilter(name);
       if (!filter) return false;
-      console.log((new filter).getPropertyMap());
       store.commit("setFilter", (new filter).getPropertyMap());
     },
     runFilterProcessor(store) {
@@ -136,5 +135,4 @@ new Vue({
 }).$mount("#app");
 
 // ---- INIT ---
-console.log(store);
 store.commit("setlang", navigator.language.substr(0, 2).toLowerCase());
