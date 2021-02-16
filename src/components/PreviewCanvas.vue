@@ -1,7 +1,7 @@
 <i18n src="../common/locales.json"></i18n>
 
 <template>
-  <div class="preview h-100 d-flex flex-column border border-left border-right">
+  <div class="h-100 d-flex flex-column border border-left border-right">
     <b-form-group v-slot="{ ariaDescribedby }">
       <b-form-radio-group
         id="btn-radios-1"
@@ -86,9 +86,3 @@ export default Vue.extend({
 
 </script>
 
-<style>
-div.preview {
-  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2 2"><path d="M1 2V0h1v1H0v1z" fill-opacity=".15"/></svg>');
-  background-size: 50px;
-}
-</style>

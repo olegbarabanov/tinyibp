@@ -29,15 +29,15 @@
         </b-col>
       </b-row>
       <b-row align-v="stretch" no-gutters class="flex-grow-1 overflow-hidden">
-        <b-col md="3" class="mh-100">
+        <b-col md="3" class="mh-100 p-1">
           <append-file></append-file>
         </b-col>
 
-        <b-col md="6" class="mh-100">
+        <b-col md="6" class="mh-100 p-1">
           <preview-canvas></preview-canvas>
         </b-col>
 
-        <b-col md="3" class="mh-100">
+        <b-col md="3" class="mh-100 p-1">
           <div class="d-flex flex-column mh-100">
             <b-dropdown block :text="$t('button.addeventhandler')" class="m-2">
               <b-dropdown-item
@@ -172,4 +172,9 @@ export default class App extends Vue {}
 */
 </script>
 
-
+<style scoped>
+#app {
+  background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2 2"><path d="M1 2V0h1v1H0v1z" fill-opacity=".15"/></svg>');
+  background-size: 2rem;
+}
+</style>
