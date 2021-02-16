@@ -2,7 +2,7 @@ name: Deploy Photobatch to Github Pages
 on:
     push:
         branches:
-            - dev
+            - develop
 
 jobs:
     deploy:
