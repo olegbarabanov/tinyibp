@@ -7,7 +7,7 @@
         <b-col>
           <b-navbar toggleable="lg" type="dark" variant="info">
             <b-navbar-brand href="#"
-              >ImageBatch {{ $t("hello") }}</b-navbar-brand
+              >ImageBatch {{ $t("hello") }} (version 0.0.1 - alpha)</b-navbar-brand
             >
 
             <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
