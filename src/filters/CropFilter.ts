@@ -18,6 +18,7 @@ export enum supportModes {
 }
 
 export default class CropFilter extends AbstractFilter {
+  readonly name:string = "crop";
   position: supportPositions = 0; // Позиционирование
   width: number = 1;
   height: number = 1;

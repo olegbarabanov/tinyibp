@@ -5,7 +5,7 @@ interface ITypeFormat {
 }
 
 export default class ConvertFilter  extends AbstractFilter {
-
+    readonly name:string = "convert";
     readonly supportFormat: ITypeFormat = {
       "webp" : "image/webp",
       "gif" : "image/gif",

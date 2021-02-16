@@ -1,6 +1,7 @@
 import AbstractFilter from "./AbstractFilter";
 
 export default class ResizeFilter extends AbstractFilter {
+    readonly name:string = "resize";
     resizeToX: number = 0;
     resizeToY: number = 0;
 

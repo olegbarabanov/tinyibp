@@ -1,6 +1,7 @@
 import AbstractFilter from "./AbstractFilter";
 
 export default class GrayscaleFilter extends AbstractFilter {
+    readonly name:string = "grayscale";
     level: number = 100;
 
     async run (canvas: OffscreenCanvas): Promise<OffscreenCanvas> {

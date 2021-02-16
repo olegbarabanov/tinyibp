@@ -15,6 +15,7 @@ export enum supportPositions {
 }
 
 export default class OverlayFilter extends AbstractFilter {
+    readonly name:string = "overlay";
     image?: File;
     position: number = 0; // Позиционирование
     margin: number = 0; //Отступ

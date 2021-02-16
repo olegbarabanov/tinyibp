@@ -1,6 +1,7 @@
 import AbstractFilter from "./AbstractFilter";
 
 export default class BlurFilter extends AbstractFilter {
+    readonly name: string = "blur";
     level: number = 0;
 
     async run (canvas: OffscreenCanvas): Promise<OffscreenCanvas> {

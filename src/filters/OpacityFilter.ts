@@ -1,6 +1,7 @@
 import AbstractFilter from "./AbstractFilter";
 
 export default class OpacityFilter extends AbstractFilter {
+    readonly name:string = "opacity";
     level: number = 0;
 
     async run (canvas: OffscreenCanvas): Promise<OffscreenCanvas> {

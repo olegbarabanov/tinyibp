@@ -1,6 +1,7 @@
 import AbstractFilter from "./AbstractFilter";
 
 export default class ContrastFilter extends AbstractFilter {
+    readonly name:string = "contrast";
     level: number = 100;
 
     async run (canvas: OffscreenCanvas): Promise<OffscreenCanvas> {

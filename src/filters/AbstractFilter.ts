@@ -4,11 +4,7 @@ export default abstract class AbstractFilter implements FilterInterface{
 
     abstract run(canvas: OffscreenCanvas): Promise<OffscreenCanvas>
 
-    readonly name: string;
-
-    constructor() {
-        this.name = this.constructor.name;
-    }
+    readonly name: string = "";
 
     getPropertyMap(): FilterMap {
         return Object.assign({}, this) as FilterMap;
