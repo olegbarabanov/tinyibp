@@ -1,4 +1,4 @@
-name: Deploy Photobatch to Github Pages
+name: Deploy to Github Pages
 on:
     push:
         branches:
@@ -10,11 +10,11 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - name: Checkout Repo
-              uses: actions/checkout@master
+              uses: actions/checkout@gp-branch
             - name: Create Node Environment
               uses: actions/setup-node@v1
               with: 
-                node-version: 14.x
+                node-version: 10.x
             - name: Install Packages and Build Application
               run: |
                 npm install -g @vue/cli yarn
