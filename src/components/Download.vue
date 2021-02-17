@@ -1,31 +1,23 @@
 <i18n src="../common/locales.json"></i18n>
 
 <template>
-  <div>
-    <b-dropdown id="dropdown-form" text="Dropdown with form" ref="dropdown" class="m-2">
-      <b-dropdown-form>
-        <b-form-group label="Формат" label-for="dropdown-form-email" @submit.stop.prevent>
-          <b-form-input
-            id="dropdown-form-email"
-            size="sm"
-            placeholder="email@example.com"
-          ></b-form-input>
-        </b-form-group>
+  <b-card
+    bg-variant="dark"
+    class="h-100 text-center rounded-0"
+    border-variant="dark"
+  >
 
-        <b-form-group label="Password" label-for="dropdown-form-password">
-          <b-form-input
-            id="dropdown-form-password"
-            type="password"
-            size="sm"
-            placeholder="Password"
-          ></b-form-input>
-        </b-form-group>
-
-        <b-form-checkbox class="mb-3">Remember me</b-form-checkbox>
-        <b-button variant="primary" size="sm" @click="onClick">Sign In</b-button>
-      </b-dropdown-form>
-    </b-dropdown>
-  </div>
+  <b-form @submit.stop.prevent class="mh-100 d-flex flex-row">
+    <b-form-select v-model="selected" :options="options"></b-form-select>
+    <b-form-input id="range-2" v-model="quality" type="range" min="1" max="100" step="1"></b-form-input>
+    <b-form-input
+      id="input-live"
+      v-model="pattern"
+      placeholder="Enter your pattern"
+      trim
+    ></b-form-input>
+  </b-form>
+  </b-card>
 </template>
 
 <script lang="ts">
@@ -33,20 +25,18 @@ import Vue from "vue";
 
 export default Vue.extend({
   data() {
-    return {
-      fileList: [] as Array<File>,
-    };
-  },
-  watch: {
-    fileList: function (newFileList: Array<File>) {
-      newFileList.forEach((file: File) => this.$store.commit("setFile", file));
-      (this.$refs["form-file"] as any).reset();
-    },
-  },
-  computed: {
-    globalFileList: function () {
-      return this.$store.state.fileList;
-    },
-  },
+      return {
+        selected: null,
+        quality: 1,
+        pattern: "#name",
+        options: [
+          { value: null, text: 'Please select an option' },
+          { value: 'a', text: 'This is First option' },
+          { value: 'b', text: 'Selected Option' },
+          { value: { C: '3PO' }, text: 'This is an option with object value' },
+          { value: 'd', text: 'This one is disabled', disabled: true }
+        ]
+      }
+  }
 });
 </script>

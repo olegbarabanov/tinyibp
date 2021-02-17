@@ -1,6 +1,14 @@
 <i18n src="../common/locales.json"></i18n>
 
 <template>
+  <b-card
+    bg-variant="transparent"
+    header-bg-variant="dark"
+    header-text-variant="white"
+    header="Предпросмотр"
+    class="h-100 text-center"
+    border-variant="dark"
+  >
   <div class="h-100 d-flex flex-column border border-left border-right">
     <b-form-group v-slot="{ ariaDescribedby }">
       <b-form-radio-group
@@ -17,6 +25,7 @@
       <canvas class="mw-100 mh-100" id="canvas" ref="canvas" :width="width" :height="height" />
     </b-overlay>
   </div>
+  </b-card>
 </template>
 
 <script lang="ts">
