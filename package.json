@@ -6,7 +6,13 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "i18n:report": "vue-cli-service i18n:report --src './src/**/*.?(js|vue)' --locales './src/locales/**/*.json'"
+    "i18n:report": "vue-cli-service i18n:report --src './src/**/*.?(js|vue)' --locales './src/locales/**/*.json'",
+    "clean": "gts clean",
+    "compile": "tsc",
+    "fix": "gts fix",
+    "prepare": "npm.cmd run compile",
+    "pretest": "npm.cmd run compile",
+    "posttest": "npm.cmd run lint"
   },
   "dependencies": {
     "bootstrap-vue": "^2.21.2",
@@ -39,9 +45,11 @@
     "eslint-plugin-promise": "^4.3.1",
     "eslint-plugin-standard": "^5.0.0",
     "eslint-plugin-vue": "^6.2.2",
-    "typescript": "~3.9.3",
+    "typescript": "^4.0.3",
     "vue-cli-plugin-i18n": "~1.0.1",
-    "vue-template-compiler": "^2.6.11"
+    "vue-template-compiler": "^2.6.11",
+    "gts": "^3.1.0",
+    "@types/node": "^14.11.2"
   },
   "eslintConfig": {
     "root": true,
@@ -49,7 +57,7 @@
       "node": true
     },
     "extends": [
-      "plugin:@typescript-eslint/recommended",
+      "./node_modules/gts",
       "plugin:vue/essential",
       "eslint:recommended",
       "@vue/typescript"
