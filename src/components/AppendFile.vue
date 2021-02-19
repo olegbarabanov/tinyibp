@@ -32,7 +32,7 @@
           >{{ index + 1 }} - {{ file.name }}
           <b-button
             aria-label="Close"
-            v-on:click.stop="$store.commit('deleteFile', index)"
+            v-on:click.stop="$store.dispatch('deleteFile', index)"
             class="close"
           >
             <span aria-hidden="true">&times;</span>

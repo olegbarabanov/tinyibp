@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 
 import Vue from 'vue';
-import Vuex from 'vuex';
+import Vuex, {StoreOptions} from 'vuex';
 import {BootstrapVue, BootstrapVueIcons} from 'bootstrap-vue';
 import App from './App.vue';
 import VueI18n from 'vue-i18n';
@@ -54,7 +54,23 @@ const i18n = new VueI18n({
   locale: navigator.language.substr(0, 2).toLowerCase(), // set locale
 });
 
-const store = new Vuex.Store({
+interface RootState {
+  user: any;
+  registeredFilters: any;
+}
+
+interface RootState {
+  user: any;
+  registeredFilters: any;
+  filterMaps: any;
+  fileList: any;
+  showFileIndex: any;
+  quality: any;
+  type: any;
+  nameTransformPattern: any;
+}
+
+const initStore: StoreOptions<RootState> = {
   state() {
     const imageProcessor = new ImageProcessor(filterProcessor);
     return {
@@ -70,7 +86,7 @@ const store = new Vuex.Store({
       showFileIndex: null as null | number,
       quality: imageProcessor.getQuality(),
       type: imageProcessor.getType(),
-      nameTrasfrotmPattern: imageProcessor.getNameTransformPattern(),
+      nameTransformPattern: imageProcessor.getNameTransformPattern(),
     };
   },
   mutations: {
@@ -84,18 +100,11 @@ const store = new Vuex.Store({
     setFilter(state, filter: FilterMap) {
       state.filterMaps.push(filter);
     },
-    // eslint-disable-next-line no-undef
     setFile(state, file: File) {
       state.fileList.push(file);
     },
-    deleteFile(state, index: number) {
-      if (state.fileList[index] === undefined) return false;
+    commitDeleteFile(state, index: number) {
       state.fileList.splice(index, 1);
-      if (state.fileList.length === 0) {
-        this.commit('showFile', null);
-      } else if (index >= state.fileList.length) {
-        this.commit('showFile', index - 1);
-      }
       return true;
     },
     showFile(state, index: number | null) {
@@ -114,6 +123,15 @@ const store = new Vuex.Store({
         store.getters.filterMaps
       );
     },
+    async deleteFile(store, index: number) {
+      if (store.state.fileList[index] === undefined) return false;
+      store.commit('commitDeleteFile', index);
+      if (store.state.fileList.length === 0) {
+        this.commit('showFile', null);
+      } else if (index >= store.state.fileList.length) {
+        this.commit('showFile', index - 1);
+      }
+    },
     async runFilterProcessorForOne(store, {index, ignoreFilter = false}) {
       const file = store.getters.fileList[index];
       if (!file) return null;
@@ -127,7 +145,7 @@ const store = new Vuex.Store({
       const imageProcessor = new ImageProcessor(filterProcessor);
       imageProcessor.setQuality(store.state.quality);
       imageProcessor.setType(store.state.type);
-      imageProcessor.setNameTransformPattern(store.state.nameTrasfrotmPattern);
+      imageProcessor.setNameTransformPattern(store.state.nameTransformPattern);
       imageProcessor.setFilterMaps(store.getters.filterMaps);
 
       if (method === 'common') {
@@ -154,7 +172,9 @@ const store = new Vuex.Store({
       return state.fileList;
     },
   },
-});
+};
+
+const store = new Vuex.Store(initStore);
 
 new Vue({
   i18n,
