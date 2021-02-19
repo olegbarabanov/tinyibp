@@ -44,7 +44,7 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import Vue from 'vue';
 
 export default Vue.extend({
   data() {
@@ -53,13 +53,13 @@ export default Vue.extend({
     };
   },
   watch: {
-    fileList: function (newFileList: Array<File>) {
-      newFileList.forEach((file: File) => this.$store.commit("setFile", file));
-      (this.$refs["form-file"] as any).reset();
+    fileList: function(newFileList: Array<File>) {
+      newFileList.forEach((file: File) => this.$store.commit('setFile', file));
+      (this.$refs['form-file'] as any).reset();
     },
   },
   computed: {
-    globalFileList: function () {
+    globalFileList: function() {
       return this.$store.state.fileList;
     },
   },

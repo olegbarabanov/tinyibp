@@ -59,8 +59,8 @@
               v-bind:settings="filter"
               v-bind:is="
                 filter.name.charAt(0).toUpperCase() +
-                filter.name.slice(1) +
-                'Filter'
+                  filter.name.slice(1) +
+                  'Filter'
               "
             ></component>
           </b-card-body>
@@ -79,32 +79,32 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import { mapState, mapActions } from "vuex";
-import draggable from "vuedraggable";
+import Vue from 'vue';
+import {mapState, mapActions} from 'vuex';
+import draggable from 'vuedraggable';
 
 export default Vue.extend({
   components: {
     draggable,
   },
   methods: {
-    ...mapActions(["initFilter"]),
+    ...mapActions(['initFilter']),
   },
   computed: {
-    ...mapState(["registeredFilters"]),
+    ...mapState(['registeredFilters']),
     filterMaps: {
       get() {
         return this.$store.state.filterMaps;
       },
       set() {
-        this.$store.dispatch("setFilter");
+        this.$store.dispatch('setFilter');
       },
     },
     supportLangs() {
       return Object.keys(this.$i18n.messages);
     },
   },
-  data: function () {
+  data: function() {
     return {
       filters: [],
     };

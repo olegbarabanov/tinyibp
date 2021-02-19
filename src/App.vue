@@ -5,9 +5,10 @@
     <b-container fluid class="vh-100 p-0 d-flex flex-column">
       <b-row no-gutters>
         <b-col>
-          <b-navbar toggleable="lg"  type="dark" variant="dark">
+          <b-navbar toggleable="lg" type="dark" variant="dark">
             <b-navbar-brand href="#"
-              >ImageBatch {{ $t("hello") }} (version 0.0.1 - alpha)</b-navbar-brand
+              >ImageBatch {{ $t('hello') }} (version 0.0.1 -
+              alpha)</b-navbar-brand
             >
 
             <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
@@ -41,7 +42,7 @@
           <filter-list></filter-list>
         </b-col>
       </b-row>
-      <b-row align-v="stretch" no-gutters >
+      <b-row align-v="stretch" no-gutters>
         <b-col md="12">
           <download></download>
         </b-col>
@@ -51,28 +52,27 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import previewCanvas from "./components/PreviewCanvas.vue";
-import appendFile from "./components/AppendFile.vue";
-import filterList from "./components/FilterList.vue";
-import download from "./components/Download.vue";
+import Vue from 'vue';
+import previewCanvas from './components/PreviewCanvas.vue';
+import appendFile from './components/AppendFile.vue';
+import filterList from './components/FilterList.vue';
+import download from './components/Download.vue';
 
 export default Vue.extend({
-  name: "App",
+  name: 'App',
   components: {
     previewCanvas,
     appendFile,
     filterList,
-    download
+    download,
   },
   computed: {
     supportLangs() {
       return Object.keys(this.$i18n.messages);
     },
   },
-  data: function () {
-    return {
-    };
+  data: function() {
+    return {};
   },
 });
 

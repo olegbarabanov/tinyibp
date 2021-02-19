@@ -1,8 +1,8 @@
-import FilterInterface from "./FilterInterface";
+import FilterInterface from './FilterInterface';
 
 type FilterConstructor = {
-    new (): FilterInterface
-}
+  new (): FilterInterface;
+};
 
 export default class FilterFactory {
   protected filterCollection: Array<FilterConstructor> = [];
@@ -13,10 +13,10 @@ export default class FilterFactory {
 
   findFilter(filterName: string): FilterConstructor | null {
     return (
-        this.filterCollection.find(
-          (filter: FilterConstructor) => filterName === (new filter).name
-        ) ?? null
-      );
+      this.filterCollection.find(
+        (filter: FilterConstructor) => filterName === new filter().name
+      ) ?? null
+    );
   }
 
   getFilterCollection(): Array<FilterConstructor> {

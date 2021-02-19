@@ -1,6 +1,6 @@
 export type FilterMap = {
   name: string;
-}
+};
 
 export default interface FilterInterface {
   name: string;

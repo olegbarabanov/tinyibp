@@ -1,14 +1,14 @@
-import FilterInterface, {FilterMap} from "./FilterInterface";
+import FilterInterface, {FilterMap} from './FilterInterface';
 
-export default abstract class AbstractFilter implements FilterInterface{
-    abstract readonly name: string = "";
+export default abstract class AbstractFilter implements FilterInterface {
+  abstract readonly name: string = '';
 
-    abstract run(canvas: OffscreenCanvas): Promise<OffscreenCanvas>
-    getPropertyMap(): FilterMap {
-        return Object.assign({}, this) as FilterMap;
-    }
+  abstract run(canvas: OffscreenCanvas): Promise<OffscreenCanvas>;
+  getPropertyMap(): FilterMap {
+    return Object.assign({}, this) as FilterMap;
+  }
 
-    setPropertyMap(map: FilterMap): FilterInterface {
-       return Object.assign(this, map);
-    }
+  setPropertyMap(map: FilterMap): FilterInterface {
+    return Object.assign(this, map);
+  }
 }

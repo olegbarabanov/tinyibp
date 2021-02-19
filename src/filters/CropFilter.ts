@@ -1,4 +1,4 @@
-import AbstractFilter from "./AbstractFilter";
+import AbstractFilter from './AbstractFilter';
 
 export enum supportPositions {
   TOP_LEFT,
@@ -18,10 +18,10 @@ export enum supportModes {
 }
 
 export default class CropFilter extends AbstractFilter {
-  readonly name:string = "crop";
+  readonly name: string = 'crop';
   position: supportPositions = 0; // Позиционирование
-  width: number = 1;
-  height: number = 1;
+  width = 1;
+  height = 1;
   mode: supportModes = supportModes.SIZES;
 
   protected cropByRatio(
@@ -53,9 +53,9 @@ export default class CropFilter extends AbstractFilter {
   ): OffscreenCanvasRenderingContext2D {
     const newCanvas = new OffscreenCanvas(width, height);
     const oldCanvas = canvasCtx.canvas;
-    const newCanvasCtx = newCanvas.getContext("2d");
+    const newCanvasCtx = newCanvas.getContext('2d');
     if (newCanvasCtx === null)
-      throw new Error("unable to create canvas context");
+      throw new Error('unable to create canvas context');
 
     const sL = 0;
     const dL = 0;
@@ -107,8 +107,8 @@ export default class CropFilter extends AbstractFilter {
   }
 
   async run(canvas: OffscreenCanvas): Promise<OffscreenCanvas> {
-    const canvasCtx = canvas.getContext("2d");
-    if (canvasCtx === null) throw new Error("unable to create canvas context");
+    const canvasCtx = canvas.getContext('2d');
+    if (canvasCtx === null) throw new Error('unable to create canvas context');
 
     switch (this.mode) {
       case supportModes.RATIO:
@@ -126,7 +126,7 @@ export default class CropFilter extends AbstractFilter {
           this.position
         ).canvas;
       default:
-        throw new Error("unsupport mode");
+        throw new Error('unsupport mode');
     }
   }
 }
