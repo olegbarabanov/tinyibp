@@ -10,11 +10,15 @@
     <b-card-header
       header-text-variant="white"
       header-bg-variant="dark"
-      class="d-flex flex-row justify-content-between"
+      class="d-flex flex-row align-items-center justify-content-center p-1"
+      style="min-height: 3rem"
     >
-      <span>Файлы</span>
-      <label role="button">
-        <b-icon icon="upload"></b-icon>
+      <h5 class="mx-4">Файлы</h5>
+      <label
+        role="button"
+        class="d-inline-flex my-0 mx-4 justify-content-center btn btn-secondary"
+      >
+        <b-icon icon="upload" scale="1"></b-icon>
         <b-form-file
           v-model="fileList"
           :placeholder="$t('helper.tooltip.uploadfile.placeholder')"
@@ -23,7 +27,7 @@
           multiple
           ref="form-file"
           class="text-left invisible"
-          style="width:0;height:0;transform:scale(0.05);"
+          style="width: 0; height: 0; transform: scale(0.05)"
           v-b-tooltip
           :title="$t('helper.tooltip.uploadfile.description')"
           :browse-text="$t('helper.tooltip.uploadfile.browsebutton')"

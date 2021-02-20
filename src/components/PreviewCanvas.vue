@@ -10,10 +10,11 @@
     <b-card-header
       header-bg-variant="dark"
       header-text-variant="white"
-      class="d-flex flex-row justify-content-between"
+      class="d-flex flex-row align-items-center justify-content-center p-1 p-1"
+      style="min-height:3rem"
     >
-      <span>Предпросмотр</span>
-      <b-form-group v-slot="{ariaDescribedby}">
+      <h5 class="mx-4">Предпросмотр</h5>
+      <b-form-group v-slot="{ariaDescribedby}" class="d-inline-flex mx-4">
         <b-form-radio-group
           id="btn-radios-1"
           v-model="selected"
