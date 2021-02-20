@@ -12,7 +12,7 @@
       @submit.stop.prevent
       class="mh-100 d-flex flex-row align-content-center justify-content-center align-items-center"
     >
-      <b-input-group prepend="Тип" class="mx-2">
+      <b-input-group size="sm" prepend="Тип" class="mx-4">
         <b-form-select
           v-model="selectedType"
           :options="supportTypes"
@@ -20,17 +20,17 @@
         ></b-form-select>
       </b-input-group>
 
-      <b-input-group prepend="Качество" class="mx-2" :append="quality">
+      <b-input-group size="sm" prepend="Качество" class="mx-4">
         <b-form-input
           id="range-2"
           v-model="quality"
-          type="range"
+          type="number"
           min="1"
           max="100"
           step="1"
         ></b-form-input>
       </b-input-group>
-      <b-input-group prepend="Шаблон имени" class="mx-2">
+      <b-input-group size="sm" prepend="Шаблон имени" class="mx-4">
         <b-form-input
           id="input-live"
           v-model="nameTransformPattern"
@@ -38,7 +38,7 @@
           trim
         ></b-form-input>
       </b-input-group>
-      <b-dropdown block :text="$t('button.event.download')" class="mx-2">
+      <b-dropdown block :text="$t('button.event.download')" class="mx-4">
         <b-dropdown-item v-on:click="$store.dispatch('downloadImages')"
           >Скачать все файлы</b-dropdown-item
         >
