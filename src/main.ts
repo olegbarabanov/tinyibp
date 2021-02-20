@@ -21,7 +21,7 @@ import JSZip from 'jszip';
 import FileSaver from 'file-saver';
 import {FilterMap} from './filters/FilterInterface';
 import CropFilter from './components/CropFilter.vue';
-import ImageProcessor from './filters/ImageProcessor';
+import ImageProcessor, {SupportMimesTypes} from './filters/ImageProcessor';
 
 const tttt = 1;
 console.log(tttt);
@@ -55,43 +55,36 @@ const i18n = new VueI18n({
 });
 
 interface RootState {
-  user: any;
-  registeredFilters: any;
-}
-
-interface RootState {
-  user: any;
-  registeredFilters: any;
-  filterMaps: any;
-  fileList: any;
-  showFileIndex: any;
-  quality: any;
-  type: any;
-  nameTransformPattern: any;
+  lang: string;
+  registeredFilters: Array<string>;
+  filterMaps: Array<FilterMap>;
+  fileList: Array<File>;
+  showFileIndex: number | null;
+  quality: number;
+  type: SupportMimesTypes | null;
+  nameTransformPattern: string;
 }
 
 const initStore: StoreOptions<RootState> = {
   state() {
     const imageProcessor = new ImageProcessor(filterProcessor);
     return {
-      user: {
-        lang: DEFAULT_LANG as string, // see ISO 639-1
-      },
+      lang: DEFAULT_LANG as string, // see ISO 639-1
       registeredFilters: filterProcessor
         .getFilterFactory()
         .getFilterCollection()
         .map(filter => new filter().name),
-      filterMaps: [] as Array<FilterMap>,
-      fileList: [] as Array<File>,
-      showFileIndex: null as null | number,
+      filterMaps: [],
+      fileList: [],
+      showFileIndex: null,
       quality: imageProcessor.getQuality(),
       type: imageProcessor.getType(),
       nameTransformPattern: imageProcessor.getNameTransformPattern(),
     };
   },
   mutations: {
-    setlang(state: any, lang: string = DEFAULT_LANG) {
-      state.user.lang = lang;
+    setLang(state, lang: string = DEFAULT_LANG) {
+      state.lang = lang;
       i18n.locale = lang;
     },
     removeFilter(state, index: number) {
@@ -107,11 +100,29 @@ const initStore: StoreOptions<RootState> = {
       state.fileList.splice(index, 1);
       return true;
     },
+    commitSetType(state, type: SupportMimesTypes) {
+      state.type = type;
+    },
+    commitSetQuality(state, quality: number) {
+      state.quality = quality;
+    },
+    commitSetNameTransformPattern(state, pattern: string) {
+      state.nameTransformPattern = pattern;
+    },
     showFile(state, index: number | null) {
       state.showFileIndex = index;
     },
   },
   actions: {
+    async setType(store, type: SupportMimesTypes) {
+      store.commit('commitSetType', type);
+    },
+    async setQuality(store, quality: number) {
+      store.commit('commitSetQuality', quality);
+    },
+    async setNameTransformPattern(store, pattern: string) {
+      store.commit('commitSetNameTransformPattern', pattern);
+    },
     initFilter(store, name: string) {
       const filter = filterProcessor.getFilterFactory().findFilter(name);
       if (!filter) return false;
@@ -132,13 +143,15 @@ const initStore: StoreOptions<RootState> = {
         this.commit('showFile', index - 1);
       }
     },
-    async runFilterProcessorForOne(store, {index, ignoreFilter = false}) {
+    async runFilterProcessorForOne(store, index) {
       const file = store.getters.fileList[index];
       if (!file) return null;
-      return await filterProcessor.run(
-        file,
-        ignoreFilter ? [] : store.getters.filterMaps
-      );
+      const imageProcessor = new ImageProcessor(filterProcessor);
+      imageProcessor.setQuality(store.state.quality);
+      imageProcessor.setType(store.state.type);
+      imageProcessor.setNameTransformPattern(store.state.nameTransformPattern);
+      imageProcessor.setFilterMaps(store.getters.filterMaps);
+      return await imageProcessor.run(file);
     },
     async downloadImages(store, method = 'common') {
       //var zip = new JSZip();
@@ -151,13 +164,8 @@ const initStore: StoreOptions<RootState> = {
       if (method === 'common') {
         await Promise.all(
           store.getters.fileList.map(async (file: File) => {
-            const result = await imageProcessor.run(file);
-            const blob = await (result as any).convertToBlob({
-              type: 'image/jpeg',
-              quality: 0.95,
-            });
-
-            FileSaver.saveAs(blob, 'file.jpg');
+            const blob = await imageProcessor.run(file);
+            FileSaver.saveAs(blob, blob.name);
           })
         );
         return true;
@@ -183,4 +191,4 @@ new Vue({
 }).$mount('#app');
 
 // ---- INIT ---
-store.commit('setlang', navigator.language.substr(0, 2).toLowerCase());
+store.commit('setLang', navigator.language.substr(0, 2).toLowerCase());

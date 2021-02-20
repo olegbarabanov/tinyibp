@@ -19,7 +19,7 @@
                   <b-dropdown-item
                     v-for="lang in supportLangs"
                     :key="lang"
-                    v-on:click="$store.commit('setlang', lang)"
+                    v-on:click="$store.commit('setLang', lang)"
                     class="text-uppercase"
                     >{{ lang }}</b-dropdown-item
                   >

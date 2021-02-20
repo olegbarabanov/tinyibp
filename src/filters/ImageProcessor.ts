@@ -1,7 +1,8 @@
+import {stringify} from 'node:querystring';
 import {FilterMap} from './FilterInterface';
 import FilterProcessor from './FilterProcessor';
 
-enum SupportExtensions {
+export enum SupportExtensions {
   jpg = 'jpg',
   gif = 'gif',
   webp = 'webp',
@@ -9,7 +10,7 @@ enum SupportExtensions {
   svg = 'svg',
 }
 
-enum SupportMimesTypes {
+export enum SupportMimesTypes {
   jpg = 'image/jpeg',
   gif = 'image/gif',
   webp = 'image/webp',
@@ -17,7 +18,7 @@ enum SupportMimesTypes {
   svg = 'image/svg',
 }
 
-const supportTypes = new Map<SupportMimesTypes, SupportExtensions>([
+export const supportTypes = new Map<SupportMimesTypes, SupportExtensions>([
   [SupportMimesTypes.jpg, SupportExtensions.jpg],
   [SupportMimesTypes.gif, SupportExtensions.gif],
   [SupportMimesTypes.webp, SupportExtensions.webp],
@@ -90,18 +91,27 @@ export default class ImageProcessor {
       await this.convertToCanvas(file),
       this.filterMaps
     );
-    const blob = await canvas.convertToBlob({
-      type: this.type ?? undefined,
-      quality: this.quality / 100,
-    });
-    const fileName = file.name;
+
     let type: SupportMimesTypes | null = this.type;
     if (!type) type = file.type as SupportMimesTypes;
     if (type === SupportMimesTypes.svg) type = this.defaultType;
     if (!type) type = this.defaultType;
     if (!supportTypes.has(type)) throw new Error('set unsupported image type');
+    const blob = await canvas.convertToBlob({
+      type: type ?? undefined,
+      quality: this.quality / 100,
+    });
+    const replacer = new Map();
+    replacer.set('@file', () => file.name.replace(/\.[^.]+$/, ''));
+    const fileName = this.nameTransformPattern.replaceAll(
+      new RegExp([...replacer.keys()].join('|'), 'gi'),
+      match => {
+        return replacer.get(match)();
+      }
+    );
     const fileExt = supportTypes.get(type) as string;
-
-    return new File([blob], `${file.name}.${fileExt}`);
+    return new File([blob], `${fileName}.${fileExt}`, {
+      type: type ?? undefined,
+    });
   }
 }

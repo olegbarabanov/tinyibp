@@ -7,7 +7,10 @@
     border-variant="dark"
   >
     <b-form @submit.stop.prevent class="mh-100 d-flex flex-row">
-      <b-form-select v-model="selected" :options="options"></b-form-select>
+      <b-form-select
+        v-model="selectedType"
+        :options="supportTypes"
+      ></b-form-select>
       <b-form-input
         id="range-2"
         v-model="quality"
@@ -18,7 +21,7 @@
       ></b-form-input>
       <b-form-input
         id="input-live"
-        v-model="pattern"
+        v-model="nameTransformPattern"
         placeholder="Enter your pattern"
         trim
       ></b-form-input>
@@ -28,21 +31,44 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import {supportTypes} from '../filters/ImageProcessor';
+
+console.log(supportTypes.keys());
 
 export default Vue.extend({
   data() {
     return {
-      selected: null,
-      quality: 1,
-      pattern: '#name',
-      options: [
-        {value: null, text: 'Please select an option'},
-        {value: 'a', text: 'This is First option'},
-        {value: 'b', text: 'Selected Option'},
-        {value: {C: '3PO'}, text: 'This is an option with object value'},
-        {value: 'd', text: 'This one is disabled', disabled: true},
-      ],
+      supportTypes: Array.from(supportTypes, type => {
+        return {value: type[0], text: type[1] as string};
+      }),
+      options: [{value: null, text: 'Please select an option'}],
     };
+  },
+  computed: {
+    selectedType: {
+      get() {
+        return this.$store.state.type;
+      },
+      set(value) {
+        this.$store.dispatch('setType', value);
+      },
+    },
+    quality: {
+      get() {
+        return this.$store.state.quality;
+      },
+      set(value) {
+        this.$store.dispatch('setQuality', value);
+      },
+    },
+    nameTransformPattern: {
+      get() {
+        return this.$store.state.nameTransformPattern;
+      },
+      set(value) {
+        this.$store.dispatch('setNameTransformPattern', value);
+      },
+    },
   },
 });
 </script>
