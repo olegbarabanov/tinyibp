@@ -7,7 +7,7 @@
         <b-col>
           <b-navbar toggleable="lg" type="dark" variant="dark">
             <b-navbar-brand href="#"
-              >ImageBatch {{ $t('hello') }} (version 0.0.1 -
+              >Пакетный обработчик изображений (версия 0.0.1 -
               alpha)</b-navbar-brand
             >
 

@@ -18,7 +18,7 @@
         role="button"
         class="d-inline-flex my-0 mx-4 justify-content-center btn btn-secondary"
       >
-        <b-icon icon="upload" scale="1"></b-icon>
+        <b-icon icon="upload"></b-icon>
         <b-form-file
           v-model="fileList"
           :placeholder="$t('helper.tooltip.uploadfile.placeholder')"

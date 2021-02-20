@@ -3,28 +3,49 @@
 <template>
   <b-card
     bg-variant="dark"
-    class="h-100 text-center rounded-0"
+    text-variant="white"
+    class="h-100 text-center rounded-0 p-1"
     border-variant="dark"
+    no-body
   >
-    <b-form @submit.stop.prevent class="mh-100 d-flex flex-row">
-      <b-form-select
-        v-model="selectedType"
-        :options="supportTypes"
-      ></b-form-select>
-      <b-form-input
-        id="range-2"
-        v-model="quality"
-        type="range"
-        min="1"
-        max="100"
-        step="1"
-      ></b-form-input>
-      <b-form-input
-        id="input-live"
-        v-model="nameTransformPattern"
-        placeholder="Enter your pattern"
-        trim
-      ></b-form-input>
+    <b-form
+      @submit.stop.prevent
+      class="mh-100 d-flex flex-row align-content-center justify-content-center align-items-center"
+    >
+      <b-input-group prepend="Тип" class="mx-2">
+        <b-form-select
+          v-model="selectedType"
+          :options="supportTypes"
+          class="text-nowrap"
+        ></b-form-select>
+      </b-input-group>
+
+      <b-input-group prepend="Качество" class="mx-2" :append="quality">
+        <b-form-input
+          id="range-2"
+          v-model="quality"
+          type="range"
+          min="1"
+          max="100"
+          step="1"
+        ></b-form-input>
+      </b-input-group>
+      <b-input-group prepend="Шаблон имени" class="mx-2">
+        <b-form-input
+          id="input-live"
+          v-model="nameTransformPattern"
+          placeholder="Enter your pattern"
+          trim
+        ></b-form-input>
+      </b-input-group>
+      <b-dropdown block :text="$t('button.event.download')" class="mx-2">
+        <b-dropdown-item v-on:click="$store.dispatch('downloadImages')"
+          >Скачать все файлы</b-dropdown-item
+        >
+        <b-dropdown-item v-on:click="$store.dispatch('downloadImages', 'zip')"
+          >Скачать как ZIP</b-dropdown-item
+        >
+      </b-dropdown>
     </b-form>
   </b-card>
 </template>
