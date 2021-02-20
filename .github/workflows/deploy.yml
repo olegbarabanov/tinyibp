@@ -17,9 +17,8 @@ jobs:
                 node-version: 14.x
             - name: Install Packages and Build Application
               run: |
-                npm install -g @vue/cli yarn
-                yarn install
-                yarn build
+                npm install -g @vue/cli
+                npm run build
             - name: Deploy
               uses: s0/git-publish-subdir-action@master
               env:
