@@ -13,7 +13,6 @@
       class="d-flex flex-row justify-content-between"
     >
       <span>Предпросмотр</span>
-      <b-button-close></b-button-close>
       <b-form-group v-slot="{ariaDescribedby}">
         <b-form-radio-group
           id="btn-radios-1"
