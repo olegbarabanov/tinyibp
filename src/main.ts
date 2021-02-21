@@ -169,6 +169,14 @@ const initStore: StoreOptions<RootState> = {
           })
         );
         return true;
+      } else if (method === 'zip') {
+        const zip = new JSZip();
+        for (const file of store.getters.fileList) {
+          const blob = await imageProcessor.run(file);
+          zip.file(blob.name, blob);
+        }
+        const zipFile = await zip.generateAsync({type: 'blob'});
+        FileSaver.saveAs(zipFile, 'PhotoBatch-' + Date.now());
       }
     },
   },
