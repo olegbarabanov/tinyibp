@@ -13,7 +13,7 @@
       class="d-flex flex-row align-items-center justify-content-center p-1"
       style="min-height: 3rem"
     >
-      <h5 class="mx-4">Файлы</h5>
+      <h5 class="my-0 mx-4">Файлы</h5>
       <label
         role="button"
         class="d-inline-flex my-0 mx-4 justify-content-center btn btn-secondary"

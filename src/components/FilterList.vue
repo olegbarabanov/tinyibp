@@ -13,7 +13,7 @@
       class="d-flex flex-row align-items-center justify-content-center p-1"
       style="min-height:3rem"
     >
-      <h5 class="mx-4">Фильтры</h5>
+      <h5 class="my-0 mx-4">Фильтры</h5>
       <b-dropdown
         block
         :text="$t('button.addeventhandler')"
