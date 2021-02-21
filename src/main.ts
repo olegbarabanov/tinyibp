@@ -153,7 +153,7 @@ const initStore: StoreOptions<RootState> = {
       imageProcessor.setFilterMaps(store.getters.filterMaps);
       return await imageProcessor.run(file);
     },
-    async downloadImages(store, method = 'common') {
+    async downloadAll(store, method = 'common') {
       //var zip = new JSZip();
       const imageProcessor = new ImageProcessor(filterProcessor);
       imageProcessor.setQuality(store.state.quality);

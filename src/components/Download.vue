@@ -39,10 +39,10 @@
         ></b-form-input>
       </b-input-group>
       <b-dropdown block :text="$t('button.event.download')" class="mx-4">
-        <b-dropdown-item v-on:click="$store.dispatch('downloadImages')"
+        <b-dropdown-item v-on:click="downloadAll()"
           >Скачать все файлы</b-dropdown-item
         >
-        <b-dropdown-item v-on:click="$store.dispatch('downloadImages', 'zip')"
+        <b-dropdown-item v-on:click="downloadAll('zip')"
           >Скачать как ZIP</b-dropdown-item
         >
       </b-dropdown>
@@ -53,8 +53,6 @@
 <script lang="ts">
 import Vue from 'vue';
 import {supportTypes} from '../filters/ImageProcessor';
-
-console.log(supportTypes.keys());
 
 export default Vue.extend({
   data() {
@@ -89,6 +87,23 @@ export default Vue.extend({
       set(value) {
         this.$store.dispatch('setNameTransformPattern', value);
       },
+    },
+  },
+  methods: {
+    downloadAll: async function(method: string = 'common') {
+      this.$bvToast.toast(
+        'Создаем ZIP архив... Это может занять некоторое время.',
+        {variant: 'info'}
+      );
+      try {
+        await this.$store.dispatch('downloadAll', method);
+        this.$bvToast.toast('Архив изображений готов !', {variant: 'success'});
+      } catch (error) {
+        this.$bvToast.toast(
+          'К сожалению при сохранении произошла ошибка. Попробуйте другой способ сохранения файлов',
+          {variant: 'danger'}
+        );
+      }
     },
   },
 });
