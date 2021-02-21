@@ -5,9 +5,7 @@ import BootstrapVue from 'bootstrap-vue';
 
 describe('BlurFilter.vue', () => {
   test('Передает пустые значения в настройках', () => {
-    // create an extended `Vue` constructor
     const localVue = createLocalVue();
-    // install plugins as normal
     localVue.use(BootstrapVue);
     const wrapper = mount(BlurFilter, {
       localVue,
