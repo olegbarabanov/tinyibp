@@ -56,11 +56,14 @@ import {supportTypes} from '../filters/ImageProcessor';
 
 export default Vue.extend({
   data() {
+    console.log(this);
     return {
-      supportTypes: Array.from(supportTypes, type => {
-        return {value: type[0], text: type[1] as string};
-      }),
-      options: [{value: null, text: 'Please select an option'}],
+      supportTypes: [
+        {value: null, text: 'auto'},
+        ...Array.from(supportTypes, type => {
+          return {value: type[0], text: type[1] as string};
+        }),
+      ],
     };
   },
   computed: {
@@ -99,6 +102,7 @@ export default Vue.extend({
         await this.$store.dispatch('downloadAll', method);
         this.$bvToast.toast('Архив изображений готов !', {variant: 'success'});
       } catch (error) {
+        console.log(error);
         this.$bvToast.toast(
           'К сожалению при сохранении произошла ошибка. Попробуйте другой способ сохранения файлов',
           {variant: 'danger'}

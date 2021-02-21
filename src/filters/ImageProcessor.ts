@@ -15,7 +15,7 @@ export enum SupportMimesTypes {
   gif = 'image/gif',
   webp = 'image/webp',
   png = 'image/png',
-  svg = 'image/svg',
+  svg = 'image/svg+xml',
 }
 
 export const supportTypes = new Map<SupportMimesTypes, SupportExtensions>([
