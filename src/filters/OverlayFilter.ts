@@ -5,9 +5,9 @@ export enum supportPositions {
   TOP_LEFT,
   TOP_CENTER,
   TOP_RIGHT,
-  CENTER_LEFT,
-  CENTER_CENTER,
-  CENTER_RIGHT,
+  MIDDLE_LEFT,
+  MIDDLE_CENTER,
+  MIDDLE_RIGHT,
   BOTTOM_LEFT,
   BOTTOM_CENTER,
   BOTTOM_RIGHT,
@@ -16,7 +16,7 @@ export enum supportPositions {
 
 export default class OverlayFilter extends AbstractFilter {
   readonly name: string = 'overlay';
-  image?: File;
+  image?: File = undefined;
   position = 0; // Позиционирование
   margin = 0; //Отступ
 
@@ -38,17 +38,17 @@ export default class OverlayFilter extends AbstractFilter {
       case supportPositions.TOP_RIGHT:
         canvasCtx.drawImage(image, canvas.width - image.width - margin, margin);
         break;
-      case supportPositions.CENTER_LEFT:
+      case supportPositions.MIDDLE_LEFT:
         canvasCtx.drawImage(image, margin, (canvas.height - image.height) / 2);
         break;
-      case supportPositions.CENTER_CENTER:
+      case supportPositions.MIDDLE_CENTER:
         canvasCtx.drawImage(
           image,
           (canvas.width - image.width) / 2,
           (canvas.height - image.height) / 2
         );
         break;
-      case supportPositions.CENTER_RIGHT:
+      case supportPositions.MIDDLE_RIGHT:
         canvasCtx.drawImage(
           image,
           canvas.width - image.width - margin,

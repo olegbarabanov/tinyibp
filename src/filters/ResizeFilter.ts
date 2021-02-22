@@ -2,12 +2,12 @@ import AbstractFilter from './AbstractFilter';
 
 export default class ResizeFilter extends AbstractFilter {
   readonly name: string = 'resize';
-  resizeToX = 0;
-  resizeToY = 0;
+  width = 0;
+  height = 0;
 
   async run(canvas: OffscreenCanvas): Promise<OffscreenCanvas> {
-    const x = this.resizeToX;
-    const y = this.resizeToY;
+    const x = this.width;
+    const y = this.height;
     const deltaX = x / canvas.width;
     const deltaY = y / canvas.height;
     let newHeight = y;

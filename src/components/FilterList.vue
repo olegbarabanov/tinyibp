@@ -32,7 +32,7 @@
       </b-dropdown>
     </b-card-header>
 
-    <b-card-body>
+    <b-card-body class="p-1">
       <div class="d-flex flex-column mh-100">
         <draggable
           tag="div"
@@ -40,12 +40,20 @@
           class="list-group overflow-auto"
           handle=".handle"
         >
-          <b-card no-body v-for="(filter, index) in filterMaps" :key="index">
+          <b-card
+            no-body
+            v-for="(filter, index) in filterMaps"
+            :key="index"
+            border-variant="secondary"
+            class="mb-1"
+          >
             <b-card-header
               header-tag="header"
-              class="handle"
-              header-bg-variant="gradient-dark"
+              class="handle py-1"
+              header-bg-variant="secondary"
+              header-text-variant="white"
               :title="$t('helper.tooltip.draggable')"
+              style="cursor: move;"
             >
               <b-row align-v="center" class="flex-nowrap">
                 <b-col cols="3">
@@ -54,7 +62,7 @@
                     v-b-tooltip
                     size="sm"
                     :title="$t('helper.tooltip.draggable')"
-                    >{{ index + 1 }}
+                    >{{ index + 1 }}.
                   </b-button></b-col
                 >
                 <b-col cols="6">{{ $t(`filter.${filter.name}.name`) }}</b-col>
@@ -71,7 +79,7 @@
             </b-card-header>
             <b-card-body>
               <component
-                v-bind:settings="filter"
+                v-bind.sync="filterMaps[index]"
                 v-bind:is="
                   filter.name.charAt(0).toUpperCase() +
                     filter.name.slice(1) +
