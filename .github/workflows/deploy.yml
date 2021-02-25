@@ -15,7 +15,7 @@ jobs:
               uses: actions/setup-node@v1
               with: 
                 node-version: 14.x
-            - name: Install Packages and Build Application
+            - name: Install Packages, run tests and Build Application
               run: |
                 npm install
                 npm run test:unit
