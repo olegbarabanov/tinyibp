@@ -18,10 +18,8 @@ jobs:
             - name: Install Packages and Build Application
               run: |
                 npm install
-                npm run build
-            - name: Run unit tests
-              run: |
                 npm run test:unit
+                npm run build
             - name: Deploy
               uses: s0/git-publish-subdir-action@master
               env:
