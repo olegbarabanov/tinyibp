@@ -1,25 +1,25 @@
 import AbstractFilter from './AbstractFilter';
 
 export enum supportPositions {
-  TOP_LEFT,
-  TOP_CENTER,
-  TOP_RIGHT,
-  MIDDLE_LEFT,
-  MIDDLE_CENTER,
-  MIDDLE_RIGHT,
-  BOTTOM_LEFT,
-  BOTTOM_CENTER,
-  BOTTOM_RIGHT,
+  LEFT_TOP = 'left-top',
+  LEFT_MIDDLE = 'left-middle',
+  LEFT_BOTTOM = 'left-bottom',
+  CENTER_TOP = 'center-top',
+  CENTER_MIDDLE = 'center-middle',
+  CENTER_BOTTOM = 'center-bottom',
+  RIGHT_TOP = 'right-top',
+  RIGHT_MIDDLE = 'right-middle',
+  RIGHT_BOTTOM = 'right-bottom',
 }
 
 export enum supportModes {
-  SIZES,
-  RATIO,
+  SIZES = 'sizes',
+  RATIO = 'ratio',
 }
 
 export default class CropFilter extends AbstractFilter {
   readonly name: string = 'crop';
-  position: supportPositions = 0; // Позиционирование
+  position: supportPositions = supportPositions.CENTER_MIDDLE; // Позиционирование
   width = 1;
   height = 1;
   mode: supportModes = supportModes.SIZES;
@@ -75,31 +75,31 @@ export default class CropFilter extends AbstractFilter {
     const dH = sH;
 
     switch (this.position) {
-      case supportPositions.TOP_LEFT:
+      case supportPositions.LEFT_TOP:
         newCanvasCtx.drawImage(oldCanvas, sL, sT, sW, sH, dL, dT, dW, dH);
         break;
-      case supportPositions.TOP_CENTER:
+      case supportPositions.CENTER_TOP:
         newCanvasCtx.drawImage(oldCanvas, sC, sT, sW, sH, dC, dT, dW, dH);
         break;
-      case supportPositions.TOP_RIGHT:
+      case supportPositions.RIGHT_TOP:
         newCanvasCtx.drawImage(oldCanvas, sR, sT, sW, sH, dR, dT, dW, dH);
         break;
-      case supportPositions.MIDDLE_LEFT:
+      case supportPositions.LEFT_MIDDLE:
         newCanvasCtx.drawImage(oldCanvas, sL, sM, sW, sH, dL, dM, dW, dH);
         break;
-      case supportPositions.MIDDLE_CENTER:
+      case supportPositions.CENTER_MIDDLE:
         newCanvasCtx.drawImage(oldCanvas, sC, sM, sW, sH, dC, dM, dW, dH);
         break;
-      case supportPositions.MIDDLE_RIGHT:
+      case supportPositions.RIGHT_MIDDLE:
         newCanvasCtx.drawImage(oldCanvas, sR, sM, sW, sH, dR, dM, dW, dH);
         break;
-      case supportPositions.BOTTOM_LEFT:
+      case supportPositions.LEFT_BOTTOM:
         newCanvasCtx.drawImage(oldCanvas, sL, sB, sW, sH, dL, dB, dW, dH);
         break;
-      case supportPositions.BOTTOM_CENTER:
+      case supportPositions.CENTER_BOTTOM:
         newCanvasCtx.drawImage(oldCanvas, sC, sB, sW, sH, dC, dB, dW, dH);
         break;
-      case supportPositions.BOTTOM_RIGHT:
+      case supportPositions.RIGHT_BOTTOM:
         newCanvasCtx.drawImage(oldCanvas, sR, sB, sW, sH, dR, dB, dW, dH);
         break;
     }
@@ -109,22 +109,16 @@ export default class CropFilter extends AbstractFilter {
   async run(canvas: OffscreenCanvas): Promise<OffscreenCanvas> {
     const canvasCtx = canvas.getContext('2d');
     if (canvasCtx === null) throw new Error('unable to create canvas context');
+    // if width | height equal 0 then side size equal to size canvas;
+    const width = this.width || canvas.width;
+    const height = this.height || canvas.height;
+    const position = this.position;
 
     switch (this.mode) {
       case supportModes.RATIO:
-        return this.cropByRatio(
-          canvasCtx,
-          this.width,
-          this.height,
-          this.position
-        ).canvas;
+        return this.cropByRatio(canvasCtx, width, height, position).canvas;
       case supportModes.SIZES:
-        return this.cropBySize(
-          canvasCtx,
-          this.width,
-          this.height,
-          this.position
-        ).canvas;
+        return this.cropBySize(canvasCtx, width, height, position).canvas;
       default:
         throw new Error('unsupport mode');
     }

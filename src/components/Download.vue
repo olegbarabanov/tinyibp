@@ -19,10 +19,8 @@
           class="text-nowrap"
         ></b-form-select>
       </b-input-group>
-
       <b-input-group size="sm" prepend="Качество" class="mx-4">
         <b-form-input
-          id="range-2"
           v-model="quality"
           type="number"
           min="1"
@@ -32,7 +30,6 @@
       </b-input-group>
       <b-input-group size="sm" prepend="Шаблон имени" class="mx-4">
         <b-form-input
-          id="input-live"
           v-model="nameTransformPattern"
           placeholder="Enter your pattern"
           trim
@@ -56,7 +53,6 @@ import {supportTypes} from '../filters/ImageProcessor';
 
 export default Vue.extend({
   data() {
-    console.log(this);
     return {
       supportTypes: [
         {value: null, text: 'auto'},

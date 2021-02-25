@@ -6,6 +6,7 @@
     >
       <b-form-select
         :id="`input-mode-${componentID}`"
+        name="mode"
         :value="mode"
         :options="supportModes"
         size="sm"
@@ -19,6 +20,7 @@
     >
       <b-form-select
         :id="`input-position-${componentID}`"
+        name="position"
         :value="position"
         :options="supportPositions"
         size="sm"
@@ -26,25 +28,37 @@
         v-on:input="updatePosition"
       ></b-form-select>
     </b-form-group>
-    <b-form-group label="Размеры" :label-for="`input-position-${componentID}`">
+    <b-form-group
+      label="Размеры"
+      :label-for="`input-position-${componentID}`"
+      description="пустое поле = автоматический размер"
+    >
       <b-input-group>
         <b-input-group-text>
           X:
         </b-input-group-text>
         <b-form-input
           :value="width"
+          name="width"
           v-on:input="updateWidth"
           type="number"
           step="1"
+          min="0"
+          placeholder="auto"
+          :formatter="formatter"
         ></b-form-input>
         <b-input-group-text>
           Y:
         </b-input-group-text>
         <b-form-input
           :value="height"
+          name="height"
           v-on:input="updateHeight"
           type="number"
           step="1"
+          min="0"
+          placeholder="auto"
+          :formatter="formatter"
         ></b-form-input>
       </b-input-group>
     </b-form-group>
@@ -61,19 +75,18 @@ export default Vue.extend({
   data() {
     return {
       componentID: SequenceId.getNew(),
-      supportPositions: Object.entries(supportPositions)
-        .filter(([position]) => isNaN(Number(position)))
-        .map(([position, index]) => {
-          return {text: position, value: index};
-        }),
-      supportModes: Object.entries(supportModes)
-        .filter(([mode]) => isNaN(Number(mode)))
-        .map(([mode, index]) => {
-          return {text: mode, value: index};
-        }),
+      supportPositions: Object.values(supportPositions).map(position => {
+        return {text: position, value: position};
+      }),
+      supportModes: Object.values(supportModes).map(mode => {
+        return {text: mode, value: mode};
+      }),
     };
   },
   methods: {
+    formatter(value: string) {
+      return Number(value) === 0 ? '' : value;
+    },
     updateMode(value: string) {
       this.$emit('update:mode', value);
     },

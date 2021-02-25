@@ -57,14 +57,8 @@
             >
               <b-row align-v="center" class="flex-nowrap">
                 <b-col cols="3">
-                  <b-button
-                    class="m-1 p-1"
-                    v-b-tooltip
-                    size="sm"
-                    :title="$t('helper.tooltip.draggable')"
-                    >{{ index + 1 }}.
-                  </b-button></b-col
-                >
+                  <b-badge variant="light">{{ index + 1 }}</b-badge>
+                </b-col>
                 <b-col cols="6">{{ $t(`filter.${filter.name}.name`) }}</b-col>
                 <b-col cols="3">
                   <b-button

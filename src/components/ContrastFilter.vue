@@ -22,7 +22,12 @@ import Vue from 'vue';
 import SequenceId from '@/utils/SequenceId';
 
 export default Vue.extend({
-  props: ['level'],
+  props: {
+    level: {
+      type: Number,
+      default: 100,
+    },
+  },
   data() {
     return {
       componentID: SequenceId.getNew(),
@@ -30,7 +35,10 @@ export default Vue.extend({
   },
   methods: {
     updateLevel: function(value: string) {
-      this.$emit('update:level', Number(value));
+      const numberValue = Number(value);
+      if (!isNaN(numberValue)) {
+        this.$emit('update:level', numberValue);
+      }
     },
   },
 });

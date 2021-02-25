@@ -1,6 +1,6 @@
 /* eslint-disable node/no-unpublished-import */
 import {createLocalVue, mount, shallowMount} from '@vue/test-utils';
-import BlurFilter from '@/components/BlurFilter.vue';
+import ContrastFilter from '@/components/ContrastFilter.vue';
 import BootstrapVue, {BFormInput} from 'bootstrap-vue';
 
 global.console.warn = global.console.error = (message: Error) => {
@@ -11,7 +11,7 @@ describe('BlurFilter.vue', () => {
   test('emits the correct event with a numeric value when different "level" types are set.', async () => {
     const localVue = createLocalVue();
     localVue.use(BootstrapVue);
-    const wrapper = mount(BlurFilter, {
+    const wrapper = mount(ContrastFilter, {
       localVue,
     });
     const input = wrapper.findComponent(BFormInput);
