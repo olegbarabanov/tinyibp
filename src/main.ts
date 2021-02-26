@@ -22,11 +22,10 @@ import FileSaver from 'file-saver';
 import {FilterMap} from './filters/FilterInterface';
 import CropFilter from './components/CropFilter.vue';
 import ImageProcessor, {SupportMimesTypes} from './filters/ImageProcessor';
-
-const tttt = 1;
-console.log(tttt);
+import VueScreen from 'vue-screen';
 
 Vue.config.productionTip = false;
+Vue.use(VueScreen, 'bootstrap');
 Vue.use(VueI18n);
 Vue.use(Vuex);
 Vue.use(BootstrapVue);
