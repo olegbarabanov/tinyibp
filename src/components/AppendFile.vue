@@ -34,7 +34,7 @@
         ></b-form-file>
       </label>
     </b-card-header>
-    <b-card-body>
+    <b-card-body class="p-1">
       <b-form @submit.stop.prevent class="mh-100 d-flex flex-column">
         <b-list-group class="overflow-auto">
           <b-list-group-item
@@ -42,8 +42,11 @@
             v-bind:key="index"
             :active="$store.state.showFileIndex === index"
             v-on:click="$store.commit('showFile', index)"
+            variant="light"
             class="d-flex justify-content-between align-items-center p-1"
-            >{{ index + 1 }} - {{ file.name }}
+            ><span class="text-truncate"
+              >{{ index + 1 }} - {{ file.name }}</span
+            >
             <b-button
               aria-label="Close"
               v-on:click.stop="$store.dispatch('deleteFile', index)"
