@@ -2,7 +2,7 @@
 
 <template>
   <b-card
-    class="h-100 text-center"
+    class="h-100 text-center w-100"
     border-variant="dark"
     body-bg-variant="light"
     no-body

@@ -10,7 +10,7 @@
   >
     <b-form
       @submit.stop.prevent
-      class="mh-100 d-flex flex-row align-content-center justify-content-center align-items-center"
+      class="mh-100 d-flex flex-row align-content-center justify-content-center align-items-center flex-wrap"
     >
       <b-input-group size="sm" prepend="Тип" class="mx-4">
         <b-form-select
