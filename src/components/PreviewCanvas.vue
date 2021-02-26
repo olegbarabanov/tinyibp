@@ -26,14 +26,20 @@
         ></b-form-radio-group>
       </b-form-group>
     </b-card-header>
-    <b-card-body class="h-100">
+    <b-card-body
+      class="h-100"
+      v-on:dblclick="fullSizePreview = !fullSizePreview"
+    >
       <div class="h-100 d-flex flex-column border border-left border-right">
         <b-overlay
           :show="showProcessIndicator"
           class="d-flex flex-grow-1 align-items-center justify-content-center overflow-auto p-1"
         >
           <canvas
-            class="mw-100 mh-100"
+            v-bind:class="{
+              'mw-100': !fullSizePreview,
+              'mh-100': !fullSizePreview,
+            }"
             id="canvas"
             ref="canvas"
             :width="width"
@@ -82,6 +88,7 @@ export default Vue.extend({
       size: 0 as number,
       type: '' as string,
       name: '' as string,
+      fullSizePreview: false,
     };
   },
   computed: {
