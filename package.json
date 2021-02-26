@@ -1,5 +1,5 @@
 {
-  "name": "TinyIBP - tiny image batch processor",
+  "name": "tinyibp",
   "version": "0.1.1",
   "private": true,
   "scripts": {
