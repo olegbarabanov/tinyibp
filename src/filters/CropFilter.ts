@@ -22,7 +22,7 @@ export default class CropFilter extends AbstractFilter {
   position: supportPositions = supportPositions.CENTER_MIDDLE; // Позиционирование
   width = 1;
   height = 1;
-  mode: supportModes = supportModes.SIZES;
+  mode: supportModes = supportModes.RATIO;
 
   protected cropByRatio(
     canvasCtx: OffscreenCanvasRenderingContext2D,
