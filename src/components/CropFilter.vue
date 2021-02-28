@@ -1,7 +1,9 @@
+<i18n src="../common/locales.json"></i18n>
+
 <template>
   <b-form @submit.stop.prevent>
     <b-form-group
-      label="Режим кадрирования"
+      :label="$t('cropfilter.form.mode.label')"
       :label-for="`input-mode-${componentID}`"
     >
       <b-form-select
@@ -15,7 +17,7 @@
       />
     </b-form-group>
     <b-form-group
-      label="Позиционирование"
+      :label="$t('cropfilter.form.position.label')"
       :label-for="`input-position-${componentID}`"
     >
       <b-form-select
@@ -29,9 +31,9 @@
       />
     </b-form-group>
     <b-form-group
-      label="Размеры"
+      :label="$t('cropfilter.form.sizes.label')"
       :label-for="`input-position-${componentID}`"
-      description="пустое поле = автоматический размер"
+      :description="$t('cropfilter.form.sizes.description')"
     >
       <b-input-group>
         <b-input-group-text>

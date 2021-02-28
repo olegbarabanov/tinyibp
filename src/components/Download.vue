@@ -8,16 +8,24 @@
     border-variant="dark"
     no-body
   >
-    <b-dropdown text="Настройки файлов" dropup class="mx-md-4">
+    <b-dropdown :text="$t('download.settings.label')" dropup class="mx-md-4">
       <b-dropdown-form style="min-width: 250px;">
-        <b-input-group size="sm" prepend="Тип" class="m-1">
+        <b-input-group
+          size="sm"
+          :prepend="$t('download.settings.form.type.label')"
+          class="m-1"
+        >
           <b-form-select
             v-model="selectedType"
             :options="supportTypes"
             class="text-nowrap"
           />
         </b-input-group>
-        <b-input-group size="sm" prepend="Качество" class="m-1">
+        <b-input-group
+          size="sm"
+          :prepend="$t('download.settings.form.quality.label')"
+          class="m-1"
+        >
           <b-form-input
             v-model="quality"
             type="number"
@@ -26,12 +34,12 @@
             step="1"
           />
         </b-input-group>
-        <b-input-group size="sm" prepend="Шаблон имени" class="m-1">
-          <b-form-input
-            v-model="nameTransformPattern"
-            placeholder="Enter your pattern"
-            trim
-          />
+        <b-input-group
+          size="sm"
+          :prepend="$t('download.settings.form.pattern.label')"
+          class="m-1"
+        >
+          <b-form-input v-model="nameTransformPattern" placeholder="" trim />
         </b-input-group>
       </b-dropdown-form>
     </b-dropdown>
@@ -40,14 +48,14 @@
       right
       variant="secondary"
       block
-      :text="$t('button.event.download')"
+      :text="$t('download.download.label')"
       class="mx-md-4"
     >
       <b-dropdown-item-button @click="downloadAll()">
-        Скачать все файлы
+        {{ $t('download.download.all.label') }}
       </b-dropdown-item-button>
       <b-dropdown-item-button @click="downloadAll('zip')">
-        Скачать как ZIP
+        {{ $t('download.download.zip.label') }}
       </b-dropdown-item-button>
     </b-dropdown>
   </b-card>
@@ -96,19 +104,19 @@ export default Vue.extend({
   },
   methods: {
     downloadAll: async function(method = 'common') {
-      this.$bvToast.toast(
-        'Создаем ZIP архив... Это может занять некоторое время.',
-        {variant: 'info'}
-      );
+      this.$bvToast.toast(this.$tc('download.toast.createzip.text'), {
+        variant: 'info',
+      });
       try {
         await this.$store.dispatch('downloadAll', method);
-        this.$bvToast.toast('Архив изображений готов !', {variant: 'success'});
+        this.$bvToast.toast(this.$tc('download.toast.successzip.text'), {
+          variant: 'success',
+        });
       } catch (error) {
-        console.log(error);
-        this.$bvToast.toast(
-          'К сожалению при сохранении произошла ошибка. Попробуйте другой способ сохранения файлов',
-          {variant: 'danger'}
-        );
+        console.warn(error);
+        this.$bvToast.toast(this.$tc('download.toast.errorzip.text'), {
+          variant: 'danger',
+        });
       }
     },
   },

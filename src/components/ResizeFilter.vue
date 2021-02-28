@@ -1,8 +1,10 @@
+<i18n src="../common/locales.json"></i18n>
+
 <template>
   <b-form @submit.stop.prevent>
     <b-form-group
-      description="Если ширина или высота равна 0, то параметр расчитывается автоматически"
-      label="Новый размер"
+      :description="$t('resizefilter.form.size.description')"
+      :label="$t('resizefilter.form.size.label')"
       class="m-0"
     >
       <b-input-group>

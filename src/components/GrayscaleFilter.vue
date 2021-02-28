@@ -1,7 +1,11 @@
+<i18n src="../common/locales.json"></i18n>
+
 <template>
   <b-form @submit.stop.prevent>
     <b-form-group
-      :description="`Уровень обесцвечивания: ${level}%`"
+      :description="
+        $t('grayscalefilter.form.level.description') + `: ${level}%`
+      "
       :label-for="`input-${componentID}`"
       class="m-0"
     >

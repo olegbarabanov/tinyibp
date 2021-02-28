@@ -1,7 +1,9 @@
+<i18n src="../common/locales.json"></i18n>
+
 <template>
   <b-form @submit.stop.prevent>
     <b-form-group
-      description="Укажите уровень размытия"
+      :description="$t('blurfilter.form.level.description')"
       :label-for="`input-${componentID}`"
       class="m-0"
     >

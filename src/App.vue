@@ -12,7 +12,7 @@
             <b-navbar-toggle target="nav-collapse" />
             <b-collapse id="nav-collapse" is-nav>
               <b-navbar-nav class="ml-auto">
-                <b-nav-item-dropdown :text="$t('chooselang')" right>
+                <b-nav-item-dropdown :text="$t('app.chooselang')" right>
                   <b-dropdown-item
                     v-for="lang in supportLangs"
                     :key="lang"
@@ -68,7 +68,7 @@
         v-b-toggle.sidebar-files-backdrop
         style="position: fixed; left: 0; top: 50%; z-index: 99;"
       >
-        Файлы
+        {{ $t('app.filelist.header') }}
       </b-button>
 
       <b-sidebar
@@ -87,7 +87,7 @@
         v-b-toggle.sidebar-filters-backdrop
         style="position: fixed; right: 0; top: 50%; z-index: 99;"
       >
-        Фильтры
+        {{ $t('app.filterlist.header') }}
       </b-button>
 
       <b-sidebar

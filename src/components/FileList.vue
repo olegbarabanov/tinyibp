@@ -14,7 +14,7 @@
       style="min-height: 3rem"
     >
       <h5 class="my-0 mx-4">
-        Файлы
+        {{ $t('filelist.header.text') }}
       </h5>
       <label
         role="button"
@@ -25,14 +25,10 @@
           ref="form-file"
           v-model="fileList"
           v-b-tooltip
-          :placeholder="$t('helper.tooltip.uploadfile.placeholder')"
-          :drop-placeholder="$t('helper.tooltip.uploadfile.dropplaceholder')"
           accept="image/*"
           multiple
           class="text-left invisible"
           style="width: 0; height: 0; transform: scale(0.05)"
-          :title="$t('helper.tooltip.uploadfile.description')"
-          :browse-text="$t('helper.tooltip.uploadfile.browsebutton')"
         />
       </label>
     </b-card-header>

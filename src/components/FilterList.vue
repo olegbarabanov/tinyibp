@@ -14,14 +14,9 @@
       style="min-height:3rem"
     >
       <h5 class="my-0 mx-4">
-        Фильтры
+        {{ $t('filterlist.header.text') }}
       </h5>
-      <b-dropdown
-        block
-        :text="$t('button.addeventhandler')"
-        class="d-inline-flex mx-4"
-        no-caret
-      >
+      <b-dropdown block class="d-inline-flex mx-4" no-caret>
         <template #button-content>
           <b-icon icon="plus-circle" />
         </template>
@@ -30,7 +25,7 @@
           :key="filter"
           @click="initFilter(filter)"
         >
-          {{ $t(`filter.${filter}.name`) }}
+          {{ $t(`filterlist.filter.${filter}.name`) }}
         </b-dropdown-item>
       </b-dropdown>
     </b-card-header>
@@ -55,7 +50,7 @@
               class="handle py-1"
               header-bg-variant="secondary"
               header-text-variant="white"
-              :title="$t('helper.tooltip.draggable')"
+              :title="$t('filterlist.event.draggable.title')"
               style="cursor: move;"
             >
               <b-row align-v="center" class="flex-nowrap">
@@ -65,7 +60,7 @@
                   </b-badge>
                 </b-col>
                 <b-col cols="6">
-                  {{ $t(`filter.${filter.name}.name`) }}
+                  {{ $t(`filterlist.filter.${filter.name}.name`) }}
                 </b-col>
                 <b-col cols="3">
                   <b-button

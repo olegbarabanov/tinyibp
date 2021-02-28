@@ -14,7 +14,7 @@
       style="min-height:3rem"
     >
       <h5 class="my-0 mx-4 d-none d-md-block">
-        Предпросмотр
+        {{ $t('previewcanvas.header.text') }}
       </h5>
       <b-form-group v-slot="{ariaDescribedby}" class="d-inline-flex m-0 mx-4">
         <b-form-radio-group
@@ -60,13 +60,18 @@
       </p>
       <p>
         <span class="m-3"
-          >Размер <b-badge>{{ width }}x{{ height }}</b-badge></span
+          >{{ $t('previewcanvas.dimensions.label') }}
+          <b-badge>{{ width }}x{{ height }}</b-badge></span
         >
         <span class="m-3"
-          >Вес <b-badge>{{ sizeToMb }} МБ</b-badge></span
+          >{{ $t('previewcanvas.size.label')
+          }}<b-badge
+            >{{ sizeToMb }} {{ $t('previewcanvas.size.value') }}</b-badge
+          ></span
         >
         <span class="m-3"
-          >Тип <b-badge>{{ type }}</b-badge></span
+          >{{ $t('previewcanvas.type.label')
+          }}<b-badge>{{ type }}</b-badge></span
         >
       </p>
     </b-card-footer>
@@ -103,11 +108,11 @@ export default Vue.extend({
       return [
         {
           value: 'original-preview',
-          text: this.$t('preview.button.viewselector.originalview'),
+          text: this.$t('previewcanvas.viewselector.original.text'),
         },
         {
           value: 'result-preview',
-          text: this.$t('preview.button.viewselector.resultview'),
+          text: this.$t('previewcanvas.viewselector.result.text'),
         },
       ];
     },

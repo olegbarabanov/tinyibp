@@ -1,7 +1,9 @@
+<i18n src="../common/locales.json"></i18n>
+
 <template>
   <b-form @submit.stop.prevent>
     <b-form-group
-      label="Накладываемое изображение"
+      :label="$t('overlayfilter.form.image.label')"
       :label-for="`input-image-${componentID}`"
     >
       <b-form-file
@@ -12,7 +14,7 @@
       />
     </b-form-group>
     <b-form-group
-      label="Позиционирование"
+      :label="$t('overlayfilter.form.position.label')"
       :label-for="`input-position-${componentID}`"
     >
       <b-form-select
@@ -23,7 +25,10 @@
         @input="updatePosition"
       />
     </b-form-group>
-    <b-form-group label="Отступ" :label-for="`input-margin-${componentID}`">
+    <b-form-group
+      :label="$t('overlayfilter.form.margin.label')"
+      :label-for="`input-margin-${componentID}`"
+    >
       <b-form-input
         :label-for="`input-margin-${componentID}`"
         :value="margin"
