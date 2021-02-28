@@ -50,6 +50,7 @@
       block
       :text="$t('download.download.label')"
       class="mx-md-4"
+      dropup
     >
       <b-dropdown-item-button @click="downloadAll()">
         {{ $t('download.download.all.label') }}
