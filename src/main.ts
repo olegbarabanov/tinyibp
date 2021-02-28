@@ -47,8 +47,6 @@ SUPPORT_FILTERS.forEach(filter => {
   filterProcessor.getFilterFactory().registerFilter(filter);
 });
 
-const imageProcessor = new ImageProcessor(filterProcessor);
-
 const i18n = new VueI18n({
   locale: navigator.language.substr(0, 2).toLowerCase(), // set locale
 });
@@ -175,7 +173,7 @@ const initStore: StoreOptions<RootState> = {
           zip.file(blob.name, blob);
         }
         const zipFile = await zip.generateAsync({type: 'blob'});
-        FileSaver.saveAs(zipFile, 'PhotoBatch-' + Date.now());
+        FileSaver.saveAs(zipFile, 'TinyIBP-' + Date.now());
       }
     },
   },
