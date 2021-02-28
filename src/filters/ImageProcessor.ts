@@ -25,8 +25,6 @@ export const supportTypes = new Map<SupportMimesTypes, SupportExtensions>([
   [SupportMimesTypes.svg, SupportExtensions.svg],
 ]);
 
-const defaultType = SupportMimesTypes.png;
-
 export default class ImageProcessor {
   readonly filterProcessor: FilterProcessor;
   protected quality = 100;
