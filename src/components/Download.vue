@@ -51,6 +51,7 @@
       :text="$t('download.download.label')"
       class="mx-md-4"
       dropup
+      :disabled="disabledDownload"
     >
       <b-dropdown-item-button @click="downloadAll()">
         {{ $t('download.download.all.label') }}
@@ -101,6 +102,9 @@ export default Vue.extend({
       set(value) {
         this.$store.dispatch('setNameTransformPattern', value);
       },
+    },
+    disabledDownload() {
+      return this.$store.state.fileList.length === 0;
     },
   },
   methods: {
