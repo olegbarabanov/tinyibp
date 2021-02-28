@@ -13,44 +13,45 @@
       class="d-flex flex-row align-items-center justify-content-center p-1"
       style="min-height: 3rem"
     >
-      <h5 class="my-0 mx-4">Файлы</h5>
+      <h5 class="my-0 mx-4">
+        Файлы
+      </h5>
       <label
         role="button"
         class="d-inline-flex my-0 mx-4 justify-content-center btn btn-secondary"
       >
-        <b-icon icon="upload"></b-icon>
+        <b-icon icon="upload" />
         <b-form-file
+          ref="form-file"
           v-model="fileList"
+          v-b-tooltip
           :placeholder="$t('helper.tooltip.uploadfile.placeholder')"
           :drop-placeholder="$t('helper.tooltip.uploadfile.dropplaceholder')"
           accept="image/*"
           multiple
-          ref="form-file"
           class="text-left invisible"
           style="width: 0; height: 0; transform: scale(0.05)"
-          v-b-tooltip
           :title="$t('helper.tooltip.uploadfile.description')"
           :browse-text="$t('helper.tooltip.uploadfile.browsebutton')"
-        ></b-form-file>
+        />
       </label>
     </b-card-header>
     <b-card-body class="p-1">
-      <b-form @submit.stop.prevent class="mh-100 d-flex flex-column">
+      <b-form class="mh-100 d-flex flex-column" @submit.stop.prevent>
         <b-list-group class="overflow-auto">
           <b-list-group-item
             v-for="(file, index) in globalFileList"
-            v-bind:key="index"
+            :key="index"
             :active="$store.state.showFileIndex === index"
-            v-on:click="$store.commit('showFile', index)"
             variant="light"
             class="d-flex justify-content-between align-items-center p-1"
-            ><span class="text-truncate"
-              >{{ index + 1 }} - {{ file.name }}</span
-            >
+            @click="$store.commit('showFile', index)"
+          >
+            <span class="text-truncate">{{ index + 1 }} - {{ file.name }}</span>
             <b-button
               aria-label="Close"
-              v-on:click.stop="$store.dispatch('deleteFile', index)"
               class="close"
+              @click.stop="$store.dispatch('deleteFile', index)"
             >
               <span aria-hidden="true">&times;</span>
             </b-button>
@@ -70,15 +71,15 @@ export default Vue.extend({
       fileList: [] as Array<File>,
     };
   },
+  computed: {
+    globalFileList: function() {
+      return this.$store.state.fileList;
+    },
+  },
   watch: {
     fileList: function(newFileList: Array<File>) {
       newFileList.forEach((file: File) => this.$store.commit('setFile', file));
       (this.$refs['form-file'] as any).reset();
-    },
-  },
-  computed: {
-    globalFileList: function() {
-      return this.$store.state.fileList;
     },
   },
 });

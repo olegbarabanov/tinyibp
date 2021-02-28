@@ -13,7 +13,9 @@
       class="d-flex flex-row align-items-center justify-content-center p-1"
       style="min-height:3rem"
     >
-      <h5 class="my-0 mx-4 d-none d-md-block">Предпросмотр</h5>
+      <h5 class="my-0 mx-4 d-none d-md-block">
+        Предпросмотр
+      </h5>
       <b-form-group v-slot="{ariaDescribedby}" class="d-inline-flex m-0 mx-4">
         <b-form-radio-group
           id="btn-radios-1"
@@ -23,25 +25,22 @@
           name="radios-btn-default"
           size="sm"
           buttons
-        ></b-form-radio-group>
+        />
       </b-form-group>
     </b-card-header>
-    <b-card-body
-      class="h-100"
-      v-on:dblclick="fullSizePreview = !fullSizePreview"
-    >
+    <b-card-body class="h-100" @dblclick="fullSizePreview = !fullSizePreview">
       <div class="h-100 d-flex flex-column border border-left border-right">
         <b-overlay
           :show="showProcessIndicator"
           class="d-flex flex-grow-1 align-items-center justify-content-center overflow-auto p-1"
         >
           <canvas
-            v-bind:class="{
+            id="canvas"
+            ref="canvas"
+            :class="{
               'mw-100': !fullSizePreview,
               'mh-100': !fullSizePreview,
             }"
-            id="canvas"
-            ref="canvas"
             :width="width"
             :height="height"
           />
@@ -49,13 +48,15 @@
       </div>
     </b-card-body>
     <b-card-footer
+      v-show="show"
       footer-bg-variant="dark"
       footer-text-variant="white"
-      v-show="show"
       class="text"
     >
       <p class="text-nowrap">
-        <b-badge class="d-inline-flex text-truncate mw-100">{{ name }}</b-badge>
+        <b-badge class="d-inline-flex text-truncate mw-100">
+          {{ name }}
+        </b-badge>
       </p>
       <p>
         <span class="m-3"
@@ -111,6 +112,29 @@ export default Vue.extend({
       ];
     },
   },
+  watch: {
+    '$store.state.filterMaps': {
+      handler: async function() {
+        await this.updateCanvas();
+      },
+      deep: true,
+    },
+    '$store.state.showFileIndex': async function() {
+      await this.updateCanvas();
+    },
+    '$store.state.type': async function() {
+      await this.updateCanvas();
+    },
+    '$store.state.quality': async function() {
+      await this.updateCanvas();
+    },
+    '$store.state.nameTransformPattern': async function() {
+      await this.updateCanvas();
+    },
+    selected: async function() {
+      await this.updateCanvas();
+    },
+  },
   methods: {
     updateCanvas: function() {
       const canvas = this.$refs.canvas as HTMLCanvasElement;
@@ -143,29 +167,6 @@ export default Vue.extend({
         );
         this.showProcessIndicator = false;
       }, 200);
-    },
-  },
-  watch: {
-    '$store.state.filterMaps': {
-      handler: async function() {
-        await this.updateCanvas();
-      },
-      deep: true,
-    },
-    '$store.state.showFileIndex': async function() {
-      await this.updateCanvas();
-    },
-    '$store.state.type': async function() {
-      await this.updateCanvas();
-    },
-    '$store.state.quality': async function() {
-      await this.updateCanvas();
-    },
-    '$store.state.nameTransformPattern': async function() {
-      await this.updateCanvas();
-    },
-    selected: async function() {
-      await this.updateCanvas();
     },
   },
   //updated: function() {

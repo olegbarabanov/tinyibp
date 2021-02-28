@@ -6,13 +6,13 @@
       class="m-0"
     >
       <b-form-input
-        :value="level"
-        v-on:input="updateLevel"
         :id="`input-${componentID}`"
+        :value="level"
         type="number"
         min="0"
         step="0.1"
-      ></b-form-input>
+        @input="updateLevel"
+      />
     </b-form-group>
   </b-form>
 </template>

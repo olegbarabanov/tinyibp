@@ -6,20 +6,21 @@
       <b-row no-gutters>
         <b-col>
           <b-navbar sticky toggleable="lg" type="dark" variant="dark">
-            <b-navbar-brand href="#"
-              ><span>TinyIBP (v0.1.1 - alpha)</span></b-navbar-brand
-            >
-            <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+            <b-navbar-brand href="#">
+              <span>TinyIBP (v0.1.1 - alpha)</span>
+            </b-navbar-brand>
+            <b-navbar-toggle target="nav-collapse" />
             <b-collapse id="nav-collapse" is-nav>
               <b-navbar-nav class="ml-auto">
                 <b-nav-item-dropdown :text="$t('chooselang')" right>
                   <b-dropdown-item
                     v-for="lang in supportLangs"
                     :key="lang"
-                    v-on:click="$store.commit('setLang', lang)"
                     class="text-uppercase"
-                    >{{ lang }}</b-dropdown-item
+                    @click="$store.commit('setLang', lang)"
                   >
+                    {{ lang }}
+                  </b-dropdown-item>
                 </b-nav-item-dropdown>
               </b-navbar-nav>
             </b-collapse>
@@ -28,37 +29,37 @@
       </b-row>
 
       <b-row
+        v-if="$screen.md"
         align-v="stretch"
         no-gutters
         class="flex-grow-1 overflow-hidden"
-        v-if="$screen.md"
       >
         <b-col md="3" class="mh-100 p-1">
-          <append-file></append-file>
+          <append-file />
         </b-col>
 
         <b-col md="6" class="mh-100 p-1">
-          <preview-canvas></preview-canvas>
+          <preview-canvas />
         </b-col>
 
         <b-col md="3" class="mh-100 p-1">
-          <filter-list></filter-list>
+          <filter-list />
         </b-col>
       </b-row>
       <b-row
+        v-else
         align-v="stretch"
         no-gutters
         class="flex-grow-1 overflow-hidden"
-        v-else
       >
         <b-col cols="12" class="mh-100 p-1">
-          <preview-canvas></preview-canvas>
+          <preview-canvas />
         </b-col>
       </b-row>
 
       <b-row align-v="stretch" no-gutters>
         <b-col md="12">
-          <download></download>
+          <download />
         </b-col>
       </b-row>
     </b-container>
@@ -66,8 +67,9 @@
       <b-button
         v-b-toggle.sidebar-files-backdrop
         style="position: fixed; left: 0; top: 50%; z-index: 99;"
-        >Файлы</b-button
       >
+        Файлы
+      </b-button>
 
       <b-sidebar
         id="sidebar-files-backdrop"
@@ -78,14 +80,15 @@
         no-header
         width="250px"
       >
-        <append-file></append-file>
+        <append-file />
       </b-sidebar>
 
       <b-button
         v-b-toggle.sidebar-filters-backdrop
         style="position: fixed; right: 0; top: 50%; z-index: 99;"
-        >Фильтры</b-button
       >
+        Фильтры
+      </b-button>
 
       <b-sidebar
         id="sidebar-filters-backdrop"
@@ -97,7 +100,7 @@
         no-header
         width="250px"
       >
-        <filter-list></filter-list>
+        <filter-list />
       </b-sidebar>
     </div>
   </div>
@@ -118,13 +121,13 @@ export default Vue.extend({
     filterList,
     download,
   },
+  data: function() {
+    return {};
+  },
   computed: {
     supportLangs() {
       return Object.keys(this.$i18n.messages);
     },
-  },
-  data: function() {
-    return {};
   },
 });
 

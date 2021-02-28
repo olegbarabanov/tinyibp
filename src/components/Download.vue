@@ -4,46 +4,52 @@
   <b-card
     bg-variant="dark"
     text-variant="white"
-    class="h-100 text-center rounded-0 p-1"
+    class="h-100 text-center rounded-0 p-1 d-flex flex-row justify-content-between"
     border-variant="dark"
     no-body
   >
-    <b-form
-      @submit.stop.prevent
-      class="mh-100 d-flex flex-row align-content-center justify-content-center align-items-center flex-wrap"
+    <b-dropdown text="Настройки файлов" dropup class="mx-md-4">
+      <b-dropdown-form style="min-width: 250px;">
+        <b-input-group size="sm" prepend="Тип" class="m-1">
+          <b-form-select
+            v-model="selectedType"
+            :options="supportTypes"
+            class="text-nowrap"
+          />
+        </b-input-group>
+        <b-input-group size="sm" prepend="Качество" class="m-1">
+          <b-form-input
+            v-model="quality"
+            type="number"
+            min="1"
+            max="100"
+            step="1"
+          />
+        </b-input-group>
+        <b-input-group size="sm" prepend="Шаблон имени" class="m-1">
+          <b-form-input
+            v-model="nameTransformPattern"
+            placeholder="Enter your pattern"
+            trim
+          />
+        </b-input-group>
+      </b-dropdown-form>
+    </b-dropdown>
+
+    <b-dropdown
+      right
+      variant="secondary"
+      block
+      :text="$t('button.event.download')"
+      class="mx-md-4"
     >
-      <b-input-group size="sm" prepend="Тип" class="mx-4">
-        <b-form-select
-          v-model="selectedType"
-          :options="supportTypes"
-          class="text-nowrap"
-        ></b-form-select>
-      </b-input-group>
-      <b-input-group size="sm" prepend="Качество" class="mx-4">
-        <b-form-input
-          v-model="quality"
-          type="number"
-          min="1"
-          max="100"
-          step="1"
-        ></b-form-input>
-      </b-input-group>
-      <b-input-group size="sm" prepend="Шаблон имени" class="mx-4">
-        <b-form-input
-          v-model="nameTransformPattern"
-          placeholder="Enter your pattern"
-          trim
-        ></b-form-input>
-      </b-input-group>
-      <b-dropdown block :text="$t('button.event.download')" class="mx-4">
-        <b-dropdown-item v-on:click="downloadAll()"
-          >Скачать все файлы</b-dropdown-item
-        >
-        <b-dropdown-item v-on:click="downloadAll('zip')"
-          >Скачать как ZIP</b-dropdown-item
-        >
-      </b-dropdown>
-    </b-form>
+      <b-dropdown-item-button @click="downloadAll()">
+        Скачать все файлы
+      </b-dropdown-item-button>
+      <b-dropdown-item-button @click="downloadAll('zip')">
+        Скачать как ZIP
+      </b-dropdown-item-button>
+    </b-dropdown>
   </b-card>
 </template>
 
@@ -89,7 +95,7 @@ export default Vue.extend({
     },
   },
   methods: {
-    downloadAll: async function(method: string = 'common') {
+    downloadAll: async function(method = 'common') {
       this.$bvToast.toast(
         'Создаем ZIP архив... Это может занять некоторое время.',
         {variant: 'info'}
@@ -98,7 +104,7 @@ export default Vue.extend({
         await this.$store.dispatch('downloadAll', method);
         this.$bvToast.toast('Архив изображений готов !', {variant: 'success'});
       } catch (error) {
-        console.warn(error);
+        console.log(error);
         this.$bvToast.toast(
           'К сожалению при сохранении произошла ошибка. Попробуйте другой способ сохранения файлов',
           {variant: 'danger'}

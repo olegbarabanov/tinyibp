@@ -6,10 +6,10 @@
     >
       <b-form-file
         :id="`input-image-${componentID}`"
-        v-on:input="updateImage"
         placeholder="Choose a file or drop it here..."
         drop-placeholder="Drop file here..."
-      ></b-form-file>
+        @input="updateImage"
+      />
     </b-form-group>
     <b-form-group
       label="Позиционирование"
@@ -19,29 +19,38 @@
         :value="position"
         :options="supportPositions"
         :label-for="`input-position-${componentID}`"
-        v-on:input="updatePosition"
         size="sm"
-      ></b-form-select>
+        @input="updatePosition"
+      />
     </b-form-group>
     <b-form-group label="Отступ" :label-for="`input-margin-${componentID}`">
       <b-form-input
         :label-for="`input-margin-${componentID}`"
         :value="margin"
-        v-on:input="updateMargin"
         type="number"
         step="1"
-      ></b-form-input>
+        @input="updateMargin"
+      />
     </b-form-group>
   </b-form>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Vue, {PropType} from 'vue';
 import {supportPositions} from '../filters/OverlayFilter';
 import SequenceId from '@/utils/SequenceId';
 
 export default Vue.extend({
-  props: ['position', 'margin'],
+  props: {
+    position: {
+      type: Object as PropType<supportPositions>,
+      default: supportPositions.MIDDLE_CENTER,
+    },
+    margin: {
+      type: Object as PropType<number>,
+      default: 0,
+    },
+  },
   data() {
     return {
       componentID: SequenceId.getNew(),
@@ -53,13 +62,13 @@ export default Vue.extend({
     };
   },
   methods: {
-    updateImage: function(value: File) {
+    updateImage: function(value: File): void {
       this.$emit('update:image', value);
     },
-    updatePosition: function(value: string) {
+    updatePosition: function(value: string): void {
       this.$emit('update:position', value);
     },
-    updateMargin: function(value: string) {
+    updateMargin: function(value: string): void {
       this.$emit('update:margin', Number(value));
     },
   },
