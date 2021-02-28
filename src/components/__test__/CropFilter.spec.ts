@@ -1,5 +1,5 @@
 /* eslint-disable node/no-unpublished-import */
-import {createLocalVue, mount, shallowMount} from '@vue/test-utils';
+import {createLocalVue, mount} from '@vue/test-utils';
 import CropFilter from '@/components/CropFilter.vue';
 import BootstrapVue, {BFormInput, BFormSelect} from 'bootstrap-vue';
 import {supportModes, supportPositions} from '@/filters/CropFilter';
@@ -14,6 +14,10 @@ describe('CropFilter.vue', () => {
     localVue.use(BootstrapVue);
     const wrapper = mount(CropFilter, {
       localVue,
+      mocks: {
+        $t: (msg: string) => msg,
+        $tc: (msg: string) => msg,
+      },
     });
     const inputMode = wrapper.find('[name="mode"]');
     expect(inputMode.exists()).toBe(true);
@@ -34,6 +38,10 @@ describe('CropFilter.vue', () => {
     localVue.use(BootstrapVue);
     const wrapper = mount(CropFilter, {
       localVue,
+      mocks: {
+        $t: (msg: string) => msg,
+        $tc: (msg: string) => msg,
+      },
     });
     const inputPosition = wrapper.find('[name="position"]');
     expect(inputPosition.exists()).toBe(true);

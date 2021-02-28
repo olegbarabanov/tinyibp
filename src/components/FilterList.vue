@@ -2,7 +2,7 @@
 
 <template>
   <b-card
-    class="h-100 text-center"
+    class="h-100 text-center w-100"
     border-variant="dark"
     body-bg-variant="light"
     no-body
@@ -13,22 +13,20 @@
       class="d-flex flex-row align-items-center justify-content-center p-1"
       style="min-height:3rem"
     >
-      <h5 class="my-0 mx-4">Фильтры</h5>
-      <b-dropdown
-        block
-        :text="$t('button.addeventhandler')"
-        class="d-inline-flex mx-4"
-        no-caret
-      >
+      <h5 class="my-0 mx-4">
+        {{ $t('filterlist.header.text') }}
+      </h5>
+      <b-dropdown block class="d-inline-flex mx-4" no-caret>
         <template #button-content>
-          <b-icon icon="plus-circle"></b-icon>
+          <b-icon icon="plus-circle" />
         </template>
         <b-dropdown-item
           v-for="filter in registeredFilters"
-          v-bind:key="filter"
-          v-on:click="initFilter(filter)"
-          >{{ $t(`filter.${filter}.name`) }}</b-dropdown-item
+          :key="filter"
+          @click="initFilter(filter)"
         >
+          {{ $t(`filterlist.filter.${filter}.name`) }}
+        </b-dropdown-item>
       </b-dropdown>
     </b-card-header>
 
@@ -41,9 +39,9 @@
           handle=".handle"
         >
           <b-card
-            no-body
             v-for="(filter, index) in filterMaps"
             :key="index"
+            no-body
             border-variant="secondary"
             class="mb-1"
           >
@@ -52,19 +50,23 @@
               class="handle py-1"
               header-bg-variant="secondary"
               header-text-variant="white"
-              :title="$t('helper.tooltip.draggable')"
+              :title="$t('filterlist.event.draggable.title')"
               style="cursor: move;"
             >
               <b-row align-v="center" class="flex-nowrap">
                 <b-col cols="3">
-                  <b-badge variant="light">{{ index + 1 }}</b-badge>
+                  <b-badge variant="light">
+                    {{ index + 1 }}
+                  </b-badge>
                 </b-col>
-                <b-col cols="6">{{ $t(`filter.${filter.name}.name`) }}</b-col>
+                <b-col cols="6">
+                  {{ $t(`filterlist.filter.${filter.name}.name`) }}
+                </b-col>
                 <b-col cols="3">
                   <b-button
                     aria-label="Close"
-                    v-on:click="$store.commit('removeFilter', index)"
                     class="close"
+                    @click="$store.commit('removeFilter', index)"
                   >
                     <span aria-hidden="true">&times;</span>
                   </b-button>
@@ -73,13 +75,13 @@
             </b-card-header>
             <b-card-body>
               <component
-                v-bind.sync="filterMaps[index]"
-                v-bind:is="
+                :is="
                   filter.name.charAt(0).toUpperCase() +
                     filter.name.slice(1) +
                     'Filter'
                 "
-              ></component>
+                v-bind.sync="filterMaps[index]"
+              />
             </b-card-body>
           </b-card>
         </draggable>
@@ -97,8 +99,10 @@ export default Vue.extend({
   components: {
     draggable,
   },
-  methods: {
-    ...mapActions(['initFilter']),
+  data: function() {
+    return {
+      filters: [],
+    };
   },
   computed: {
     ...mapState(['registeredFilters']),
@@ -114,10 +118,8 @@ export default Vue.extend({
       return Object.keys(this.$i18n.messages);
     },
   },
-  data: function() {
-    return {
-      filters: [],
-    };
+  methods: {
+    ...mapActions(['initFilter']),
   },
 });
 </script>

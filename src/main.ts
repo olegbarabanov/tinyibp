@@ -22,11 +22,10 @@ import FileSaver from 'file-saver';
 import {FilterMap} from './filters/FilterInterface';
 import CropFilter from './components/CropFilter.vue';
 import ImageProcessor, {SupportMimesTypes} from './filters/ImageProcessor';
-
-const tttt = 1;
-console.log(tttt);
+import VueScreen from 'vue-screen';
 
 Vue.config.productionTip = false;
+Vue.use(VueScreen, 'bootstrap');
 Vue.use(VueI18n);
 Vue.use(Vuex);
 Vue.use(BootstrapVue);
@@ -47,8 +46,6 @@ const DEFAULT_LANG = 'en';
 SUPPORT_FILTERS.forEach(filter => {
   filterProcessor.getFilterFactory().registerFilter(filter);
 });
-
-const imageProcessor = new ImageProcessor(filterProcessor);
 
 const i18n = new VueI18n({
   locale: navigator.language.substr(0, 2).toLowerCase(), // set locale
@@ -176,7 +173,7 @@ const initStore: StoreOptions<RootState> = {
           zip.file(blob.name, blob);
         }
         const zipFile = await zip.generateAsync({type: 'blob'});
-        FileSaver.saveAs(zipFile, 'PhotoBatch-' + Date.now());
+        FileSaver.saveAs(zipFile, 'TinyIBP-' + Date.now());
       }
     },
   },

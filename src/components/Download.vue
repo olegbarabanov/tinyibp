@@ -4,46 +4,62 @@
   <b-card
     bg-variant="dark"
     text-variant="white"
-    class="h-100 text-center rounded-0 p-1"
+    class="h-100 text-center rounded-0 p-1 d-flex flex-row justify-content-between"
     border-variant="dark"
     no-body
   >
-    <b-form
-      @submit.stop.prevent
-      class="mh-100 d-flex flex-row align-content-center justify-content-center align-items-center"
+    <b-dropdown :text="$t('download.settings.label')" dropup class="mx-md-4">
+      <b-dropdown-form style="min-width: 250px;">
+        <b-input-group
+          size="sm"
+          :prepend="$t('download.settings.form.type.label')"
+          class="m-1"
+        >
+          <b-form-select
+            v-model="selectedType"
+            :options="supportTypes"
+            class="text-nowrap"
+          />
+        </b-input-group>
+        <b-input-group
+          size="sm"
+          :prepend="$t('download.settings.form.quality.label')"
+          class="m-1"
+        >
+          <b-form-input
+            v-model="quality"
+            type="number"
+            min="1"
+            max="100"
+            step="1"
+          />
+        </b-input-group>
+        <b-input-group
+          size="sm"
+          :prepend="$t('download.settings.form.pattern.label')"
+          class="m-1"
+        >
+          <b-form-input v-model="nameTransformPattern" placeholder="" trim />
+        </b-input-group>
+      </b-dropdown-form>
+    </b-dropdown>
+
+    <b-dropdown
+      right
+      variant="secondary"
+      block
+      :text="$t('download.download.label')"
+      class="mx-md-4"
+      dropup
+      :disabled="disabledDownload"
     >
-      <b-input-group size="sm" prepend="Тип" class="mx-4">
-        <b-form-select
-          v-model="selectedType"
-          :options="supportTypes"
-          class="text-nowrap"
-        ></b-form-select>
-      </b-input-group>
-      <b-input-group size="sm" prepend="Качество" class="mx-4">
-        <b-form-input
-          v-model="quality"
-          type="number"
-          min="1"
-          max="100"
-          step="1"
-        ></b-form-input>
-      </b-input-group>
-      <b-input-group size="sm" prepend="Шаблон имени" class="mx-4">
-        <b-form-input
-          v-model="nameTransformPattern"
-          placeholder="Enter your pattern"
-          trim
-        ></b-form-input>
-      </b-input-group>
-      <b-dropdown block :text="$t('button.event.download')" class="mx-4">
-        <b-dropdown-item v-on:click="downloadAll()"
-          >Скачать все файлы</b-dropdown-item
-        >
-        <b-dropdown-item v-on:click="downloadAll('zip')"
-          >Скачать как ZIP</b-dropdown-item
-        >
-      </b-dropdown>
-    </b-form>
+      <b-dropdown-item-button @click="downloadAll()">
+        {{ $t('download.download.all.label') }}
+      </b-dropdown-item-button>
+      <b-dropdown-item-button @click="downloadAll('zip')">
+        {{ $t('download.download.zip.label') }}
+      </b-dropdown-item-button>
+    </b-dropdown>
   </b-card>
 </template>
 
@@ -87,22 +103,25 @@ export default Vue.extend({
         this.$store.dispatch('setNameTransformPattern', value);
       },
     },
+    disabledDownload() {
+      return this.$store.state.fileList.length === 0;
+    },
   },
   methods: {
-    downloadAll: async function(method: string = 'common') {
-      this.$bvToast.toast(
-        'Создаем ZIP архив... Это может занять некоторое время.',
-        {variant: 'info'}
-      );
+    downloadAll: async function(method = 'common') {
+      this.$bvToast.toast(this.$tc('download.toast.createzip.text'), {
+        variant: 'info',
+      });
       try {
         await this.$store.dispatch('downloadAll', method);
-        this.$bvToast.toast('Архив изображений готов !', {variant: 'success'});
+        this.$bvToast.toast(this.$tc('download.toast.successzip.text'), {
+          variant: 'success',
+        });
       } catch (error) {
-        console.log(error);
-        this.$bvToast.toast(
-          'К сожалению при сохранении произошла ошибка. Попробуйте другой способ сохранения файлов',
-          {variant: 'danger'}
-        );
+        console.warn(error);
+        this.$bvToast.toast(this.$tc('download.toast.errorzip.text'), {
+          variant: 'danger',
+        });
       }
     },
   },

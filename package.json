@@ -1,6 +1,6 @@
 {
-  "name": "photobatch",
-  "version": "0.0.1",
+  "name": "tinyibp",
+  "version": "0.1.1",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -23,6 +23,7 @@
     "vue-class-component": "^7.2.3",
     "vue-i18n": "^8.17.3",
     "vue-property-decorator": "^9.1.2",
+    "vue-screen": "^1.5.3",
     "vuedraggable": "^2.24.3",
     "vuex": "^3.6.0",
     "worker-loader": "^3.0.7"
@@ -66,6 +67,8 @@
       "plugin:vue/base",
       "./node_modules/gts",
       "plugin:vue/essential",
+      "plugin:vue/strongly-recommended",
+      "plugin:vue/recommended",
       "eslint:recommended",
       "@vue/typescript"
     ],
@@ -75,9 +78,15 @@
     },
     "rules": {
       "no-undef": "off",
-      "@typescript-eslint/no-unused-vars": "off",
+      "no-unused-vars": "off",
+      "@typescript-eslint/no-unused-vars": [
+        "error"
+      ],
       "node/no-unsupported-features/es-syntax": "off",
-      "node/no-missing-import": "off"
+      "node/no-missing-import": "off",
+      "vue/max-attributes-per-line": "off",
+      "vue/html-closing-bracket-newline": "off",
+      "vue/html-indent": "off"
     }
   },
   "jest": {

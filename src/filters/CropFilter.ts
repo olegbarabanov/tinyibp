@@ -22,7 +22,7 @@ export default class CropFilter extends AbstractFilter {
   position: supportPositions = supportPositions.CENTER_MIDDLE; // Позиционирование
   width = 1;
   height = 1;
-  mode: supportModes = supportModes.SIZES;
+  mode: supportModes = supportModes.RATIO;
 
   protected cropByRatio(
     canvasCtx: OffscreenCanvasRenderingContext2D,
@@ -30,7 +30,6 @@ export default class CropFilter extends AbstractFilter {
     height: number,
     position: supportPositions
   ): OffscreenCanvasRenderingContext2D {
-    const delta = width / height;
     const canvasWidth = canvasCtx.canvas.width;
     const canvasHeight = canvasCtx.canvas.height;
     const deltaMin = Math.min(canvasWidth / width, canvasHeight / height);
@@ -74,7 +73,7 @@ export default class CropFilter extends AbstractFilter {
     const dW = sW;
     const dH = sH;
 
-    switch (this.position) {
+    switch (position) {
       case supportPositions.LEFT_TOP:
         newCanvasCtx.drawImage(oldCanvas, sL, sT, sW, sH, dL, dT, dW, dH);
         break;

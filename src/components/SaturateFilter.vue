@@ -1,19 +1,21 @@
+<i18n src="../common/locales.json"></i18n>
+
 <template>
   <b-form @submit.stop.prevent>
     <b-form-group
-      :description="`Уровень насыщенности: ${level}%`"
+      :description="$t('saturatefilter.form.level.description') + `: ${level}%`"
       :label-for="`input-${componentID}`"
       class="m-0"
     >
       <b-form-input
-        :value="level"
-        v-on:input="updateLevel"
         :id="`input-${componentID}`"
+        :value="level"
         type="range"
         min="0"
         max="200"
         step="0.1"
-      ></b-form-input>
+        @input="updateLevel"
+      />
     </b-form-group>
   </b-form>
 </template>
@@ -23,7 +25,12 @@ import Vue from 'vue';
 import SequenceId from '@/utils/SequenceId';
 
 export default Vue.extend({
-  props: ['level'],
+  props: {
+    level: {
+      type: Number,
+      default: 0,
+    },
+  },
   data() {
     return {
       componentID: SequenceId.getNew(),

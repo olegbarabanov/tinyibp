@@ -1,18 +1,20 @@
+<i18n src="../common/locales.json"></i18n>
+
 <template>
   <b-form @submit.stop.prevent>
     <b-form-group
-      description="Укажите уровень контрастности в %"
+      :description="$t('contrastfilter.form.level.description')"
       :label-for="`input-${componentID}`"
       class="m-0"
     >
       <b-form-input
-        :value="level"
-        v-on:input="updateLevel"
         :id="`input-${componentID}`"
+        :value="level"
         type="number"
         min="0"
         step="0.1"
-      ></b-form-input>
+        @input="updateLevel"
+      />
     </b-form-group>
   </b-form>
 </template>

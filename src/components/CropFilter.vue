@@ -1,7 +1,9 @@
+<i18n src="../common/locales.json"></i18n>
+
 <template>
   <b-form @submit.stop.prevent>
     <b-form-group
-      label="Режим кадрирования"
+      :label="$t('cropfilter.form.mode.label')"
       :label-for="`input-mode-${componentID}`"
     >
       <b-form-select
@@ -11,11 +13,11 @@
         :options="supportModes"
         size="sm"
         class="mt-3"
-        v-on:change="updateMode"
-      ></b-form-select>
+        @change="updateMode"
+      />
     </b-form-group>
     <b-form-group
-      label="Позиционирование"
+      :label="$t('cropfilter.form.position.label')"
       :label-for="`input-position-${componentID}`"
     >
       <b-form-select
@@ -25,13 +27,13 @@
         :options="supportPositions"
         size="sm"
         class="mt-3"
-        v-on:input="updatePosition"
-      ></b-form-select>
+        @input="updatePosition"
+      />
     </b-form-group>
     <b-form-group
-      label="Размеры"
+      :label="$t('cropfilter.form.sizes.label')"
       :label-for="`input-position-${componentID}`"
-      description="пустое поле = автоматический размер"
+      :description="$t('cropfilter.form.sizes.description')"
     >
       <b-input-group>
         <b-input-group-text>
@@ -40,26 +42,26 @@
         <b-form-input
           :value="width"
           name="width"
-          v-on:input="updateWidth"
           type="number"
           step="1"
           min="0"
           placeholder="auto"
           :formatter="formatter"
-        ></b-form-input>
+          @input="updateWidth"
+        />
         <b-input-group-text>
           Y:
         </b-input-group-text>
         <b-form-input
           :value="height"
           name="height"
-          v-on:input="updateHeight"
           type="number"
           step="1"
           min="0"
           placeholder="auto"
           :formatter="formatter"
-        ></b-form-input>
+          @input="updateHeight"
+        />
       </b-input-group>
     </b-form-group>
   </b-form>
@@ -71,7 +73,24 @@ import {supportPositions, supportModes} from '../filters/CropFilter';
 import SequenceId from '@/utils/SequenceId';
 
 export default Vue.extend({
-  props: ['mode', 'position', 'width', 'height'],
+  props: {
+    mode: {
+      type: String,
+      default: supportModes.SIZES,
+    },
+    position: {
+      type: String,
+      default: supportPositions.CENTER_MIDDLE,
+    },
+    width: {
+      type: Number,
+      default: 1,
+    },
+    height: {
+      type: Number,
+      default: 1,
+    },
+  },
   data() {
     return {
       componentID: SequenceId.getNew(),
@@ -84,7 +103,7 @@ export default Vue.extend({
     };
   },
   methods: {
-    formatter(value: string) {
+    formatter(value: string): string {
       return Number(value) === 0 ? '' : value;
     },
     updateMode(value: string) {

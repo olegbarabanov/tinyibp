@@ -13,7 +13,9 @@
       class="d-flex flex-row align-items-center justify-content-center p-1"
       style="min-height:3rem"
     >
-      <h5 class="my-0 mx-4">Предпросмотр</h5>
+      <h5 class="my-0 mx-4 d-none d-md-block">
+        {{ $t('previewcanvas.header.text') }}
+      </h5>
       <b-form-group v-slot="{ariaDescribedby}" class="d-inline-flex m-0 mx-4">
         <b-form-radio-group
           id="btn-radios-1"
@@ -23,19 +25,22 @@
           name="radios-btn-default"
           size="sm"
           buttons
-        ></b-form-radio-group>
+        />
       </b-form-group>
     </b-card-header>
-    <b-card-body class="h-100">
+    <b-card-body class="h-100" @dblclick="fullSizePreview = !fullSizePreview">
       <div class="h-100 d-flex flex-column border border-left border-right">
         <b-overlay
           :show="showProcessIndicator"
           class="d-flex flex-grow-1 align-items-center justify-content-center overflow-auto p-1"
         >
           <canvas
-            class="mw-100 mh-100"
             id="canvas"
             ref="canvas"
+            :class="{
+              'mw-100': !fullSizePreview,
+              'mh-100': !fullSizePreview,
+            }"
             :width="width"
             :height="height"
           />
@@ -43,23 +48,30 @@
       </div>
     </b-card-body>
     <b-card-footer
+      v-show="show"
       footer-bg-variant="dark"
       footer-text-variant="white"
-      v-show="show"
       class="text"
     >
       <p class="text-nowrap">
-        <b-badge class="d-inline-flex text-truncate mw-100">{{ name }}</b-badge>
+        <b-badge class="d-inline-flex text-truncate mw-100">
+          {{ name }}
+        </b-badge>
       </p>
       <p>
         <span class="m-3"
-          >Размер <b-badge>{{ width }}x{{ height }}</b-badge></span
+          >{{ $t('previewcanvas.dimensions.label') }}
+          <b-badge>{{ width }}x{{ height }}</b-badge></span
         >
         <span class="m-3"
-          >Вес <b-badge>{{ sizeToMb }} МБ</b-badge></span
+          >{{ $t('previewcanvas.size.label')
+          }}<b-badge
+            >{{ sizeToMb }} {{ $t('previewcanvas.size.value') }}</b-badge
+          ></span
         >
         <span class="m-3"
-          >Тип <b-badge>{{ type }}</b-badge></span
+          >{{ $t('previewcanvas.type.label')
+          }}<b-badge>{{ type }}</b-badge></span
         >
       </p>
     </b-card-footer>
@@ -82,6 +94,7 @@ export default Vue.extend({
       size: 0 as number,
       type: '' as string,
       name: '' as string,
+      fullSizePreview: false,
     };
   },
   computed: {
@@ -95,13 +108,36 @@ export default Vue.extend({
       return [
         {
           value: 'original-preview',
-          text: this.$t('preview.button.viewselector.originalview'),
+          text: this.$t('previewcanvas.viewselector.original.text'),
         },
         {
           value: 'result-preview',
-          text: this.$t('preview.button.viewselector.resultview'),
+          text: this.$t('previewcanvas.viewselector.result.text'),
         },
       ];
+    },
+  },
+  watch: {
+    '$store.state.filterMaps': {
+      handler: async function() {
+        await this.updateCanvas();
+      },
+      deep: true,
+    },
+    '$store.state.showFileIndex': async function() {
+      await this.updateCanvas();
+    },
+    '$store.state.type': async function() {
+      await this.updateCanvas();
+    },
+    '$store.state.quality': async function() {
+      await this.updateCanvas();
+    },
+    '$store.state.nameTransformPattern': async function() {
+      await this.updateCanvas();
+    },
+    selected: async function() {
+      await this.updateCanvas();
     },
   },
   methods: {
@@ -136,29 +172,6 @@ export default Vue.extend({
         );
         this.showProcessIndicator = false;
       }, 200);
-    },
-  },
-  watch: {
-    '$store.state.filterMaps': {
-      handler: async function() {
-        await this.updateCanvas();
-      },
-      deep: true,
-    },
-    '$store.state.showFileIndex': async function() {
-      await this.updateCanvas();
-    },
-    '$store.state.type': async function() {
-      await this.updateCanvas();
-    },
-    '$store.state.quality': async function() {
-      await this.updateCanvas();
-    },
-    '$store.state.nameTransformPattern': async function() {
-      await this.updateCanvas();
-    },
-    selected: async function() {
-      await this.updateCanvas();
     },
   },
   //updated: function() {
