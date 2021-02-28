@@ -1,5 +1,5 @@
 /* eslint-disable node/no-unpublished-import */
-import {createLocalVue, mount, shallowMount} from '@vue/test-utils';
+import {createLocalVue, mount} from '@vue/test-utils';
 import ContrastFilter from '@/components/ContrastFilter.vue';
 import BootstrapVue, {BFormInput} from 'bootstrap-vue';
 
@@ -13,6 +13,10 @@ describe('BlurFilter.vue', () => {
     localVue.use(BootstrapVue);
     const wrapper = mount(ContrastFilter, {
       localVue,
+      mocks: {
+        $t: (msg: string) => msg,
+        $tc: (msg: string) => msg,
+      },
     });
     const input = wrapper.findComponent(BFormInput);
     expect(input.exists()).toBe(true);
