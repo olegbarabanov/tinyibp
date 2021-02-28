@@ -35,7 +35,7 @@
         class="flex-grow-1 overflow-hidden"
       >
         <b-col md="3" class="mh-100 p-1">
-          <append-file />
+          <file-list />
         </b-col>
 
         <b-col md="6" class="mh-100 p-1">
@@ -80,7 +80,7 @@
         no-header
         width="250px"
       >
-        <append-file />
+        <file-list />
       </b-sidebar>
 
       <b-button
@@ -109,7 +109,7 @@
 <script lang="ts">
 import Vue from 'vue';
 import previewCanvas from './components/PreviewCanvas.vue';
-import appendFile from './components/AppendFile.vue';
+import fileList from './components/FileList.vue';
 import filterList from './components/FilterList.vue';
 import download from './components/Download.vue';
 
@@ -117,7 +117,7 @@ export default Vue.extend({
   name: 'App',
   components: {
     previewCanvas,
-    appendFile,
+    fileList,
     filterList,
     download,
   },
