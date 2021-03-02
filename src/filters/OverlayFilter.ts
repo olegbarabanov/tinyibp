@@ -1,5 +1,6 @@
-import FileToCanvas from '../utils/FileToCanvas';
 import AbstractFilter from './AbstractFilter';
+import FilterProcessor from './FilterProcessor';
+import ImageProcessor from './ImageProcessor';
 
 export enum supportPositions {
   TOP_LEFT,
@@ -25,7 +26,10 @@ export default class OverlayFilter extends AbstractFilter {
 
     const canvasCtx = canvas.getContext('2d');
     if (canvasCtx === null) throw new Error('unable to create canvas context');
-    const image = await FileToCanvas(this.image);
+    const image = await new ImageProcessor(
+      new FilterProcessor()
+    ).convertToCanvas(this.image);
+
     //const margin = parseInt(this.margin);
     const margin = this.margin;
     switch (this.position) {
