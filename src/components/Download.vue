@@ -60,16 +60,31 @@
         {{ $t('download.download.zip.label') }}
       </b-dropdown-item-button>
     </b-dropdown>
+
+    <b-modal
+      :id="`modal-download-${componentID}`"
+      centered
+      title="In progress"
+      no-close-on-esc
+      no-close-on-backdrop
+    >
+      <p class="my-4">
+        Wait a bit while it runs
+      </p>
+    </b-modal>
   </b-card>
 </template>
 
 <script lang="ts">
+import SequenceId from '@/utils/SequenceId';
 import Vue from 'vue';
 import {supportTypes} from '../filters/ImageProcessor';
 
 export default Vue.extend({
   data() {
     return {
+      busy: false,
+      componentID: SequenceId.getNew(),
       supportTypes: [
         {value: null, text: 'auto'},
         ...Array.from(supportTypes, type => {
@@ -112,7 +127,10 @@ export default Vue.extend({
       this.$bvToast.toast(this.$tc('download.toast.createzip.text'), {
         variant: 'info',
       });
+      const modalId = `modal-download-${this.componentID}`;
       try {
+        this.busy = true;
+        this.$bvModal.show(modalId);
         await this.$store.dispatch('downloadAll', method);
         this.$bvToast.toast(this.$tc('download.toast.successzip.text'), {
           variant: 'success',
@@ -122,6 +140,9 @@ export default Vue.extend({
         this.$bvToast.toast(this.$tc('download.toast.errorzip.text'), {
           variant: 'danger',
         });
+      } finally {
+        this.busy = false;
+        this.$bvModal.hide(modalId);
       }
     },
   },
