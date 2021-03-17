@@ -9,6 +9,7 @@
       <b-form-file
         :id="`input-image-${componentID}`"
         placeholder="Choose a file or drop it here..."
+        :accept="acceptImageTypeList"
         drop-placeholder="Drop file here..."
         @input="updateImage"
       />
@@ -42,17 +43,18 @@
 
 <script lang="ts">
 import Vue, {PropType} from 'vue';
-import {supportPositions} from '../filters/OverlayFilter';
+import {supportPositions} from '@/ImageProcessor/filters/OverlayFilter';
 import SequenceId from '@/utils/SequenceId';
+import {supportTypes} from '@/ImageProcessor';
 
 export default Vue.extend({
   props: {
     position: {
-      type: Object as PropType<supportPositions>,
+      type: Number as PropType<supportPositions>,
       default: supportPositions.MIDDLE_CENTER,
     },
     margin: {
-      type: Object as PropType<number>,
+      type: Number as PropType<number>,
       default: 0,
     },
   },
@@ -65,6 +67,11 @@ export default Vue.extend({
           return {text: position, value: index};
         }),
     };
+  },
+  computed: {
+    acceptImageTypeList() {
+      return Array.from(supportTypes, type => type[0]).join(',');
+    },
   },
   methods: {
     updateImage: function(value: File): void {
@@ -79,3 +86,6 @@ export default Vue.extend({
   },
 });
 </script>
+
+function SupportTypes(SupportTypes: any, arg1: (type: unknown) => any) { throw
+new Error('Function not implemented.'); }

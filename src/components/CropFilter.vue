@@ -69,7 +69,10 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import {supportPositions, supportModes} from '../filters/CropFilter';
+import {
+  supportPositions,
+  supportModes,
+} from '@/ImageProcessor/filters/CropFilter';
 import SequenceId from '@/utils/SequenceId';
 
 export default Vue.extend({

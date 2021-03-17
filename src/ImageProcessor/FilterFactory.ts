@@ -1,8 +1,4 @@
-import FilterInterface from './FilterInterface';
-
-type FilterConstructor = {
-  new (): FilterInterface;
-};
+import {FilterConstructor, FilterInterface} from '.';
 
 export default class FilterFactory {
   protected filterCollection: Array<FilterConstructor> = [];

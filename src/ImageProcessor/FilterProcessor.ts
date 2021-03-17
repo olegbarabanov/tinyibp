@@ -1,8 +1,6 @@
-import FilterFactory from './FilterFactory';
-import FilterInterface, {FilterMap} from './FilterInterface';
+import {FilterFactory, FilterMap} from '.';
 
 export default class FilterProcessor {
-  listProps: Array<FilterInterface> = [];
   protected filterFactory: FilterFactory;
 
   constructor(filterFactory?: FilterFactory) {

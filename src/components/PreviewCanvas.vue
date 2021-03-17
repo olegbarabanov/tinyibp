@@ -63,13 +63,13 @@
           >{{ $t('previewcanvas.dimensions.label') }}
           <b-badge>{{ width }}x{{ height }}</b-badge></span
         >
-        <span class="m-3"
+        <span v-show="selected !== 'preliminary-preview'" class="m-3"
           >{{ $t('previewcanvas.size.label')
           }}<b-badge
             >{{ sizeToMb }} {{ $t('previewcanvas.size.value') }}</b-badge
           ></span
         >
-        <span class="m-3"
+        <span v-show="selected !== 'preliminary-preview'" class="m-3"
           >{{ $t('previewcanvas.type.label')
           }}<b-badge>{{ type }}</b-badge></span
         >
@@ -79,14 +79,13 @@
 </template>
 
 <script lang="ts">
-import FilterProcessor from '@/filters/FilterProcessor';
-import ImageProcessor from '@/filters/ImageProcessor';
+import {ImageBuilderWorkerProxy} from '@/ImageProcessor/ImageBuilderWorkerProxy';
 import Vue from 'vue';
 
 export default Vue.extend({
   data() {
     return {
-      selected: 'result-preview' as string,
+      selected: 'preliminary-preview' as string,
       width: 0 as number,
       height: 0 as number,
       updateTimeout: 0 as any,
@@ -95,6 +94,7 @@ export default Vue.extend({
       type: '' as string,
       name: '' as string,
       fullSizePreview: false,
+      imageBuilder: undefined,
     };
   },
   computed: {
@@ -111,6 +111,10 @@ export default Vue.extend({
           text: this.$t('previewcanvas.viewselector.original.text'),
         },
         {
+          value: 'preliminary-preview',
+          text: this.$t('previewcanvas.viewselector.preliminary.text'),
+        },
+        {
           value: 'result-preview',
           text: this.$t('previewcanvas.viewselector.result.text'),
         },
@@ -120,20 +124,35 @@ export default Vue.extend({
   watch: {
     '$store.state.filterMaps': {
       handler: async function() {
+        this.$data.imageBuilder.setFilterMap(this.$store.state.filterMaps);
         await this.updateCanvas();
       },
       deep: true,
     },
     '$store.state.showFileIndex': async function() {
+      const blob = this.$store.state.fileList[this.$store.state.showFileIndex];
+      const imageBuilder = new ImageBuilderWorkerProxy(blob);
+      imageBuilder.setType(this.$store.state.type);
+      imageBuilder.setQuality(this.$store.state.quality);
+      imageBuilder.setNameTransformPattern(
+        this.$store.state.nameTransformPattern
+      );
+      imageBuilder.setFilterMap(this.$store.state.filterMaps);
+      this.$data.imageBuilder = imageBuilder;
       await this.updateCanvas();
     },
     '$store.state.type': async function() {
+      this.$data.imageBuilder.setType(this.$store.state.type);
       await this.updateCanvas();
     },
     '$store.state.quality': async function() {
+      this.$data.imageBuilder.setQuality(this.$store.state.quality);
       await this.updateCanvas();
     },
     '$store.state.nameTransformPattern': async function() {
+      this.$data.imageBuilder.setNameTransformPattern(
+        this.$store.state.nameTransformPattern
+      );
       await this.updateCanvas();
     },
     selected: async function() {
@@ -150,25 +169,34 @@ export default Vue.extend({
       this.showProcessIndicator = true;
       window.clearTimeout(this.updateTimeout);
       this.updateTimeout = window.setTimeout(async () => {
-        const sourceBlob =
-          this.selected === 'original-preview'
-            ? this.$store.state.fileList[this.$store.state.showFileIndex]
-            : await this.$store.dispatch(
-                'runFilterProcessorForOne',
-                this.$store.state.showFileIndex
-              );
+        let imageBitmap: ImageBitmap;
+        let blob = this.$store.state.fileList[this.$store.state.showFileIndex];
 
-        const sourceCanvas = await new ImageProcessor(
-          new FilterProcessor()
-        ).convertToCanvas(sourceBlob);
+        if (this.selected === 'original-preview') {
+          this.$data.imageBuilder.setFilterMap([]);
+          imageBitmap = await this.$data.imageBuilder.buildImageBitmap();
+          this.$data.imageBuilder.setFilterMap(this.$store.state.filterMaps);
+        } else if (this.selected === 'preliminary-preview') {
+          imageBitmap = await this.$data.imageBuilder.buildImageBitmap();
+        } else if (this.selected === 'result-preview') {
+          blob = await this.$data.imageBuilder.buildFile();
+          imageBitmap = await new ImageBuilderWorkerProxy(
+            blob
+          ).buildImageBitmap();
+        } else {
+          throw new Error('call unknown preview mode');
+        }
+
+        this.width = imageBitmap.width;
+        this.height = imageBitmap.height;
+        this.size = blob.size;
+        this.type = blob.type;
+        this.name = blob.name;
+
         canvas.getContext('2d')?.clearRect(0, 0, canvas.width, canvas.height);
-        this.width = sourceCanvas.width;
-        this.height = sourceCanvas.height;
-        this.size = sourceBlob.size;
-        this.type = sourceBlob.type;
-        this.name = sourceBlob.name;
+
         this.$nextTick(() =>
-          canvas.getContext('2d')?.drawImage(sourceCanvas, 0, 0)
+          canvas.getContext('2d')?.drawImage(imageBitmap, 0, 0)
         );
         this.showProcessIndicator = false;
       }, 200);

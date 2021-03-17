@@ -1,6 +1,4 @@
-export type FilterMap = {
-  name: string;
-};
+import {FilterMap} from '.';
 
 export default interface FilterInterface {
   name: string;

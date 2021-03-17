@@ -76,9 +76,9 @@
 </template>
 
 <script lang="ts">
+import {supportTypes} from '@/ImageProcessor';
 import SequenceId from '@/utils/SequenceId';
 import Vue from 'vue';
-import {supportTypes} from '../filters/ImageProcessor';
 
 export default Vue.extend({
   data() {

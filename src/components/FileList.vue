@@ -25,7 +25,7 @@
           ref="form-file"
           v-model="fileList"
           v-b-tooltip
-          accept="image/*"
+          :accept="acceptImageTypeList"
           multiple
           class="text-left invisible"
           style="width: 0; height: 0; transform: scale(0.05)"
@@ -59,6 +59,7 @@
 </template>
 
 <script lang="ts">
+import {supportTypes} from '@/ImageProcessor';
 import Vue from 'vue';
 
 export default Vue.extend({
@@ -70,6 +71,9 @@ export default Vue.extend({
   computed: {
     globalFileList: function() {
       return this.$store.state.fileList;
+    },
+    acceptImageTypeList() {
+      return Array.from(supportTypes, type => type[0]).join(',');
     },
   },
   watch: {

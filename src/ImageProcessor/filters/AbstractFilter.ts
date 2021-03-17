@@ -1,4 +1,4 @@
-import FilterInterface, {FilterMap} from './FilterInterface';
+import {FilterInterface, FilterMap} from '..';
 
 export default abstract class AbstractFilter implements FilterInterface {
   abstract readonly name: string = '';

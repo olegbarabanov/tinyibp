@@ -3,10 +3,6 @@ import {createLocalVue, mount} from '@vue/test-utils';
 import BlurFilter from '@/components/BlurFilter.vue';
 import BootstrapVue, {BFormInput} from 'bootstrap-vue';
 
-global.console.warn = global.console.error = (message: Error) => {
-  throw message;
-};
-
 describe('BlurFilter.vue', () => {
   test('emits the correct event with a numeric value when different "level" types are set.', async () => {
     const localVue = createLocalVue();

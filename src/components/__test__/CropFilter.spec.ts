@@ -2,11 +2,10 @@
 import {createLocalVue, mount} from '@vue/test-utils';
 import CropFilter from '@/components/CropFilter.vue';
 import BootstrapVue, {BFormInput, BFormSelect} from 'bootstrap-vue';
-import {supportModes, supportPositions} from '@/filters/CropFilter';
-
-global.console.warn = global.console.error = (message: Error) => {
-  throw message;
-};
+import {
+  supportModes,
+  supportPositions,
+} from '@/ImageProcessor/filters/CropFilter';
 
 describe('CropFilter.vue', () => {
   test('emits the correct event "update:mode" with different values', async () => {

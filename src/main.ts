@@ -8,8 +8,8 @@ import Vuex, {StoreOptions} from 'vuex';
 import {BootstrapVue, BootstrapVueIcons} from 'bootstrap-vue';
 import App from './App.vue';
 import VueI18n from 'vue-i18n';
-import FilterProcessor from './filters/FilterProcessor';
-import SUPPORT_FILTERS from './filters/index';
+import FilterProcessor from './ImageProcessor/FilterProcessor';
+import SUPPORT_FILTERS from './ImageProcessor/filters/index';
 import ResizeFilter from './components/ResizeFilter.vue';
 import ContrastFilter from './components/ContrastFilter.vue';
 import GrayscaleFilter from './components/GrayscaleFilter.vue';
@@ -17,12 +17,15 @@ import OpacityFilter from './components/OpacityFilter.vue';
 import SaturateFilter from './components/SaturateFilter.vue';
 import BlurFilter from './components/BlurFilter.vue';
 import OverlayFilter from './components/OverlayFilter.vue';
-import JSZip from 'jszip';
-import FileSaver from 'file-saver';
-import {FilterMap} from './filters/FilterInterface';
+// import JSZip from 'jszip';
+// import FileSaver from 'file-saver';
 import CropFilter from './components/CropFilter.vue';
-import ImageProcessor, {SupportMimesTypes} from './filters/ImageProcessor';
 import VueScreen from 'vue-screen';
+import {FilterMap, SupportMimesTypes} from './ImageProcessor';
+import ImageBuilderWorkerManager from './ImageProcessor/ImageBuilderWorkerManager';
+import {ImageBuilderWorkerProxy} from './ImageProcessor/ImageBuilderWorkerProxy';
+import FileSaver from 'file-saver';
+import JSZip from 'jszip';
 
 Vue.config.productionTip = false;
 Vue.use(VueScreen, 'bootstrap');
@@ -47,6 +50,8 @@ SUPPORT_FILTERS.forEach(filter => {
   filterProcessor.getFilterFactory().registerFilter(filter);
 });
 
+ImageBuilderWorkerManager.getInstance().setMaxWorker(2);
+
 const i18n = new VueI18n({
   locale: navigator.language.substr(0, 2).toLowerCase(), // set locale
 });
@@ -58,13 +63,12 @@ interface RootState {
   fileList: Array<File>;
   showFileIndex: number | null;
   quality: number;
-  type: SupportMimesTypes | null;
+  type?: SupportMimesTypes;
   nameTransformPattern: string;
 }
 
 const initStore: StoreOptions<RootState> = {
   state() {
-    const imageProcessor = new ImageProcessor(filterProcessor);
     return {
       lang: DEFAULT_LANG as string, // see ISO 639-1
       registeredFilters: filterProcessor
@@ -74,9 +78,9 @@ const initStore: StoreOptions<RootState> = {
       filterMaps: [],
       fileList: [],
       showFileIndex: null,
-      quality: imageProcessor.getQuality(),
-      type: imageProcessor.getType(),
-      nameTransformPattern: imageProcessor.getNameTransformPattern(),
+      quality: 90,
+      type: undefined,
+      nameTransformPattern: '@file',
     };
   },
   mutations: {
@@ -140,38 +144,51 @@ const initStore: StoreOptions<RootState> = {
         this.commit('showFile', index - 1);
       }
     },
-    async runFilterProcessorForOne(store, index) {
-      const file = store.getters.fileList[index];
-      if (!file) return null;
-      const imageProcessor = new ImageProcessor(filterProcessor);
-      imageProcessor.setQuality(store.state.quality);
-      imageProcessor.setType(store.state.type);
-      imageProcessor.setNameTransformPattern(store.state.nameTransformPattern);
-      imageProcessor.setFilterMaps(store.getters.filterMaps);
-      return await imageProcessor.run(file);
-    },
     async downloadAll(store, method = 'common') {
-      //var zip = new JSZip();
-      const imageProcessor = new ImageProcessor(filterProcessor);
-      imageProcessor.setQuality(store.state.quality);
-      imageProcessor.setType(store.state.type);
-      imageProcessor.setNameTransformPattern(store.state.nameTransformPattern);
-      imageProcessor.setFilterMaps(store.getters.filterMaps);
+      const fileList = store.getters.fileList;
+      let fileIndexNotProcessed = 0;
 
+      const buildFile = async (file: File) => {
+        const imageBuilder = new ImageBuilderWorkerProxy(file);
+        imageBuilder.setQuality(store.state.quality);
+        if (store.state.type) imageBuilder.setType(store.state.type);
+        imageBuilder.setNameTransformPattern(store.state.nameTransformPattern);
+        imageBuilder.setFilterMap(store.getters.filterMaps);
+        return await imageBuilder.buildFile();
+      };
+
+      const runner = async (fileHandler: (file: File) => void) => {
+        while (fileIndexNotProcessed < fileList.length) {
+          const index = fileIndexNotProcessed++;
+          const file = fileList[index];
+          const resultFile = await buildFile(file);
+          fileHandler(resultFile);
+        }
+      };
+
+      const process = async (fileHandler: (file: File) => void) => {
+        const maxRunners = ImageBuilderWorkerManager.getInstance().getMaxWorker();
+        const runnerList = [];
+        for (let i = 0; i < maxRunners; i++)
+          runnerList.push(runner(fileHandler));
+        await Promise.all(runnerList);
+      };
       if (method === 'common') {
-        await Promise.all(
-          store.getters.fileList.map(async (file: File) => {
-            const blob = await imageProcessor.run(file);
-            FileSaver.saveAs(blob, blob.name);
-          })
-        );
+        await process((file: File) => FileSaver.saveAs(file, file.name));
         return true;
       } else if (method === 'zip') {
         const zip = new JSZip();
-        for (const file of store.getters.fileList) {
-          const blob = await imageProcessor.run(file);
-          zip.file(blob.name, blob);
-        }
+        const listUsingFilenames = new Set();
+        await process((file: File) => {
+          let name = file.name;
+          if (listUsingFilenames.has(name)) {
+            for (let i = 1; listUsingFilenames.has(name); i++) {
+              name = name.replace(/(.*)\.(.*)/, `$1 (${i}).$2`);
+            }
+          }
+          listUsingFilenames.add(name);
+          zip.file(name, file);
+        });
         const zipFile = await zip.generateAsync({type: 'blob'});
         FileSaver.saveAs(zipFile, 'TinyIBP-' + Date.now());
       }
@@ -188,7 +205,6 @@ const initStore: StoreOptions<RootState> = {
 };
 
 const store = new Vuex.Store(initStore);
-
 new Vue({
   i18n,
   store,
