@@ -1,11 +1,11 @@
-import ContrastFilter from './ContrastFilter';
-import ResizeFilter from './ResizeFilter';
-import GrayscaleFilter from './GrayscaleFilter';
-import OpacityFilter from './OpacityFilter';
-import SaturateFilter from './SaturateFilter';
-import BlurFilter from './BlurFilter';
-import OverlayFilter from './OverlayFilter';
-import CropFilter from './CropFilter';
+import BlurFilter from './blur-filter';
+import ContrastFilter from './contrast-filter';
+import CropFilter from './crop-filter';
+import GrayscaleFilter from './grayscale-filter';
+import OpacityFilter from './opacity-filter';
+import OverlayFilter from './overlay-filter';
+import ResizeFilter from './resize-filter';
+import SaturateFilter from './saturate-filter';
 
 const SUPPORT_FILTERS = [
   ContrastFilter,
