@@ -108,10 +108,10 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import previewCanvas from './components/PreviewCanvas.vue';
-import fileList from './components/FileList.vue';
-import filterList from './components/FilterList.vue';
-import download from './components/Download.vue';
+import previewCanvas from './components/preview-canvas.vue';
+import fileList from './components/file-list.vue';
+import filterList from './components/filter-list.vue';
+import download from '@/components/download.vue';
 
 export default Vue.extend({
   name: 'App',

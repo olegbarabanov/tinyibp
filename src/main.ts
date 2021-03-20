@@ -8,24 +8,27 @@ import Vuex, {StoreOptions} from 'vuex';
 import {BootstrapVue, BootstrapVueIcons} from 'bootstrap-vue';
 import App from './App.vue';
 import VueI18n from 'vue-i18n';
-import FilterProcessor from './ImageProcessor/FilterProcessor';
-import SUPPORT_FILTERS from './ImageProcessor/filters/index';
-import ResizeFilter from './components/ResizeFilter.vue';
-import ContrastFilter from './components/ContrastFilter.vue';
-import GrayscaleFilter from './components/GrayscaleFilter.vue';
-import OpacityFilter from './components/OpacityFilter.vue';
-import SaturateFilter from './components/SaturateFilter.vue';
-import BlurFilter from './components/BlurFilter.vue';
-import OverlayFilter from './components/OverlayFilter.vue';
+import ResizeFilter from './components/resize-filter.vue';
+import ContrastFilter from './components/contrast-filter.vue';
+import GrayscaleFilter from './components/grayscale-filter.vue';
+import OpacityFilter from './components/opacity-filter.vue';
+import SaturateFilter from './components/saturate-filter.vue';
+import BlurFilter from './components/blur-filter.vue';
+import OverlayFilter from './components/overlay-filter.vue';
 // import JSZip from 'jszip';
 // import FileSaver from 'file-saver';
-import CropFilter from './components/CropFilter.vue';
+import CropFilter from './components/crop-filter.vue';
 import VueScreen from 'vue-screen';
-import {FilterMap, SupportMimesTypes} from './ImageProcessor';
-import ImageBuilderWorkerManager from './ImageProcessor/ImageBuilderWorkerManager';
-import {ImageBuilderWorkerProxy} from './ImageProcessor/ImageBuilderWorkerProxy';
 import FileSaver from 'file-saver';
 import JSZip from 'jszip';
+import {
+  FilterMap,
+  FilterProcessor,
+  SupportMimesTypes,
+  SUPPORT_FILTERS,
+} from './image-processor';
+import ImageBuilderWorkerManager from './image-processor/image-builder-worker-manager';
+import {ImageBuilderWorkerProxy} from './image-processor/image-builder-worker-proxy';
 
 Vue.config.productionTip = false;
 Vue.use(VueScreen, 'bootstrap');

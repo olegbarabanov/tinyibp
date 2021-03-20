@@ -1,9 +1,9 @@
 /* eslint-disable node/no-unpublished-import */
 import {createLocalVue, mount, shallowMount} from '@vue/test-utils';
-import Download from '@/components/download.vue';
+import OverlayFilter from '@/components/overlay-filter.vue';
 import BootstrapVue from 'bootstrap-vue';
 
-describe('download.vue', () => {
+describe('overlay-filter.vue', () => {
   /*
     EMPTY TEST !
     MUST BE CREATED FOR RELEASE !
