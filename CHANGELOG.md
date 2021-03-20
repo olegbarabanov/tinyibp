@@ -1,5 +1,10 @@
 # Change Log
 
+## [0.1.2] - 2021-03-20
+
+### Changed
+- File naming style changed to kebab-case
+
 ## [0.1.1] - 2021-03-17
 
 ### Added

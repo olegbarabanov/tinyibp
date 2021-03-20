@@ -7,7 +7,7 @@
         <b-col>
           <b-navbar sticky toggleable="lg" type="dark" variant="dark">
             <b-navbar-brand href="#">
-              <span>TinyIBP (v0.1.1 - alpha)</span>
+              <span>TinyIBP (v0.1.2)</span>
             </b-navbar-brand>
             <b-navbar-toggle target="nav-collapse" />
             <b-collapse id="nav-collapse" is-nav>
