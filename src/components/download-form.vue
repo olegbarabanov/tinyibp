@@ -64,12 +64,12 @@
     <b-modal
       :id="`modal-download-${componentID}`"
       centered
-      title="In progress"
+      :title="$t('download.modal.progress.title')"
       no-close-on-esc
       no-close-on-backdrop
     >
       <p class="my-4">
-        Wait a bit while it runs
+        {{ $t('download.modal.progress.text') }}
       </p>
     </b-modal>
   </b-card>
