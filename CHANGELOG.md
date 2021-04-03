@@ -1,5 +1,11 @@
 # Change Log
 
+## [0.1.3] - 2021-04-04
+
+### Fixed
+- Fixed preview when changing the files but the sequence number to display did not change 
+- Translate the pop-up window, when the process is running ([#3](https://github.com/olegbarabanov/tinyibp/issues/3))
+
 ## [0.1.2] - 2021-03-20
 
 ### Changed
