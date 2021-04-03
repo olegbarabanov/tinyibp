@@ -131,6 +131,10 @@ export default Vue.extend({
     },
     '$store.state.showFileIndex': async function() {
       const blob = this.$store.state.fileList[this.$store.state.showFileIndex];
+      if (!blob) {
+        await this.updateCanvas();
+        return;
+      }
       const imageBuilder = new ImageBuilderWorkerProxy(blob);
       imageBuilder.setType(this.$store.state.type);
       imageBuilder.setQuality(this.$store.state.quality);

@@ -145,6 +145,9 @@ const initStore: StoreOptions<RootState> = {
         this.commit('showFile', null);
       } else if (index >= store.state.fileList.length) {
         this.commit('showFile', index - 1);
+      } else if (index === store.state.showFileIndex) {
+        this.commit('showFile', null);
+        setTimeout(() => this.commit('showFile', index)); //force update
       }
     },
     async downloadAll(store, method = 'common') {
