@@ -14,7 +14,7 @@ export default class FilterProcessor {
   }
 
   /**
-   * Кeturns the assigned class factory
+   * Returns the assigned class factory
    * @returns - assigned object implements the FilterFactory class
    */
   getFilterFactory(): FilterFactory {
