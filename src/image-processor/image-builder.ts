@@ -26,7 +26,7 @@ export class ImageBuilder {
    * @param filterMaps - list of filter maps
    * @returns (this) - current object
    */
-  setFilterMap(filterMaps: Array<FilterMap>): ImageBuilder {
+  setFilterMap(filterMaps: Array<FilterMap>): this {
     this.filterMaps = filterMaps;
     return this;
   }
@@ -44,7 +44,7 @@ export class ImageBuilder {
    * @param filterProcessor - filter handler
    * @returns (this) - current image builder
    */
-  setFilterProcessor(filterProcessor?: FilterProcessor): ImageBuilder {
+  setFilterProcessor(filterProcessor?: FilterProcessor): this {
     this.filterProcessor = filterProcessor;
     return this;
   }
@@ -62,7 +62,7 @@ export class ImageBuilder {
    * @param value - image quality level
    * @returns (this) - current image builder
    */
-  setQuality(value: number): ImageBuilder {
+  setQuality(value: number): this {
     this.quality = Number(value);
     return this;
   }
@@ -80,7 +80,7 @@ export class ImageBuilder {
    * @param value - defined type or undefined
    * @returns (this) - current image builder
    */
-  setType(value: SupportMimesTypes | undefined): ImageBuilder {
+  setType(value: SupportMimesTypes | undefined): this {
     this.type = value;
     if (!this.type) this.type = this.file.type as SupportMimesTypes;
     return this;
@@ -99,7 +99,7 @@ export class ImageBuilder {
    * @param value - transformation pattern
    * @returns (this) - current image builder
    */
-  setNameTransformPattern(value: string): ImageBuilder {
+  setNameTransformPattern(value: string): this {
     this.nameTransformPattern = value;
     return this;
   }
