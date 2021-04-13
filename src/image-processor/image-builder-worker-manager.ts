@@ -12,7 +12,7 @@ export default class ImageBuilderWorkerManager {
   }
 
   setMaxWorker(maxWorkers: number): ImageBuilderWorkerManager {
-    if (maxWorkers <= 1)
+    if (maxWorkers < 1)
       throw new Error('the maximum number of workers must be >= 1');
     this.maxWorkers = maxWorkers;
     if (this.workerList.length > maxWorkers) {
