@@ -1,5 +1,13 @@
 # Change Log
 
+## [0.1.4] - 2021-04-21
+
+### Added
+- Added a simple preloader
+
+### Fixed
+- Fixed the ability to set the maximum number of workers = 1
+
 ## [0.1.3] - 2021-04-04
 
 ### Fixed
