@@ -3,16 +3,16 @@
 <template>
   <b-form @submit.stop.prevent>
     <b-form-group
-      :description="$t('rotatefilter.form.level.description') + `: ${level}%`"
+      :description="$t('rotatefilter.form.angle.description') + `: ${angle}%`"
       :label-for="`input-${componentID}`"
       class="m-0"
     >
       <b-form-input
         :id="`input-${componentID}`"
-        :value="level"
+        :value="angle"
         type="number"
         step="0.1"
-        @input="updateLevel"
+        @input="updateAngle"
       />
     </b-form-group>
   </b-form>
@@ -24,7 +24,7 @@ import SequenceId from '@/utils/sequence-id';
 
 export default Vue.extend({
   props: {
-    level: {
+    angle: {
       type: Number,
       default: 0,
     },
@@ -35,8 +35,8 @@ export default Vue.extend({
     };
   },
   methods: {
-    updateLevel: function(value: string) {
-      this.$emit('update:level', Number(value));
+    updateAngle: function(value: string) {
+      this.$emit('update:angle', Number(value));
     },
   },
 });

@@ -49,7 +49,7 @@
         "resizefilter.form.size.description": "If the width or height is 0, the parameter is calculated automatically",
         "resizefilter.form.size.label": "New size",
         "saturatefilter.form.level.description": "Saturate level",
-        "rotatefilter.form.level.description": "Angle of rotation"
+        "rotatefilter.form.angle.description": "Angle of rotation"
     },
     "ru": {
         "app.filelist.header": "Файлы",
@@ -102,6 +102,6 @@
         "resizefilter.form.size.description": "Если ширина или высота равна 0, то параметр расчитывается автоматически",
         "resizefilter.form.size.label": "Новый размер",
         "saturatefilter.form.level.description": "Уровень насыщенности",
-        "rotatefilter.form.level.description": "Угол поворота"
+        "rotatefilter.form.angle.description": "Угол поворота"
     }
 }
