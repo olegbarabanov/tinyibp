@@ -1,5 +1,13 @@
 # Change Log
 
+## [0.1.5] - 2021-05-09
+
+### Added
+- Added new filter - "rotate"
+
+### Changed
+- Updated some unit tests
+
 ## [0.1.4] - 2021-04-21
 
 ### Added
