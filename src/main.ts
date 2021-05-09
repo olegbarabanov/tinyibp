@@ -18,6 +18,7 @@ import OverlayFilter from './components/overlay-filter.vue';
 // import JSZip from 'jszip';
 // import FileSaver from 'file-saver';
 import CropFilter from './components/crop-filter.vue';
+import RotateFilter from './components/rotate-filter.vue';
 import VueScreen from 'vue-screen';
 import FileSaver from 'file-saver';
 import JSZip from 'jszip';
@@ -45,6 +46,7 @@ Vue.component('SaturateFilter', SaturateFilter);
 Vue.component('BlurFilter', BlurFilter);
 Vue.component('OverlayFilter', OverlayFilter);
 Vue.component('CropFilter', CropFilter);
+Vue.component('RotateFilter', RotateFilter);
 
 const filterProcessor = new FilterProcessor();
 const DEFAULT_LANG = 'en';

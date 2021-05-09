@@ -6,6 +6,7 @@ import OpacityFilter from './opacity-filter';
 import OverlayFilter from './overlay-filter';
 import ResizeFilter from './resize-filter';
 import SaturateFilter from './saturate-filter';
+import RotateFilter from './rotate-filter';
 
 const SUPPORT_FILTERS = [
   ContrastFilter,
@@ -16,6 +17,7 @@ const SUPPORT_FILTERS = [
   BlurFilter,
   OverlayFilter,
   CropFilter,
+  RotateFilter,
 ];
 
 export default SUPPORT_FILTERS;
