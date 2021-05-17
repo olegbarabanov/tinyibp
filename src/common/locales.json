@@ -33,6 +33,7 @@
         "filterlist.filter.overlay.name": "Overlay",
         "filterlist.filter.crop.name": "Crop",
         "filterlist.filter.rotate.name": "Rotate",
+        "filterlist.filter.color-replacement.name": "Color replacement",
         "grayscalefilter.form.level.description": "grayscale level:",
         "opacityfilter.form.level.description": "opacity level:",
         "overlayfilter.form.image.label": "overlay image",
@@ -49,7 +50,9 @@
         "resizefilter.form.size.description": "If the width or height is 0, the parameter is calculated automatically",
         "resizefilter.form.size.label": "New size",
         "saturatefilter.form.level.description": "Saturate level",
-        "rotatefilter.form.angle.description": "Angle of rotation"
+        "rotatefilter.form.angle.description": "Angle of rotation",
+        "colorreplacementfilter.form.initcolor.description": "Source color",
+        "colorreplacementfilter.form.finalcolor.description": "Final color"
     },
     "ru": {
         "app.filelist.header": "Файлы",
@@ -86,6 +89,7 @@
         "filterlist.filter.overlay.name": "Наложение",
         "filterlist.filter.crop.name": "Кадрирование",
         "filterlist.filter.rotate.name": "Поворот",
+        "filterlist.filter.color-replacement.name": "Замена цвета",
         "grayscalefilter.form.level.description": "Уровень обесцвечивания",
         "opacityfilter.form.level.description": "Уровень прозрачности",
         "overlayfilter.form.image.label": "Накладываемое изображение",
@@ -102,6 +106,8 @@
         "resizefilter.form.size.description": "Если ширина или высота равна 0, то параметр расчитывается автоматически",
         "resizefilter.form.size.label": "Новый размер",
         "saturatefilter.form.level.description": "Уровень насыщенности",
-        "rotatefilter.form.angle.description": "Угол поворота"
+        "rotatefilter.form.angle.description": "Угол поворота",
+        "colorreplacementfilter.form.initcolor.description": "Исходный цвет",
+        "colorreplacementfilter.form.finalcolor.description": "Итоговый цвет"
     }
 }

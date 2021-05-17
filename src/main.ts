@@ -19,6 +19,7 @@ import OverlayFilter from './components/overlay-filter.vue';
 // import FileSaver from 'file-saver';
 import CropFilter from './components/crop-filter.vue';
 import RotateFilter from './components/rotate-filter.vue';
+import ColorReplacementFilter from './components/color-replacement-filter.vue';
 import VueScreen from 'vue-screen';
 import FileSaver from 'file-saver';
 import JSZip from 'jszip';
@@ -47,6 +48,7 @@ Vue.component('BlurFilter', BlurFilter);
 Vue.component('OverlayFilter', OverlayFilter);
 Vue.component('CropFilter', CropFilter);
 Vue.component('RotateFilter', RotateFilter);
+Vue.component('ColorReplacementFilter', ColorReplacementFilter);
 
 const filterProcessor = new FilterProcessor();
 const DEFAULT_LANG = 'en';

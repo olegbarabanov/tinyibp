@@ -7,6 +7,7 @@ import OverlayFilter from './overlay-filter';
 import ResizeFilter from './resize-filter';
 import SaturateFilter from './saturate-filter';
 import RotateFilter from './rotate-filter';
+import ColorReplacementFilter from './color-replacement-filter';
 
 const SUPPORT_FILTERS = [
   ContrastFilter,
@@ -18,6 +19,7 @@ const SUPPORT_FILTERS = [
   OverlayFilter,
   CropFilter,
   RotateFilter,
+  ColorReplacementFilter,
 ];
 
 export default SUPPORT_FILTERS;
