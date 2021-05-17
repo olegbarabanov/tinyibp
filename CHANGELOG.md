@@ -1,5 +1,10 @@
 # Change Log
 
+## [0.1.6] - 2021-05-17
+
+### Added
+- Added new filter - "color replacement"
+
 ## [0.1.5] - 2021-05-09
 
 ### Added
