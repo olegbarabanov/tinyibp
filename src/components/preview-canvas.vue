@@ -79,6 +79,7 @@
 </template>
 
 <script lang="ts">
+import {ImageBuilder} from '@/image-processor';
 import {ImageBuilderWorkerProxy} from '@/image-processor/image-builder-worker-proxy';
 import Vue from 'vue';
 
@@ -124,7 +125,9 @@ export default Vue.extend({
   watch: {
     '$store.state.filterMaps': {
       handler: async function() {
-        this.$data.imageBuilder.setFilterMap(this.$store.state.filterMaps);
+        if (this.$data.imageBuilder instanceof ImageBuilder) {
+          this.$data.imageBuilder.setFilterMap(this.$store.state.filterMaps);
+        }
         await this.updateCanvas();
       },
       deep: true,
