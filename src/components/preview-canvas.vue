@@ -10,7 +10,7 @@
     <b-card-header
       header-bg-variant="dark"
       header-text-variant="white"
-      class="d-flex flex-row align-items-center justify-content-center p-1"
+      class="d-flex flex-row flex-wrap align-items-center justify-content-center p-1"
       style="min-height:3rem"
     >
       <h5 class="my-0 mx-4 d-none d-md-block">
