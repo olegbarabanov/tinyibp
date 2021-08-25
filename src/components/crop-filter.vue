@@ -79,7 +79,7 @@ export default Vue.extend({
   props: {
     mode: {
       type: String,
-      default: supportModes.SIZES,
+      default: supportModes.RATIO,
     },
     position: {
       type: String,
@@ -97,13 +97,25 @@ export default Vue.extend({
   data() {
     return {
       componentID: SequenceId.getNew(),
-      supportPositions: Object.values(supportPositions).map(position => {
-        return {text: position, value: position};
-      }),
-      supportModes: Object.values(supportModes).map(mode => {
-        return {text: mode, value: mode};
-      }),
     };
+  },
+  computed: {
+    supportPositions: function() {
+      return Object.values(supportPositions).map(position => {
+        return {
+          text: this.$t(`cropfilter.form.position.value.${position}`),
+          value: position,
+        };
+      });
+    },
+    supportModes: function() {
+      return Object.values(supportModes).map(mode => {
+        return {
+          text: this.$t(`cropfilter.form.mode.value.${mode}`),
+          value: mode,
+        };
+      });
+    },
   },
   methods: {
     formatter(value: string): string {
