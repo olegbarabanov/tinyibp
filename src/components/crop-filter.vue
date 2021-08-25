@@ -93,7 +93,7 @@ export default Vue.extend({
   props: {
     useMode: {
       type: String,
-      default: supportModes.SIZES,
+      default: supportModes.RATIO,
     },
     usePosition: {
       type: String,
