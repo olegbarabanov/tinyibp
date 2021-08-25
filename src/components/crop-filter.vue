@@ -9,12 +9,19 @@
       <b-form-select
         :id="`input-mode-${componentID}`"
         name="mode"
-        :value="mode"
-        :options="supportModes"
+        :value="useMode"
         size="sm"
         class="mt-3"
         @change="updateMode"
-      />
+      >
+        <b-form-select-option
+          v-for="mode in supportModes"
+          :key="mode.value"
+          :value="mode.value"
+        >
+          {{ $t(`cropfilter.form.mode.value.${mode.value}`) }}
+        </b-form-select-option>
+      </b-form-select>
     </b-form-group>
     <b-form-group
       :label="$t('cropfilter.form.position.label')"
@@ -23,12 +30,19 @@
       <b-form-select
         :id="`input-position-${componentID}`"
         name="position"
-        :value="position"
-        :options="supportPositions"
+        :value="usePosition"
         size="sm"
         class="mt-3"
         @input="updatePosition"
-      />
+      >
+        <b-form-select-option
+          v-for="position in supportPositions"
+          :key="position.value"
+          :value="position.value"
+        >
+          {{ $t(`cropfilter.form.position.value.${position.value}`) }}
+        </b-form-select-option>
+      </b-form-select>
     </b-form-group>
     <b-form-group
       :label="$t('cropfilter.form.sizes.label')"
@@ -77,11 +91,11 @@ import SequenceId from '@/utils/sequence-id';
 
 export default Vue.extend({
   props: {
-    mode: {
+    useMode: {
       type: String,
       default: supportModes.RATIO,
     },
-    position: {
+    usePosition: {
       type: String,
       default: supportPositions.CENTER_MIDDLE,
     },
