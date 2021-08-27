@@ -30,7 +30,7 @@
       </b-dropdown>
     </b-card-header>
 
-    <b-card-body class="p-1">
+    <b-card-body v-if="filterMaps.length > 0" class="p-1">
       <div class="d-flex flex-column mh-100">
         <draggable
           tag="div"
@@ -85,6 +85,13 @@
             </b-card-body>
           </b-card>
         </draggable>
+      </div>
+    </b-card-body>
+    <b-card-body v-else>
+      <div class="d-flex align-items-center justify-content-center h-100">
+        <p>
+          {{ $t('filterlist.notice.emptylist') }}
+        </p>
       </div>
     </b-card-body>
   </b-card>
