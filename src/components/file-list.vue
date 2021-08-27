@@ -32,7 +32,7 @@
         />
       </label>
     </b-card-header>
-    <b-card-body class="p-1">
+    <b-card-body v-if="globalFileList.length > 0" class="p-1">
       <b-form class="mh-100 d-flex flex-column" @submit.stop.prevent>
         <b-list-group class="overflow-auto">
           <b-list-group-item
@@ -54,6 +54,14 @@
           </b-list-group-item>
         </b-list-group>
       </b-form>
+    </b-card-body>
+
+    <b-card-body v-else class="p-1">
+      <div class="d-flex align-items-center justify-content-center h-100">
+        <p>
+          {{ $t('filelist.notice.emptylist') }}
+        </p>
+      </div>
     </b-card-body>
   </b-card>
 </template>
