@@ -16,21 +16,18 @@
       <h5 class="my-0 mx-4">
         {{ $t('filelist.header.text') }}
       </h5>
-      <label
-        role="button"
-        class="d-inline-flex my-0 mx-4 justify-content-center btn btn-secondary"
-      >
-        <b-icon icon="upload" />
-        <b-form-file
-          ref="form-file"
-          v-model="fileList"
-          v-b-tooltip
-          :accept="acceptImageTypeList"
-          multiple
-          class="text-left invisible"
-          style="width: 0; height: 0; transform: scale(0.05)"
-        />
-      </label>
+
+      <b-dropdown block class="d-inline-flex mx-4" no-caret>
+        <template #button-content>
+          <b-icon icon="plus-circle" />
+        </template>
+        <b-dropdown-item @click="getImageFromFilePicker()">
+          Загрузить с устройства
+        </b-dropdown-item>
+        <b-dropdown-item @click="getImageFromClipboard()">
+          Загрузить с буфера обмена
+        </b-dropdown-item>
+      </b-dropdown>
     </b-card-header>
     <b-card-body v-if="globalFileList.length > 0" class="p-1">
       <b-form class="mh-100 d-flex flex-column" @submit.stop.prevent>
@@ -67,15 +64,10 @@
 </template>
 
 <script lang="ts">
-import {supportTypes} from '@/image-processor';
+import {SupportMimesTypes, supportTypes} from '@/image-processor';
 import Vue from 'vue';
 
 export default Vue.extend({
-  data() {
-    return {
-      fileList: [] as Array<File>,
-    };
-  },
   computed: {
     globalFileList: function() {
       return this.$store.state.fileList;
@@ -84,10 +76,75 @@ export default Vue.extend({
       return Array.from(supportTypes, type => type[0]).join(',');
     },
   },
-  watch: {
-    fileList: function(newFileList: Array<File>) {
-      newFileList.forEach((file: File) => this.$store.commit('setFile', file));
-      (this.$refs['form-file'] as any).reset();
+  methods: {
+    getImageFromFilePicker: async function() {
+      const filePickerOptions = {
+        types: [
+          {
+            description: this.$tc('filelist.filepicker.description'),
+            accept: Object.fromEntries(
+              Array.from(supportTypes, value => [value[0], '.' + value[1]])
+            ),
+          },
+        ],
+        excludeAcceptAllOption: true,
+        multiple: true,
+      };
+      let fileHandle;
+      try {
+        [fileHandle] = await window.showOpenFilePicker(filePickerOptions);
+      } catch (e) {
+        if (!(e instanceof DOMException)) throw e; // capture AbortError
+      }
+      if (fileHandle) {
+        const fileData = await fileHandle.getFile();
+        this.$store.commit('setFile', fileData);
+      }
+    },
+    getImageFromClipboard: async function() {
+      const permission = await navigator.permissions.query({
+        name: 'clipboard-read',
+      });
+      if (permission.state === 'denied') {
+        this.$bvToast.toast(
+          this.$tc('filelist.notice.forbidden-clipboard.text'),
+          {
+            title: this.$tc('filelist.notice.forbidden-clipboard.title'),
+            variant: 'warning',
+          }
+        );
+        return;
+      }
+      const data = await navigator.clipboard.read();
+      const allowImageClipboardExtension = 'png';
+      const allowImageType = SupportMimesTypes[allowImageClipboardExtension];
+      for (let i = 0; i < data.length; i++) {
+        if (!data[i].types.includes(allowImageType)) {
+          this.$bvToast.toast(
+            this.$tc('filelist.notice.incompatible-clipboard-data.text'),
+            {
+              title: this.$tc(
+                'filelist.notice.incompatible-clipboard-data.title'
+              ),
+              variant: 'warning',
+            }
+          );
+          continue;
+        }
+        const blob = await data[i].getType(allowImageType);
+        const file = new File(
+          [blob],
+          this.$tc('filelist.clipboard.default-filename') +
+            '_' +
+            Date.now() +
+            '.' +
+            allowImageClipboardExtension,
+          {
+            type: blob.type,
+          }
+        );
+        this.$store.commit('setFile', file);
+      }
     },
   },
 });
