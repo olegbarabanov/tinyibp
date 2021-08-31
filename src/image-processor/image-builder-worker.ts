@@ -53,7 +53,7 @@ ctx.onmessage = e => {
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const result = await (imageBuilder[method] as any)(...params);
-    const transferable: Transferable[] = [];
+    const transferable: Array<Transferable | OffscreenCanvas> = [];
     for (const cls of [
       OffscreenCanvas,
       MessagePort,

@@ -92,7 +92,7 @@ export default Vue.extend({
       };
       let fileHandle;
       try {
-        [fileHandle] = await showOpenFilePicker(filePickerOptions);
+        [fileHandle] = await window.showOpenFilePicker(filePickerOptions);
       } catch (e) {
         if (!(e instanceof DOMException)) throw e; // capture AbortError
       }
@@ -103,7 +103,7 @@ export default Vue.extend({
     },
     getImageFromClipboard: async function() {
       const permission = await navigator.permissions.query({
-        name: 'clipboard-read',
+        name: 'clipboard-read' as PermissionName, //trouble with TS >= 4.4.2
       });
       if (permission.state === 'denied') {
         this.$bvToast.toast(
@@ -118,6 +118,7 @@ export default Vue.extend({
       const data = await navigator.clipboard.read();
       const allowImageClipboardExtension = 'png';
       const allowImageType = SupportMimesTypes[allowImageClipboardExtension];
+
       for (let i = 0; i < data.length; i++) {
         if (!data[i].types.includes(allowImageType)) {
           this.$bvToast.toast(

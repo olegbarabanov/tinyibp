@@ -15,7 +15,9 @@
     "baseUrl": ".",
     "types": [
       "webpack-env",
-      "jest"
+      "jest",
+      "wicg-file-system-access",
+      "offscreencanvas"
     ],
     "paths": {
       "@/*": [
