@@ -22,10 +22,10 @@
           <b-icon icon="plus-circle" />
         </template>
         <b-dropdown-item @click="getImageFromFilePicker()">
-          Загрузить с устройства
+          {{ $t('filelist.upload.from-device') }}
         </b-dropdown-item>
         <b-dropdown-item @click="getImageFromClipboard()">
-          Загрузить с буфера обмена
+          {{ $t('filelist.upload.from-clipboard') }}
         </b-dropdown-item>
       </b-dropdown>
     </b-card-header>
@@ -92,7 +92,7 @@ export default Vue.extend({
       };
       let fileHandle;
       try {
-        [fileHandle] = await window.showOpenFilePicker(filePickerOptions);
+        [fileHandle] = await showOpenFilePicker(filePickerOptions);
       } catch (e) {
         if (!(e instanceof DOMException)) throw e; // capture AbortError
       }
