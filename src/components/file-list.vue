@@ -78,28 +78,19 @@ export default Vue.extend({
   },
   methods: {
     getImageFromFilePicker: async function() {
-      const filePickerOptions = {
-        types: [
-          {
-            description: this.$tc('filelist.filepicker.description'),
-            accept: Object.fromEntries(
-              Array.from(supportTypes, value => [value[0], '.' + value[1]])
-            ),
-          },
-        ],
-        excludeAcceptAllOption: true,
-        multiple: true,
+      const input = document.createElement('input');
+      input.type = 'file';
+      input.multiple = true;
+      input.accept = Array.from(supportTypes, type => type[0]).join(',');
+      input.onchange = () => {
+        if (!input.files) return;
+        for (const file of input.files) {
+          if (supportTypes.has(file.type as SupportMimesTypes)) {
+            this.$store.commit('setFile', file);
+          }
+        }
       };
-      let fileHandle;
-      try {
-        [fileHandle] = await window.showOpenFilePicker(filePickerOptions);
-      } catch (e) {
-        if (!(e instanceof DOMException)) throw e; // capture AbortError
-      }
-      if (fileHandle) {
-        const fileData = await fileHandle.getFile();
-        this.$store.commit('setFile', fileData);
-      }
+      input.click();
     },
     getImageFromClipboard: async function() {
       const permission = await navigator.permissions.query({

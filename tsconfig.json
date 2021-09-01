@@ -16,7 +16,6 @@
     "types": [
       "webpack-env",
       "jest",
-      "wicg-file-system-access",
       "offscreencanvas"
     ],
     "paths": {
