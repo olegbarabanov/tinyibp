@@ -72,9 +72,6 @@ export default Vue.extend({
     globalFileList: function() {
       return this.$store.state.fileList;
     },
-    acceptImageTypeList() {
-      return Array.from(supportTypes, type => type[0]).join(',');
-    },
   },
   methods: {
     getImageFromFilePicker: async function() {
