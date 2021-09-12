@@ -1,6 +1,13 @@
 {
   "name": "tinyibp",
   "version": "0.1.6",
+  "description": "TinyIBP - Tiny Image Batch Processor",
+  "license": "MIT",
+  "author": {
+    "name": "Oleg Barabanov",
+    "email": "mail@olegbarabanov.ru",
+    "url": "https://olegbarabanov.ru"
+  },
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
