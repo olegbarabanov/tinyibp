@@ -123,27 +123,28 @@ export default Vue.extend({
     },
   },
   methods: {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     downloadAll: async function(method = 'common') {
-      this.$bvToast.toast(this.$tc('download.toast.createzip.text'), {
-        variant: 'info',
-      });
-      const modalId = `modal-download-${this.componentID}`;
-      try {
-        this.busy = true;
-        this.$bvModal.show(modalId);
-        await this.$store.dispatch('downloadAll', method);
-        this.$bvToast.toast(this.$tc('download.toast.successzip.text'), {
-          variant: 'success',
-        });
-      } catch (error) {
-        console.warn(error);
-        this.$bvToast.toast(this.$tc('download.toast.errorzip.text'), {
-          variant: 'danger',
-        });
-      } finally {
-        this.busy = false;
-        this.$bvModal.hide(modalId);
-      }
+      // this.$bvToast.toast(this.$tc('download.toast.createzip.text'), {
+      //   variant: 'info',
+      // });
+      // const modalId = `modal-download-${this.componentID}`;
+      // try {
+      //   this.busy = true;
+      //   this.$bvModal.show(modalId);
+      //   await this.$store.dispatch('downloadAll', method);
+      //   this.$bvToast.toast(this.$tc('download.toast.successzip.text'), {
+      //     variant: 'success',
+      //   });
+      // } catch (error) {
+      //   console.warn(error);
+      //   this.$bvToast.toast(this.$tc('download.toast.errorzip.text'), {
+      //     variant: 'danger',
+      //   });
+      // } finally {
+      //   this.busy = false;
+      //   this.$bvModal.hide(modalId);
+      // }
     },
   },
 });

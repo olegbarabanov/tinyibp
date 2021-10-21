@@ -94,13 +94,13 @@ export default Vue.extend({
         name: 'clipboard-read' as PermissionName, //trouble with TS >= 4.4.2
       });
       if (permission.state === 'denied') {
-        this.$bvToast.toast(
-          this.$tc('filelist.notice.forbidden-clipboard.text'),
-          {
-            title: this.$tc('filelist.notice.forbidden-clipboard.title'),
-            variant: 'warning',
-          }
-        );
+        // this.$bvToast.toast(
+        //   this.$tc('filelist.notice.forbidden-clipboard.text'),
+        //   {
+        //     title: this.$tc('filelist.notice.forbidden-clipboard.title'),
+        //     variant: 'warning',
+        //   }
+        // );
         return;
       }
       const data = await navigator.clipboard.read();
@@ -109,15 +109,15 @@ export default Vue.extend({
 
       for (let i = 0; i < data.length; i++) {
         if (!data[i].types.includes(allowImageType)) {
-          this.$bvToast.toast(
-            this.$tc('filelist.notice.incompatible-clipboard-data.text'),
-            {
-              title: this.$tc(
-                'filelist.notice.incompatible-clipboard-data.title'
-              ),
-              variant: 'warning',
-            }
-          );
+          // this.$bvToast.toast(
+          //   this.$tc('filelist.notice.incompatible-clipboard-data.text'),
+          //   {
+          //     title: this.$tc(
+          //       'filelist.notice.incompatible-clipboard-data.title'
+          //     ),
+          //     variant: 'warning',
+          //   }
+          // );
           continue;
         }
         const blob = await data[i].getType(allowImageType);

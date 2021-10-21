@@ -1,11 +1,11 @@
 /* eslint-disable no-undef */
 // eslint-disable-next-line node/no-extraneous-import
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap-vue/dist/bootstrap-vue.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import 'bootstrap';
 
 import Vue from 'vue';
 import Vuex, {StoreOptions} from 'vuex';
-import {BootstrapVue, BootstrapVueIcons} from 'bootstrap-vue';
+//import {BootstrapVue, BootstrapVueIcons} from 'bootstrap-vue';
 import App from './App.vue';
 import VueI18n from 'vue-i18n';
 import ResizeFilter from './components/resize-filter.vue';
@@ -36,8 +36,8 @@ Vue.config.productionTip = false;
 Vue.use(VueScreen, 'bootstrap');
 Vue.use(VueI18n);
 Vue.use(Vuex);
-Vue.use(BootstrapVue);
-Vue.use(BootstrapVueIcons);
+//Vue.use(BootstrapVue);
+//Vue.use(BootstrapVueIcons);
 
 Vue.component('ResizeFilter', ResizeFilter);
 Vue.component('ContrastFilter', ContrastFilter);
@@ -52,7 +52,7 @@ Vue.component('ColorReplacementFilter', ColorReplacementFilter);
 
 const filterProcessor = new FilterProcessor();
 const DEFAULT_LANG = 'en';
-
+console.log(SUPPORT_FILTERS);
 SUPPORT_FILTERS.forEach(filter => {
   filterProcessor.getFilterFactory().registerFilter(filter);
 });
@@ -76,6 +76,7 @@ interface RootState {
 
 const initStore: StoreOptions<RootState> = {
   state() {
+    // console.log(filterProcessor.getFilterFactory().getFilterCollection());
     return {
       lang: DEFAULT_LANG as string, // see ISO 639-1
       registeredFilters: filterProcessor
