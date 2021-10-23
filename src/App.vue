@@ -147,18 +147,18 @@
 <script lang="ts">
 import Vue from 'vue';
 // import previewCanvas from './components/preview-canvas.vue';
-// import fileList from './components/file-list.vue';
+import fileList from './components/file-list.vue';
 // import filterList from './components/filter-list.vue';
 // import downloadForm from '@/components/download-form.vue';
 
 export default Vue.extend({
   name: 'App',
-  // components: {
-  //   previewCanvas,
-  //   fileList,
-  //   filterList,
-  //   downloadForm,
-  // },
+  components: {
+    //   previewCanvas,
+    fileList,
+    //   filterList,
+    //   downloadForm,
+  },
   data: function() {
     return {};
   },

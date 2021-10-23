@@ -2,6 +2,7 @@
 // eslint-disable-next-line node/no-extraneous-import
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 
 import Vue from 'vue';
 import Vuex, {StoreOptions} from 'vuex';
