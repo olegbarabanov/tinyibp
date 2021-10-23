@@ -94,10 +94,10 @@
     <div v-if="!$screen.md">
       <button
         type="button"
-        class="btn btn-secondary collapsed"
+        class="btn btn-secondary collapsed position-fixed end-0 top-50"
         aria-expanded="false"
         aria-controls="sidebar-files-backdrop"
-        style="position: fixed; left: 0px; top: 50%; z-index: 99; overflow-anchor: none;"
+        style="z-index: 99; overflow-anchor: none;"
       >
         {{ $t('app.filelist.header') }}
       </button>
@@ -118,10 +118,10 @@
       </div>
       <button
         type="button"
-        class="btn btn-secondary collapsed"
+        class="btn btn-secondary collapsed position-fixed end-0 top-50"
         aria-expanded="false"
         aria-controls="sidebar-filters-backdrop"
-        style="position: fixed; right: 0px; top: 50%; z-index: 99; overflow-anchor: none;"
+        style="z-index: 99; overflow-anchor: none;"
       >
         {{ $t('app.filterlist.header') }}
       </button>
