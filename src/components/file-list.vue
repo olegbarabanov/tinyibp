@@ -1,66 +1,76 @@
 <i18n src="../common/locales.json"></i18n>
 
 <template>
-  <b-card
-    class="h-100 text-center w-100"
-    border-variant="dark"
-    body-bg-variant="light"
-    no-body
-  >
-    <b-card-header
-      header-text-variant="white"
-      header-bg-variant="dark"
-      class="d-flex flex-row align-items-center justify-content-center p-1"
-      style="min-height: 3rem"
+  <div class="card h-100 text-center w-100 border-dark">
+    <div
+      class="card-header d-flex flex-row align-items-center justify-content-center p-1 bg-dark text-white"
+      style="min-height: 3rem;"
     >
       <h5 class="my-0 mx-4">
         {{ $t('filelist.header.text') }}
       </h5>
+      <div id="__BVID__21" class="dropdown b-dropdown d-inline-flex mx-4">
+        <button
+          id="__BVID__21__BV_toggle_"
+          aria-haspopup="true"
+          aria-expanded="false"
+          type="button"
+          class="btn dropdown-toggle btn-secondary btn-block dropdown-toggle-no-caret"
+          data-bs-toggle="dropdown"
+        >
+          <i class="bi bi-plus-circle" />
+        </button>
+        <ul
+          role="menu"
+          tabindex="-1"
+          class="dropdown-menu"
+          aria-labelledby="__BVID__21__BV_toggle_"
+        >
+          <li role="presentation" @click="getImageFromFilePicker()">
+            <a role="menuitem" href="#" target="_self" class="dropdown-item">
+              {{ $t('filelist.upload.from-device') }}
+            </a>
+          </li>
+          <li role="presentation" @click="getImageFromClipboard()">
+            <a role="menuitem" href="#" target="_self" class="dropdown-item">
+              {{ $t('filelist.upload.from-clipboard') }}
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
 
-      <b-dropdown block class="d-inline-flex mx-4" no-caret>
-        <template #button-content>
-          <b-icon icon="plus-circle" />
-        </template>
-        <b-dropdown-item @click="getImageFromFilePicker()">
-          {{ $t('filelist.upload.from-device') }}
-        </b-dropdown-item>
-        <b-dropdown-item @click="getImageFromClipboard()">
-          {{ $t('filelist.upload.from-clipboard') }}
-        </b-dropdown-item>
-      </b-dropdown>
-    </b-card-header>
-    <b-card-body v-if="globalFileList.length > 0" class="p-1">
-      <b-form class="mh-100 d-flex flex-column" @submit.stop.prevent>
-        <b-list-group class="overflow-auto">
-          <b-list-group-item
+    <div v-if="globalFileList.length > 0" class="card-body p-1">
+      <form class="mh-100 d-flex flex-column">
+        <div class="list-group overflow-auto">
+          <div
             v-for="(file, index) in globalFileList"
             :key="index"
+            class="list-group-item d-flex justify-content-between align-items-center p-1 list-group-item-light"
             :active="$store.state.showFileIndex === index"
-            variant="light"
-            class="d-flex justify-content-between align-items-center p-1"
             @click="$store.commit('showFile', index)"
           >
-            <span class="text-truncate">{{ index + 1 }} - {{ file.name }}</span>
-            <b-button
+            <span class="text-truncate">{{ index + 1 }} - {{ file.name }}</span
+            ><button
               aria-label="Close"
-              class="close"
+              type="button"
+              class="btn close btn-secondary"
               @click.stop="$store.dispatch('deleteFile', index)"
             >
-              <span aria-hidden="true">&times;</span>
-            </b-button>
-          </b-list-group-item>
-        </b-list-group>
-      </b-form>
-    </b-card-body>
-
-    <b-card-body v-else class="p-1">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div v-else class="card-body p-1">
       <div class="d-flex align-items-center justify-content-center h-100">
         <p>
           {{ $t('filelist.notice.emptylist') }}
         </p>
       </div>
-    </b-card-body>
-  </b-card>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
