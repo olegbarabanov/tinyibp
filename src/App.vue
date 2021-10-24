@@ -86,7 +86,7 @@
         </div>
       </div>
       <div class="row g-0 align-items-stretch">
-        <div class="col-12 mh-100 p-1">
+        <div class="col-12">
           <download-form />
         </div>
       </div>
@@ -149,7 +149,7 @@ import Vue from 'vue';
 import previewCanvas from './components/preview-canvas.vue';
 import fileList from './components/file-list.vue';
 import filterList from './components/filter-list.vue';
-// import downloadForm from '@/components/download-form.vue';
+import downloadForm from '@/components/download-form.vue';
 
 export default Vue.extend({
   name: 'App',
@@ -157,7 +157,7 @@ export default Vue.extend({
     previewCanvas,
     fileList,
     filterList,
-    //   downloadForm,
+    downloadForm,
   },
   data: function() {
     return {};

@@ -1,66 +1,113 @@
 <i18n src="../common/locales.json"></i18n>
 
 <template>
-  <b-card
-    bg-variant="dark"
-    text-variant="white"
-    class="h-100 text-center rounded-0 p-1 d-flex flex-row justify-content-between"
-    border-variant="dark"
-    no-body
+  <div
+    class="card h-100 text-center rounded-0 p-1 d-flex flex-row justify-content-between bg-dark border-dark text-white"
   >
-    <b-dropdown :text="$t('download.settings.label')" dropup class="mx-md-4">
-      <b-dropdown-form style="min-width: 250px;">
-        <b-input-group
-          size="sm"
-          :prepend="$t('download.settings.form.type.label')"
-          class="m-1"
-        >
-          <b-form-select
-            v-model="selectedType"
-            :options="supportTypes"
-            class="text-nowrap"
-          />
-        </b-input-group>
-        <b-input-group
-          size="sm"
-          :prepend="$t('download.settings.form.quality.label')"
-          class="m-1"
-        >
-          <b-form-input
-            v-model="quality"
-            type="number"
-            min="1"
-            max="100"
-            step="1"
-          />
-        </b-input-group>
-        <b-input-group
-          size="sm"
-          :prepend="$t('download.settings.form.pattern.label')"
-          class="m-1"
-        >
-          <b-form-input v-model="nameTransformPattern" placeholder="" trim />
-        </b-input-group>
-      </b-dropdown-form>
-    </b-dropdown>
+    <div id="__BVID__60" class="dropdown b-dropdown mx-md-4 dropup btn-group">
+      <button
+        id="__BVID__60__BV_toggle_"
+        aria-haspopup="true"
+        aria-expanded="false"
+        type="button"
+        class="btn dropdown-toggle btn-secondary"
+        data-bs-toggle="dropdown"
+      >
+        {{ $t('download.settings.label') }}
+      </button>
+      <ul
+        role="menu"
+        tabindex="-1"
+        class="dropdown-menu"
+        aria-labelledby="__BVID__60__BV_toggle_"
+      >
+        <li role="presentation" style="min-width: 250px;">
+          <form tabindex="-1" class="b-dropdown-form">
+            <div role="group" class="input-group m-1 input-group-sm">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  {{ $t('download.settings.form.type.label') }}
+                </div>
+              </div>
+              <select v-model="selectedType" class="text-nowrap custom-select">
+                <option
+                  v-for="type in supportTypes"
+                  :key="type.value"
+                  :value="type.value"
+                >
+                  {{ type.text }}
+                </option>
+              </select>
+            </div>
+            <div role="group" class="input-group m-1 input-group-sm">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  {{ $t('download.settings.form.quality.label') }}
+                </div>
+              </div>
+              <input
+                v-model="quality"
+                type="number"
+                min="1"
+                max="100"
+                step="1"
+                class="form-control"
+              />
+            </div>
+            <div role="group" class="input-group m-1 input-group-sm">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  {{ $t('download.settings.form.pattern.label') }}
+                </div>
+              </div>
+              <input
+                v-model="nameTransformPattern"
+                type="text"
+                placeholder=""
+                class="form-control"
+              />
+            </div>
+          </form>
+        </li>
+      </ul>
+    </div>
+    <div id="__BVID__64" class="dropdown b-dropdown mx-md-4 dropup">
+      <button
+        aria-haspopup="true"
+        aria-expanded="false"
+        type="button"
+        :disabled="disabledDownload"
+        class="btn dropdown-toggle btn-secondary btn-block"
+        data-bs-toggle="dropdown"
+      >
+        {{ $t('download.download.label') }}
+      </button>
+      <ul role="menu" tabindex="-1" class="dropdown-menu dropdown-menu-right">
+        <li role="presentation">
+          <button
+            role="menuitem"
+            type="button"
+            class="dropdown-item"
+            @click="downloadAll()"
+          >
+            {{ $t('download.download.all.label') }}
+          </button>
+        </li>
+        <li role="presentation">
+          <button
+            role="menuitem"
+            type="button"
+            class="dropdown-item"
+            @click="downloadAll('zip')"
+          >
+            {{ $t('download.download.zip.label') }}
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
 
-    <b-dropdown
-      right
-      variant="secondary"
-      block
-      :text="$t('download.download.label')"
-      class="mx-md-4"
-      dropup
-      :disabled="disabledDownload"
-    >
-      <b-dropdown-item-button @click="downloadAll()">
-        {{ $t('download.download.all.label') }}
-      </b-dropdown-item-button>
-      <b-dropdown-item-button @click="downloadAll('zip')">
-        {{ $t('download.download.zip.label') }}
-      </b-dropdown-item-button>
-    </b-dropdown>
-
+  <!--
     <b-modal
       :id="`modal-download-${componentID}`"
       centered
@@ -72,7 +119,7 @@
         {{ $t('download.modal.progress.text') }}
       </p>
     </b-modal>
-  </b-card>
+  </b-card> -->
 </template>
 
 <script lang="ts">
