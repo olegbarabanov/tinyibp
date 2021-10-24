@@ -2,25 +2,17 @@
 
 <template>
   <div
-    class="card h-100 text-center rounded-0 p-1 d-flex flex-row justify-content-between bg-dark border-dark text-white"
+    class="card h-100 text-center rounded-0 p-1 flex-row justify-content-between bg-dark border-dark text-white"
   >
-    <div id="__BVID__60" class="dropdown b-dropdown mx-md-4 dropup btn-group">
+    <div class="dropdown b-dropdown mx-md-4 dropup btn-group">
       <button
-        id="__BVID__60__BV_toggle_"
-        aria-haspopup="true"
-        aria-expanded="false"
         type="button"
         class="btn dropdown-toggle btn-secondary"
         data-bs-toggle="dropdown"
       >
         {{ $t('download.settings.label') }}
       </button>
-      <ul
-        role="menu"
-        tabindex="-1"
-        class="dropdown-menu"
-        aria-labelledby="__BVID__60__BV_toggle_"
-      >
+      <ul tabindex="-1" class="dropdown-menu">
         <li role="presentation" style="min-width: 250px;">
           <form tabindex="-1" class="b-dropdown-form">
             <div role="group" class="input-group m-1 input-group-sm">
@@ -39,7 +31,7 @@
                 </option>
               </select>
             </div>
-            <div role="group" class="input-group m-1 input-group-sm">
+            <div class="input-group m-1 input-group-sm">
               <div class="input-group-prepend">
                 <div class="input-group-text">
                   {{ $t('download.settings.form.quality.label') }}
@@ -54,7 +46,7 @@
                 class="form-control"
               />
             </div>
-            <div role="group" class="input-group m-1 input-group-sm">
+            <div class="input-group m-1 input-group-sm">
               <div class="input-group-prepend">
                 <div class="input-group-text">
                   {{ $t('download.settings.form.pattern.label') }}
@@ -71,10 +63,8 @@
         </li>
       </ul>
     </div>
-    <div id="__BVID__64" class="dropdown b-dropdown mx-md-4 dropup">
+    <div class="dropdown b-dropdown mx-md-4 dropup">
       <button
-        aria-haspopup="true"
-        aria-expanded="false"
         type="button"
         :disabled="disabledDownload"
         class="btn dropdown-toggle btn-secondary btn-block"
