@@ -9,30 +9,22 @@
       <h5 class="my-0 mx-4">
         {{ $t('filelist.header.text') }}
       </h5>
-      <div id="__BVID__21" class="dropdown b-dropdown d-inline-flex mx-4">
+      <div class="dropdown d-inline-flex mx-4">
         <button
-          id="__BVID__21__BV_toggle_"
-          aria-haspopup="true"
-          aria-expanded="false"
           type="button"
           class="btn dropdown-toggle btn-secondary btn-block dropdown-toggle-no-caret"
           data-bs-toggle="dropdown"
         >
           <i class="bi bi-plus-circle" />
         </button>
-        <ul
-          role="menu"
-          tabindex="-1"
-          class="dropdown-menu"
-          aria-labelledby="__BVID__21__BV_toggle_"
-        >
-          <li role="presentation" @click="getImageFromFilePicker()">
-            <a role="menuitem" href="#" target="_self" class="dropdown-item">
+        <ul tabindex="-1" class="dropdown-menu">
+          <li @click="getImageFromFilePicker()">
+            <a href="#" target="_self" class="dropdown-item">
               {{ $t('filelist.upload.from-device') }}
             </a>
           </li>
-          <li role="presentation" @click="getImageFromClipboard()">
-            <a role="menuitem" href="#" target="_self" class="dropdown-item">
+          <li @click="getImageFromClipboard()">
+            <a href="#" target="_self" class="dropdown-item">
               {{ $t('filelist.upload.from-clipboard') }}
             </a>
           </li>

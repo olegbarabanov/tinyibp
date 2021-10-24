@@ -9,16 +9,13 @@
       <h5 class="my-0 mx-4 d-none d-md-block">
         {{ $t('previewcanvas.header.text') }}
       </h5>
-      <fieldset id="__BVID__28" class="form-group d-inline-flex m-0 mx-4">
+      <fieldset class="form-group d-inline-flex m-0 mx-4">
         <div>
           <div
-            id="btn-radios-1"
-            role="radiogroup"
             tabindex="-1"
             class="btn-group-toggle btn-group btn-group-sm bv-no-focus-ring"
           >
             <label v-for="option in options" :key="option.value">
-              <!-- eslint-disable-next-line vue/html-self-closing -->
               <input
                 :id="option.value"
                 v-model="selected"
@@ -36,7 +33,6 @@
       </fieldset>
     </div>
     <div class="card-body h-100" @dblclick="fullSizePreview = !fullSizePreview">
-      <!----><!---->
       <div class="h-100 d-flex flex-column border border-left border-right">
         <div
           class="b-overlay-wrap position-relative d-flex flex-grow-1 align-items-center justify-content-center overflow-auto p-1"
@@ -55,11 +51,7 @@
         </div>
       </div>
     </div>
-    <div
-      v-show="show"
-      class="card-footer text bg-dark text-white"
-      style="display: none;"
-    >
+    <div v-show="show" class="card-footer text bg-dark text-white">
       <p class="text-nowrap">
         <span class="badge d-inline-flex text-truncate mw-100 badge-secondary">
           {{ name }}

@@ -14,8 +14,8 @@
       </button>
       <ul tabindex="-1" class="dropdown-menu">
         <li role="presentation" style="min-width: 250px;">
-          <form tabindex="-1" class="b-dropdown-form px-3">
-            <div role="group" class="input-group my-1 input-group-sm">
+          <form tabindex="-1" class="px-3">
+            <div class="input-group my-1 input-group-sm">
               <div class="input-group-prepend">
                 <div class="input-group-text">
                   {{ $t('download.settings.form.type.label') }}
@@ -75,20 +75,14 @@
       >
         {{ $t('download.download.label') }}
       </button>
-      <ul role="menu" tabindex="-1" class="dropdown-menu dropdown-menu-right">
-        <li role="presentation">
-          <button
-            role="menuitem"
-            type="button"
-            class="dropdown-item"
-            @click="downloadAll()"
-          >
+      <ul tabindex="-1" class="dropdown-menu dropdown-menu-right">
+        <li>
+          <button type="button" class="dropdown-item" @click="downloadAll()">
             {{ $t('download.download.all.label') }}
           </button>
         </li>
-        <li role="presentation">
+        <li>
           <button
-            role="menuitem"
             type="button"
             class="dropdown-item"
             @click="downloadAll('zip')"

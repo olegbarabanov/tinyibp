@@ -9,30 +9,21 @@
       <h5 class="my-0 mx-4">
         {{ $t('filterlist.header.text') }}
       </h5>
-      <div id="__BVID__37" class="dropdown b-dropdown d-inline-flex mx-4">
+      <div class="dropdown d-inline-flex mx-4">
         <button
-          id="__BVID__37__BV_toggle_"
-          aria-haspopup="true"
-          aria-expanded="false"
           type="button"
           class="btn dropdown-toggle btn-secondary btn-block dropdown-toggle-no-caret"
           data-bs-toggle="dropdown"
         >
           <i class="bi bi-plus-circle" />
         </button>
-        <ul
-          role="menu"
-          tabindex="-1"
-          class="dropdown-menu"
-          aria-labelledby="__BVID__37__BV_toggle_"
-        >
+        <ul tabindex="-1" class="dropdown-menu">
           <li
             v-for="filter in registeredFilters"
             :key="filter"
-            role="presentation"
             @click="initFilter(filter)"
           >
-            <a role="menuitem" href="#" target="_self" class="dropdown-item">
+            <a href="#" target="_self" class="dropdown-item">
               {{ $t(`filterlist.filter.${filter}.name`) }}
             </a>
           </li>
@@ -67,12 +58,11 @@
                 </div>
                 <div class="col-3">
                   <button
-                    aria-label="Close"
                     type="button"
                     class="btn close btn-secondary"
                     @click="$store.commit('removeFilter', index)"
                   >
-                    <span aria-hidden="true">×</span>
+                    <span>×</span>
                   </button>
                 </div>
               </div>
