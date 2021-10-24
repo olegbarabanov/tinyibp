@@ -34,11 +34,7 @@
         </div>
       </fieldset>
     </div>
-    <div
-      class="card-body h-100"
-      style="min-height: 0;"
-      @dblclick="fullSizePreview = !fullSizePreview"
-    >
+    <div class="card-body h-100" @dblclick="fullSizePreview = !fullSizePreview">
       <!----><!---->
       <div class="h-100 d-flex flex-column border border-left border-right">
         <div
