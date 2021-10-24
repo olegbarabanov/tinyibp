@@ -18,6 +18,7 @@
             class="btn-group-toggle btn-group btn-group-sm bv-no-focus-ring"
           >
             <label v-for="option in options" :key="option.value">
+              <!-- eslint-disable-next-line vue/html-self-closing -->
               <input
                 :id="option.value"
                 v-model="selected"
