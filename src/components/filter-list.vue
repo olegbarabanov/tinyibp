@@ -1,36 +1,46 @@
 <i18n src="../common/locales.json"></i18n>
 
 <template>
-  <b-card
-    class="h-100 text-center w-100"
-    border-variant="dark"
-    body-bg-variant="light"
-    no-body
-  >
-    <b-card-header
-      header-bg-variant="dark"
-      header-text-variant="white"
-      class="d-flex flex-row align-items-center justify-content-center p-1"
-      style="min-height:3rem"
+  <div class="card h-100 text-center w-100 border-dark">
+    <div
+      class="card-header d-flex flex-row align-items-center justify-content-center p-1 bg-dark text-white"
+      style="min-height: 3rem;"
     >
       <h5 class="my-0 mx-4">
         {{ $t('filterlist.header.text') }}
       </h5>
-      <b-dropdown block class="d-inline-flex mx-4" no-caret>
-        <template #button-content>
-          <b-icon icon="plus-circle" />
-        </template>
-        <b-dropdown-item
-          v-for="filter in registeredFilters"
-          :key="filter"
-          @click="initFilter(filter)"
+      <div id="__BVID__37" class="dropdown b-dropdown d-inline-flex mx-4">
+        <button
+          id="__BVID__37__BV_toggle_"
+          aria-haspopup="true"
+          aria-expanded="false"
+          type="button"
+          class="btn dropdown-toggle btn-secondary btn-block dropdown-toggle-no-caret"
+          data-bs-toggle="dropdown"
         >
-          {{ $t(`filterlist.filter.${filter}.name`) }}
-        </b-dropdown-item>
-      </b-dropdown>
-    </b-card-header>
+          <i class="bi bi-plus-circle" />
+        </button>
+        <ul
+          role="menu"
+          tabindex="-1"
+          class="dropdown-menu"
+          aria-labelledby="__BVID__37__BV_toggle_"
+        >
+          <li
+            v-for="filter in registeredFilters"
+            :key="filter"
+            role="presentation"
+            @click="initFilter(filter)"
+          >
+            <a role="menuitem" href="#" target="_self" class="dropdown-item">
+              {{ $t(`filterlist.filter.${filter}.name`) }}
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
 
-    <b-card-body v-if="filterMaps.length > 0" class="p-1">
+    <div v-if="filterMaps.length > 0" class="card-body p-1">
       <div class="d-flex flex-column mh-100">
         <draggable
           tag="div"
@@ -38,42 +48,36 @@
           class="list-group overflow-auto"
           handle=".handle"
         >
-          <b-card
+          <div
             v-for="(filter, index) in filterMaps"
             :key="index"
-            no-body
-            border-variant="secondary"
-            class="mb-1"
+            class="card mb-1 border-secondary"
           >
-            <b-card-header
-              header-tag="header"
-              class="handle py-1"
-              header-bg-variant="secondary"
-              header-text-variant="white"
+            <header
               :title="$t('filterlist.event.draggable.title')"
+              class="card-header handle py-1 bg-secondary text-white"
               style="cursor: move;"
             >
-              <b-row align-v="center" class="flex-nowrap">
-                <b-col cols="3">
-                  <b-badge variant="light">
-                    {{ index + 1 }}
-                  </b-badge>
-                </b-col>
-                <b-col cols="6">
+              <div class="row flex-nowrap align-items-center">
+                <div class="col-3">
+                  <span class="badge badge-light"> {{ index + 1 }} </span>
+                </div>
+                <div class="col-6">
                   {{ $t(`filterlist.filter.${filter.name}.name`) }}
-                </b-col>
-                <b-col cols="3">
-                  <b-button
+                </div>
+                <div class="col-3">
+                  <button
                     aria-label="Close"
-                    class="close"
+                    type="button"
+                    class="btn close btn-secondary"
                     @click="$store.commit('removeFilter', index)"
                   >
-                    <span aria-hidden="true">&times;</span>
-                  </b-button>
-                </b-col>
-              </b-row>
-            </b-card-header>
-            <b-card-body>
+                    <span aria-hidden="true">×</span>
+                  </button>
+                </div>
+              </div>
+            </header>
+            <div class="card-body">
               <component
                 :is="
                   filter.name.charAt(0).toUpperCase() +
@@ -82,19 +86,20 @@
                 "
                 v-bind.sync="filterMaps[index]"
               />
-            </b-card-body>
-          </b-card>
+            </div>
+          </div>
         </draggable>
       </div>
-    </b-card-body>
-    <b-card-body v-else>
+    </div>
+
+    <div v-else class="card-body">
       <div class="d-flex align-items-center justify-content-center h-100">
         <p>
           {{ $t('filterlist.notice.emptylist') }}
         </p>
       </div>
-    </b-card-body>
-  </b-card>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
