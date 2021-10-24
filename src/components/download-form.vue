@@ -14,14 +14,17 @@
       </button>
       <ul tabindex="-1" class="dropdown-menu">
         <li role="presentation" style="min-width: 250px;">
-          <form tabindex="-1" class="b-dropdown-form">
-            <div role="group" class="input-group m-1 input-group-sm">
+          <form tabindex="-1" class="b-dropdown-form px-3">
+            <div role="group" class="input-group my-1 input-group-sm">
               <div class="input-group-prepend">
                 <div class="input-group-text">
                   {{ $t('download.settings.form.type.label') }}
                 </div>
               </div>
-              <select v-model="selectedType" class="text-nowrap custom-select">
+              <select
+                v-model="selectedType"
+                class="text-nowrap custom-select form-select"
+              >
                 <option
                   v-for="type in supportTypes"
                   :key="type.value"
@@ -31,7 +34,7 @@
                 </option>
               </select>
             </div>
-            <div class="input-group m-1 input-group-sm">
+            <div class="input-group my-1 input-group-sm">
               <div class="input-group-prepend">
                 <div class="input-group-text">
                   {{ $t('download.settings.form.quality.label') }}
@@ -46,7 +49,7 @@
                 class="form-control"
               />
             </div>
-            <div class="input-group m-1 input-group-sm">
+            <div class="input-group my-1 input-group-sm">
               <div class="input-group-prepend">
                 <div class="input-group-text">
                   {{ $t('download.settings.form.pattern.label') }}
