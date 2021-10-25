@@ -12,10 +12,7 @@
               ><span>TinyIBP (v0.1.6)</span></a
             ><button
               type="button"
-              aria-label="Toggle navigation"
               class="navbar-toggler collapsed"
-              aria-expanded="false"
-              aria-controls="nav-collapse"
               style="overflow-anchor: none;"
             >
               <span class="navbar-toggler-icon" />
@@ -28,26 +25,17 @@
               <ul class="navbar-nav ms-auto">
                 <li class="nav-item b-nav-dropdown dropdown">
                   <a
-                    id="__BVID__13__BV_toggle_"
-                    role="button"
-                    aria-haspopup="true"
-                    aria-expanded="false"
                     href="#"
                     target="_self"
                     class="nav-link dropdown-toggle"
                     data-bs-toggle="dropdown"
                     ><span>{{ $t('app.chooselang') }}</span></a
                   >
-                  <ul
-                    tabindex="-1"
-                    class="dropdown-menu dropdown-menu-end"
-                    aria-labelledby="__BVID__13__BV_toggle_"
-                  >
-                    <li role="presentation" class="text-uppercase">
+                  <ul tabindex="-1" class="dropdown-menu dropdown-menu-end">
+                    <li class="text-uppercase">
                       <a
                         v-for="lang in supportLangs"
                         :key="lang"
-                        role="menuitem"
                         href="#"
                         target="_self"
                         class="dropdown-item text-uppercase"
@@ -94,20 +82,14 @@
     <div v-if="!$screen.md">
       <button
         type="button"
-        class="btn btn-secondary collapsed position-fixed end-0 top-50"
-        aria-expanded="false"
-        aria-controls="sidebar-files-backdrop"
+        class="btn btn-secondary collapsed position-fixed start-0 top-50"
         style="z-index: 99; overflow-anchor: none;"
       >
         {{ $t('app.filelist.header') }}
       </button>
       <div tabindex="-1" class="b-sidebar-outer">
         <div
-          id="sidebar-files-backdrop"
           tabindex="-1"
-          role="dialog"
-          aria-modal="true"
-          aria-hidden="true"
           class="b-sidebar shadow bg-transparent text-dark"
           style="width: 250px; display: none;"
         >
@@ -119,19 +101,13 @@
       <button
         type="button"
         class="btn btn-secondary collapsed position-fixed end-0 top-50"
-        aria-expanded="false"
-        aria-controls="sidebar-filters-backdrop"
         style="z-index: 99; overflow-anchor: none;"
       >
         {{ $t('app.filterlist.header') }}
       </button>
       <div tabindex="-1" class="b-sidebar-outer">
         <div
-          id="sidebar-filters-backdrop"
           tabindex="-1"
-          role="dialog"
-          aria-modal="true"
-          aria-hidden="true"
           class="b-sidebar shadow b-sidebar-right bg-transparent text-dark"
           style="width: 250px; display: none;"
         >

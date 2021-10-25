@@ -1,44 +1,49 @@
 <i18n src="../common/locales.json"></i18n>
 
 <template>
-  <b-form @submit.stop.prevent>
-    <b-form-group
-      :label="$t('overlayfilter.form.image.label')"
-      :label-for="`input-image-${componentID}`"
-    >
-      <b-form-file
-        :id="`input-image-${componentID}`"
-        placeholder="Choose a file or drop it here..."
+  <form @submit.stop.prevent>
+    <div class="form-group">
+      <label class="d-block">{{ $t('overlayfilter.form.image.label') }}</label>
+      <input
+        type="file"
         :accept="acceptImageTypeList"
-        drop-placeholder="Drop file here..."
-        @input="updateImage"
+        class="form-control form-control-sm"
+        @input="updateImage($event.target.files[0])"
       />
-    </b-form-group>
-    <b-form-group
-      :label="$t('overlayfilter.form.position.label')"
-      :label-for="`input-position-${componentID}`"
-    >
-      <b-form-select
-        :value="position"
-        :options="supportPositions"
-        :label-for="`input-position-${componentID}`"
-        size="sm"
-        @input="updatePosition"
-      />
-    </b-form-group>
-    <b-form-group
-      :label="$t('overlayfilter.form.margin.label')"
-      :label-for="`input-margin-${componentID}`"
-    >
-      <b-form-input
-        :label-for="`input-margin-${componentID}`"
-        :value="margin"
-        type="number"
-        step="1"
-        @input="updateMargin"
-      />
-    </b-form-group>
-  </b-form>
+    </div>
+    <div class="form-group">
+      <label class="d-block">{{
+        $t('overlayfilter.form.position.label')
+      }}</label>
+      <div>
+        <select
+          class="form-select form-select-sm"
+          :value="position"
+          @input="updatePosition($event.target.value)"
+        >
+          <option
+            v-for="supportPosition in supportPositions"
+            :key="supportPosition.value"
+            :value="supportPosition.value"
+          >
+            {{ supportPosition.text }}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="d-block">{{ $t('overlayfilter.form.margin.label') }}</label>
+      <div>
+        <input
+          type="number"
+          step="1"
+          :value="margin"
+          class="form-control"
+          @input="updateMargin($event.target.value)"
+        />
+      </div>
+    </div>
+  </form>
 </template>
 
 <script lang="ts">
@@ -78,7 +83,7 @@ export default Vue.extend({
       this.$emit('update:image', value);
     },
     updatePosition: function(value: string): void {
-      this.$emit('update:position', value);
+      this.$emit('update:position', Number(value));
     },
     updateMargin: function(value: string): void {
       this.$emit('update:margin', Number(value));

@@ -1,7 +1,44 @@
 <i18n src="../common/locales.json"></i18n>
 
 <template>
-  <b-form @submit.stop.prevent>
+  <form @submit.stop.prevent>
+    <fieldset class="form-group m-0">
+      <legend tabindex="-1" class="col-form-label pt-0">
+        {{ $t('resizefilter.form.size.label') }}
+      </legend>
+      <div>
+        <div class="input-group">
+          <div class="input-group-text">
+            X:
+          </div>
+          <input
+            type="number"
+            min="0"
+            step="1"
+            class="form-control"
+            :value="width"
+            @input="updateWidth($event.target.value)"
+          />
+          <div class="input-group-text">
+            Y:
+          </div>
+          <input
+            type="number"
+            min="0"
+            step="1"
+            class="form-control"
+            :value="height"
+            @input="updateHeight($event.target.value)"
+          />
+        </div>
+        <small tabindex="-1" class="form-text text-muted">{{
+          $t('resizefilter.form.size.description')
+        }}</small>
+      </div>
+    </fieldset>
+  </form>
+
+  <!-- <b-form @submit.stop.prevent>
     <b-form-group
       :description="$t('resizefilter.form.size.description')"
       :label="$t('resizefilter.form.size.label')"
@@ -30,7 +67,7 @@
         />
       </b-input-group>
     </b-form-group>
-  </b-form>
+  </b-form> -->
 </template>
 
 <script lang="ts">

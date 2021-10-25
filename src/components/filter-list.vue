@@ -51,7 +51,9 @@
             >
               <div class="row flex-nowrap align-items-center">
                 <div class="col-3">
-                  <span class="badge badge-light"> {{ index + 1 }} </span>
+                  <span class="badge bg-light text-dark">
+                    {{ index + 1 }}
+                  </span>
                 </div>
                 <div class="col-6">
                   {{ $t(`filterlist.filter.${filter.name}.name`) }}
