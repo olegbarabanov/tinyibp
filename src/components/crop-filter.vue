@@ -1,7 +1,85 @@
 <i18n src="../common/locales.json"></i18n>
 
 <template>
-  <b-form @submit.stop.prevent>
+  <form @submit.stop.prevent>
+    <div class="form-group">
+      <label for="input-mode-3" class="d-block">{{
+        $t('cropfilter.form.mode.label')
+      }}</label>
+      <div>
+        <select
+          id="input-mode-3"
+          name="mode"
+          class="mt-3 form-select form-select-sm"
+          :value="mode"
+          @change="updateMode($event.target.value)"
+        >
+          <option
+            v-for="supportMode in supportModes"
+            :key="supportMode.value"
+            :value="supportMode.value"
+          >
+            {{ supportMode.text }}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="d-block">{{ $t('cropfilter.form.position.label') }}</label>
+      <div>
+        <select
+          name="position"
+          class="mt-3 form-select form-select-sm"
+          :value="position"
+          @change="updatePosition($event.target.value)"
+        >
+          <option
+            v-for="supportPosition in supportPositions"
+            :key="supportPosition.value"
+            :value="supportPosition.value"
+          >
+            {{ supportPosition.text }}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="d-block">{{ $t('cropfilter.form.sizes.label') }}</label>
+      <div>
+        <div role="group" class="input-group">
+          <div class="input-group-text">
+            X:
+          </div>
+          <input
+            type="number"
+            placeholder="auto"
+            min="0"
+            step="1"
+            class="form-control"
+            :value="formatter(width)"
+            @input="updateWidth($event.target.value)"
+          />
+          <div class="input-group-text">
+            Y:
+          </div>
+          <input
+            type="number"
+            placeholder="auto"
+            min="0"
+            step="1"
+            class="form-control"
+            :value="formatter(height)"
+            @input="updateHeight($event.target.value)"
+          />
+        </div>
+        <small tabindex="-1" class="form-text text-muted">{{
+          $t('cropfilter.form.sizes.description')
+        }}</small>
+      </div>
+    </div>
+  </form>
+
+  <!-- <b-form @submit.stop.prevent>
     <b-form-group
       :label="$t('cropfilter.form.mode.label')"
       :label-for="`input-mode-${componentID}`"
@@ -64,7 +142,7 @@
         />
       </b-input-group>
     </b-form-group>
-  </b-form>
+  </b-form> -->
 </template>
 
 <script lang="ts">

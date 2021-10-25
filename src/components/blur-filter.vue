@@ -1,23 +1,24 @@
 <i18n src="../common/locales.json"></i18n>
 
 <template>
-  <b-form @submit.stop.prevent>
-    <b-form-group
-      :description="$t('blurfilter.form.level.description')"
-      :label-for="`input-${componentID}`"
-      class="m-0"
-    >
-      <b-form-input
-        :id="`input-${componentID}`"
-        :value="level"
-        type="number"
-        min="0"
-        max="100"
-        step="0.1"
-        @input="updateLevel"
-      />
-    </b-form-group>
-  </b-form>
+  <form @submit.stop.prevent>
+    <div class="form-group m-0">
+      <div>
+        <input
+          type="number"
+          min="0"
+          max="100"
+          step="0.1"
+          class="form-control"
+          :value="level"
+          @input="updateLevel($event.target.value)"
+        />
+        <small tabindex="-1" class="form-text text-muted">{{
+          $t('blurfilter.form.level.description')
+        }}</small>
+      </div>
+    </div>
+  </form>
 </template>
 
 <script lang="ts">
