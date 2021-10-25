@@ -12,7 +12,7 @@
       <div class="dropdown d-inline-flex mx-4">
         <button
           type="button"
-          class="btn dropdown-toggle btn-secondary btn-block dropdown-toggle-no-caret"
+          class="btn btn-secondary btn-block"
           data-bs-toggle="dropdown"
         >
           <i class="bi bi-plus-circle" />
