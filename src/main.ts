@@ -35,8 +35,6 @@ import {ImageBuilderWorkerProxy} from './image-processor/image-builder-worker-pr
 
 Vue.use(VueScreen, 'bootstrap');
 Vue.use(VueI18n);
-//Vue.use(BootstrapVue);
-//Vue.use(BootstrapVueIcons);
 
 Vue.component('ResizeFilter', ResizeFilter);
 Vue.component('ContrastFilter', ContrastFilter);
@@ -51,7 +49,7 @@ Vue.component('ColorReplacementFilter', ColorReplacementFilter);
 
 const filterProcessor = new FilterProcessor();
 const DEFAULT_LANG = 'en';
-console.log(SUPPORT_FILTERS);
+
 SUPPORT_FILTERS.forEach(filter => {
   filterProcessor.getFilterFactory().registerFilter(filter);
 });
@@ -75,7 +73,6 @@ interface RootState {
 
 const initStore: StoreOptions<RootState> = {
   state() {
-    // console.log(filterProcessor.getFilterFactory().getFilterCollection());
     return {
       lang: DEFAULT_LANG as string, // see ISO 639-1
       registeredFilters: filterProcessor
