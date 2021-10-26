@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
-import Vue from 'vue';
+import Vue, {createApp, h} from 'vue';
 import Vuex, {StoreOptions} from 'vuex';
 //import {BootstrapVue, BootstrapVueIcons} from 'bootstrap-vue';
 import App from './App.vue';
@@ -33,10 +33,8 @@ import {
 import ImageBuilderWorkerManager from './image-processor/image-builder-worker-manager';
 import {ImageBuilderWorkerProxy} from './image-processor/image-builder-worker-proxy';
 
-Vue.config.productionTip = false;
 Vue.use(VueScreen, 'bootstrap');
 Vue.use(VueI18n);
-Vue.use(Vuex);
 //Vue.use(BootstrapVue);
 //Vue.use(BootstrapVueIcons);
 
@@ -217,11 +215,12 @@ const initStore: StoreOptions<RootState> = {
 };
 
 const store = new Vuex.Store(initStore);
-new Vue({
+createApp({
   i18n,
-  store,
-  render: h => h(App),
-}).$mount('#app');
+  render: () => h(App),
+})
+  .use(store)
+  .mount('#app');
 
 // ---- INIT ---
 store.commit('setLang', navigator.language.substr(0, 2).toLowerCase());
