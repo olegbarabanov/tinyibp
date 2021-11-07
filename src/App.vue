@@ -34,7 +34,7 @@
                   <ul tabindex="-1" class="dropdown-menu dropdown-menu-end">
                     <li class="text-uppercase">
                       <a
-                        v-for="lang in supportLangs"
+                        v-for="lang in availableLocales"
                         :key="lang"
                         href="#"
                         target="_self"
@@ -121,7 +121,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, computed} from 'vue';
+import {defineComponent} from 'vue';
 import {useI18n} from 'vue-i18n';
 // import Vue from 'vue';
 // import HelloWorld from './components/HelloWorld.vue';
@@ -129,13 +129,8 @@ import {useI18n} from 'vue-i18n';
 export default defineComponent({
   name: 'App',
   setup() {
-    const {t} = useI18n({useScope: 'global'});
-
-    const supportLangs = computed(() => {
-      // return Object.keys(this.$i18n.messages);
-      return Object.keys({});
-    });
-    return {supportLangs, t};
+    const {t, availableLocales} = useI18n({useScope: 'global'});
+    return {t, availableLocales};
   },
 });
 </script>

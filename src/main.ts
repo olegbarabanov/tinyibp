@@ -9,7 +9,7 @@ import {createApp} from 'vue';
 import App from './App.vue';
 import i18n from './i18n';
 import VueScreen from 'vue-screen';
-
+//
 createApp(App)
   .use(VueScreen, 'bootstrap')
   .use(i18n)
