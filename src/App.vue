@@ -39,7 +39,7 @@
                         href="#"
                         target="_self"
                         class="dropdown-item text-uppercase"
-                        @click="$store.commit('setLang', lang)"
+                        @click="locale = lang"
                       >
                         {{ lang }}
                       </a>
@@ -123,14 +123,14 @@
 <script lang="ts">
 import {defineComponent} from 'vue';
 import {useI18n} from 'vue-i18n';
-// import Vue from 'vue';
-// import HelloWorld from './components/HelloWorld.vue';
+import {useStore} from './store';
 
 export default defineComponent({
   name: 'App',
   setup() {
-    const {t, availableLocales} = useI18n({useScope: 'global'});
-    return {t, availableLocales};
+    const {t, availableLocales, locale} = useI18n({useScope: 'global'});
+    const store = useStore();
+    return {t, availableLocales, store, locale};
   },
 });
 </script>
