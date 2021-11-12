@@ -115,7 +115,9 @@ export default defineComponent({
       }
       showToast(
         t('filelist.notice.forbidden-clipboard.title'),
-        t('filelist.notice.incompatible-clipboard-data.text')
+        t('filelist.notice.incompatible-clipboard-data.text'),
+        'warning',
+        5000
       );
       // bc.Toast.getInstance(toastForbiddenClipboard.value)?.show();
       const data = await navigator.clipboard.read();

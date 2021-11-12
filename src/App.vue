@@ -121,21 +121,35 @@
 
   <teleport to="#toast-container">
     <!-- <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11"> -->
-    <div v-for="[symbol, toast] in toastList" :key="symbol" class="toast show">
-      <div class="toast-header">
-        <strong class="me-auto">
-          {{ toast.title }}
-        </strong>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="toast"
-        ></button>
+    <transition-group name="toast">
+      <div
+        v-for="[symbol, toast] in toastList"
+        :key="symbol"
+        class="toast show"
+      >
+        <div
+          :class="
+            `toast-header bg-${toast.type} bg-opacity-25 text-dark text-opacity-75`
+          "
+        >
+          <strong class="me-auto">
+            {{ toast.title }}
+          </strong>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="toast"
+          ></button>
+        </div>
+        <div
+          :class="
+            `toast-body bg-${toast.type} bg-opacity-25 text-dark text-opacity-75`
+          "
+        >
+          {{ toast.text }}
+        </div>
       </div>
-      <div class="toast-body">
-        {{ toast.text }}
-      </div>
-    </div>
+    </transition-group>
     <!-- </div> -->
   </teleport>
 </template>
@@ -155,12 +169,20 @@ export default defineComponent({
     const {t, availableLocales, locale} = useI18n({useScope: 'global'});
     const store = useStore();
     const toastList = reactive(
-      new Map<symbol, {title: string; text: string}>()
+      new Map<
+        symbol,
+        {title: string; text: string; type: string; duration: number}
+      >()
     );
-    const showToast = (title: string, text: string) => {
+    const showToast = (
+      title: string,
+      text: string,
+      type: string,
+      duration: number
+    ) => {
       const symbol = Symbol();
-      toastList.set(symbol, {title, text});
-      setTimeout(() => toastList.delete(symbol), 3000);
+      toastList.set(symbol, {title, text, type, duration});
+      setTimeout(() => toastList.delete(symbol), duration);
     };
     provide('showToast', showToast);
     return {t, availableLocales, store, locale, showToast, toastList};
@@ -189,5 +211,14 @@ body {
 
 .card-body {
   min-height: 0;
+}
+
+.toast-enter-active,
+.toast-leave-active {
+  transition: all 0.5s ease;
+}
+.toast-enter-from,
+.toast-leave-to {
+  opacity: 0;
 }
 </style>
