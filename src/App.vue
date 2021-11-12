@@ -52,17 +52,17 @@
         </div>
       </div>
       <div
-        v-if="$screen.md"
+        v-if="$grid.md"
         class="row flex-grow-1 overflow-hidden g-0 align-items-stretch"
       >
         <div class="col-md-3 mh-100 p-1">
           <file-list />
         </div>
         <div class="col-md-6 mh-100 p-1">
-          <preview-canvas />
+          <!-- <preview-canvas /> -->
         </div>
         <div class="col-md-3 mh-100 p-1">
-          <filter-list />
+          <!-- <filter-list /> -->
         </div>
       </div>
       <div
@@ -70,16 +70,16 @@
         class="row flex-grow-1 overflow-hidden g-0 align-items-stretch"
       >
         <div class="col-12 mh-100 p-1">
-          <preview-canvas />
+          <!-- <preview-canvas /> -->
         </div>
       </div>
       <div class="row g-0 align-items-stretch">
         <div class="col-12">
-          <download-form />
+          <!-- <download-form /> -->
         </div>
       </div>
     </div>
-    <div v-if="!$screen.md">
+    <div v-if="!$grid.md">
       <button
         type="button"
         class="btn btn-secondary collapsed position-fixed start-0 top-50"
@@ -112,25 +112,58 @@
           style="width: 250px; display: none;"
         >
           <div class="b-sidebar-body d-flex">
-            <filter-list />
+            <!-- <filter-list /> -->
           </div>
         </div>
       </div>
     </div>
   </div>
+
+  <teleport to="#toast-container">
+    <!-- <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11"> -->
+    <div v-for="[symbol, toast] in toastList" :key="symbol" class="toast show">
+      <div class="toast-header">
+        <strong class="me-auto">
+          {{ toast.title }}
+        </strong>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="toast"
+        ></button>
+      </div>
+      <div class="toast-body">
+        {{ toast.text }}
+      </div>
+    </div>
+    <!-- </div> -->
+  </teleport>
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue';
+import {defineComponent, provide, reactive} from 'vue';
 import {useI18n} from 'vue-i18n';
+import fileList from './components/file-list.vue';
 import {useStore} from './store';
 
 export default defineComponent({
   name: 'App',
+  components: {
+    fileList,
+  },
   setup() {
     const {t, availableLocales, locale} = useI18n({useScope: 'global'});
     const store = useStore();
-    return {t, availableLocales, store, locale};
+    const toastList = reactive(
+      new Map<symbol, {title: string; text: string}>()
+    );
+    const showToast = (title: string, text: string) => {
+      const symbol = Symbol();
+      toastList.set(symbol, {title, text});
+      setTimeout(() => toastList.delete(symbol), 3000);
+    };
+    provide('showToast', showToast);
+    return {t, availableLocales, store, locale, showToast, toastList};
   },
 });
 </script>

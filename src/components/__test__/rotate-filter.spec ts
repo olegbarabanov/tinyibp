@@ -1,0 +1,26 @@
+/* eslint-disable node/no-unpublished-import */
+import {createLocalVue, mount} from '@vue/test-utils';
+import RotateFilter from '@/components/rotate-filter.vue';
+import BootstrapVue, {BFormInput} from 'bootstrap-vue';
+
+describe('rotate-filter.vue', () => {
+  test('emits the correct event with a numeric value when different "angle" types are set.', async () => {
+    const localVue = createLocalVue();
+    localVue.use(BootstrapVue);
+    const wrapper = mount(RotateFilter, {
+      localVue,
+      mocks: {
+        $t: (msg: string) => msg,
+        $tc: (msg: string) => msg,
+      },
+    });
+
+    const input = wrapper.findComponent(BFormInput);
+    expect(input.exists()).toBe(true);
+    for (let i = -32; i <= 32; i++) {
+      input.setValue(i * 25.5);
+      expect(wrapper.emitted()['update:level']?.[i]).toBeTruthy();
+      expect(wrapper.emitted()['update:level']?.[i]).toEqual([i * 25.5]);
+    }
+  });
+});

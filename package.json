@@ -27,6 +27,7 @@
   "devDependencies": {
     "@babel/core": "^7.16.0",
     "@intlify/vue-i18n-loader": "^3.0.0",
+    "@types/offscreencanvas": "^2019.6.4",
     "@typescript-eslint/eslint-plugin": "^4.33.0",
     "@typescript-eslint/parser": "^4.18.0",
     "@vue/cli-plugin-babel": "~4.5.0",
