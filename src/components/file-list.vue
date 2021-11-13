@@ -19,14 +19,14 @@
         </button>
         <ul tabindex="-1" class="dropdown-menu">
           <li @click="getImageFromFilePicker">
-            <a href="#" target="_self" class="dropdown-item">{{
-              t('filelist.upload.from-device')
-            }}</a>
+            <a href="#" target="_self" class="dropdown-item">
+              {{ t('filelist.upload.from-device') }}
+            </a>
           </li>
           <li @click="getImageFromClipboard">
-            <a href="#" target="_self" class="dropdown-item">{{
-              t('filelist.upload.from-clipboard')
-            }}</a>
+            <a href="#" target="_self" class="dropdown-item">
+              {{ t('filelist.upload.from-clipboard') }}
+            </a>
           </li>
         </ul>
       </div>
@@ -68,14 +68,14 @@ import {SupportMimesTypes, supportTypes} from '@/image-processor';
 import {computed, defineComponent, inject, ref} from 'vue';
 import {useI18n} from 'vue-i18n';
 import {useStore} from '@/store';
-import {Toast} from 'bootstrap';
+import {key as keyToast} from '@/toast';
 
 export default defineComponent({
   setup() {
     const {t, availableLocales, locale} = useI18n({useScope: 'global'});
     const store = useStore();
     const toastForbiddenClipboard = ref<HTMLElement>();
-    const showToast = inject('showToast') as any;
+    const showToast = inject(keyToast);
     const fileList = computed(() => store.state.fileList);
     const getImageFromFilePicker = async () => {
       const input = document.createElement('input');
@@ -108,17 +108,14 @@ export default defineComponent({
         // );
         return;
       }
-      if (toastForbiddenClipboard.value) {
-        const toast = new Toast(toastForbiddenClipboard.value);
-        console.log(2, toast, toastForbiddenClipboard.value);
-        toast.show();
+      if (showToast) {
+        showToast({
+          title: t('filelist.notice.forbidden-clipboard.title'),
+          text: t('filelist.notice.incompatible-clipboard-data.text'),
+          type: 'warning',
+          duration: 5000,
+        });
       }
-      showToast(
-        t('filelist.notice.forbidden-clipboard.title'),
-        t('filelist.notice.incompatible-clipboard-data.text'),
-        'warning',
-        5000
-      );
       // bc.Toast.getInstance(toastForbiddenClipboard.value)?.show();
       const data = await navigator.clipboard.read();
       const allowImageClipboardExtension = 'png';

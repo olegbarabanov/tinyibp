@@ -159,6 +159,7 @@ import {defineComponent, provide, reactive} from 'vue';
 import {useI18n} from 'vue-i18n';
 import fileList from './components/file-list.vue';
 import {useStore} from './store';
+import {Toast, key as toastKey} from './toast';
 
 export default defineComponent({
   name: 'App',
@@ -168,23 +169,13 @@ export default defineComponent({
   setup() {
     const {t, availableLocales, locale} = useI18n({useScope: 'global'});
     const store = useStore();
-    const toastList = reactive(
-      new Map<
-        symbol,
-        {title: string; text: string; type: string; duration: number}
-      >()
-    );
-    const showToast = (
-      title: string,
-      text: string,
-      type: string,
-      duration: number
-    ) => {
+    const toastList = reactive(new Map<symbol, Toast>());
+    const showToast = (toast: Toast) => {
       const symbol = Symbol();
-      toastList.set(symbol, {title, text, type, duration});
-      setTimeout(() => toastList.delete(symbol), duration);
+      toastList.set(symbol, toast);
+      setTimeout(() => toastList.delete(symbol), toast.duration);
     };
-    provide('showToast', showToast);
+    provide(toastKey, showToast);
     return {t, availableLocales, store, locale, showToast, toastList};
   },
 });
