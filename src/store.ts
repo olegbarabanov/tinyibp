@@ -37,6 +37,9 @@ export const store = createStore<State>({
     setFile(state, file: File) {
       state.fileList.push(file);
     },
+    showFile(state, index: number | null) {
+      state.showFileIndex = index;
+    },
   },
 });
 

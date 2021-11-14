@@ -1,4 +1,4 @@
-<i18n src="../common/locales.json"></i18n>
+<i18n global src="../common/locales.json"></i18n>
 
 <template>
   <div class="card h-100 text-center w-100 border-dark">
@@ -98,40 +98,31 @@ export default defineComponent({
         name: 'clipboard-read' as PermissionName, //trouble with TS >= 4.4.2
       });
       if (permission.state === 'denied') {
-        // bc.Toast.getInstance(toastForbiddenClipboard.value)?.show();
-        // this.$bvToast.toast(
-        //   this.$tc('filelist.notice.forbidden-clipboard.text'),
-        //   {
-        //     title: this.$tc('filelist.notice.forbidden-clipboard.title'),
-        //     variant: 'warning',
-        //   }
-        // );
+        if (showToast) {
+          showToast({
+            title: t('filelist.notice.forbidden-clipboard.title'),
+            text: t('filelist.notice.forbidden-clipboard.text'),
+            type: 'warning',
+            duration: 5000,
+          });
+        }
+
         return;
       }
-      if (showToast) {
-        showToast({
-          title: t('filelist.notice.forbidden-clipboard.title'),
-          text: t('filelist.notice.incompatible-clipboard-data.text'),
-          type: 'warning',
-          duration: 5000,
-        });
-      }
-      // bc.Toast.getInstance(toastForbiddenClipboard.value)?.show();
       const data = await navigator.clipboard.read();
       const allowImageClipboardExtension = 'png';
       const allowImageType = SupportMimesTypes[allowImageClipboardExtension];
 
       for (let i = 0; i < data.length; i++) {
         if (!data[i].types.includes(allowImageType)) {
-          // this.$bvToast.toast(
-          //   this.$tc('filelist.notice.incompatible-clipboard-data.text'),
-          //   {
-          //     title: this.$tc(
-          //       'filelist.notice.incompatible-clipboard-data.title'
-          //     ),
-          //     variant: 'warning',
-          //   }
-          // );
+          if (showToast) {
+            showToast({
+              title: t('filelist.notice.incompatible-clipboard-data.title'),
+              text: t('filelist.notice.incompatible-clipboard-data.text'),
+              type: 'warning',
+              duration: 5000,
+            });
+          }
           continue;
         }
         const blob = await data[i].getType(allowImageType);

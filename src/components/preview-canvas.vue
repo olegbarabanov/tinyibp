@@ -1,4 +1,4 @@
-<i18n src="../common/locales.json"></i18n>
+<i18n global src="../common/locales.json"></i18n>
 
 <template>
   <div class="card h-100 text-center bg-transparent border-dark">
@@ -7,7 +7,7 @@
       style="min-height: 3rem;"
     >
       <h5 class="my-0 mx-4 d-none d-md-block">
-        {{ $t('previewcanvas.header.text') }}
+        {{ t('previewcanvas.header.text') }}
       </h5>
       <fieldset class="form-group d-inline-flex m-0 mx-4">
         <div>
@@ -15,17 +15,17 @@
             tabindex="-1"
             class="btn-group-toggle btn-group btn-group-sm bv-no-focus-ring"
           >
-            <label v-for="option in options" :key="option.value">
+            <label v-for="(value, key) in options" :key="key">
               <input
-                :id="option.value"
+                :id="key"
                 v-model="selected"
                 type="radio"
                 name="radios-btn-default"
                 class="btn-check"
-                :value="option.value"
+                :value="key"
               />
-              <label class="btn btn-secondary btn-sm" :for="option.value">
-                {{ option.text }}</label
+              <label class="btn btn-secondary btn-sm" :for="key">
+                {{ value }}</label
               >
             </label>
           </div>
@@ -47,6 +47,7 @@
             }"
             :width="width"
             :height="height"
+            rel="canvas"
           />
         </div>
       </div>
@@ -59,17 +60,17 @@
       </p>
       <p>
         <span class="m-3"
-          >{{ $t('previewcanvas.dimensions.label')
+          >{{ t('previewcanvas.dimensions.label')
           }}<span class="badge badge-secondary"
             >{{ width }}x{{ height }}</span
           ></span
         ><span v-show="selected !== 'preliminary-preview'" class="m-3"
-          >{{ $t('previewcanvas.size.label')
+          >{{ t('previewcanvas.size.label')
           }}<span class="badge badge-secondary"
-            >{{ sizeToMb }} {{ $t('previewcanvas.size.value') }}</span
+            >{{ sizeToMb }} {{ t('previewcanvas.size.value') }}</span
           ></span
         ><span v-show="selected !== 'preliminary-preview'" class="m-3"
-          >{{ $t('previewcanvas.type.label')
+          >{{ t('previewcanvas.type.label')
           }}<span class="badge badge-secondary">{{ type }}</span></span
         >
       </p>
@@ -80,8 +81,186 @@
 <script lang="ts">
 import {ImageBuilder} from '@/image-processor';
 import {ImageBuilderWorkerProxy} from '@/image-processor/image-builder-worker-proxy';
-import Vue from 'vue';
+import {useStore} from '@/store';
+import {
+  computed,
+  defineComponent,
+  nextTick,
+  onBeforeUnmount,
+  ref,
+  watch,
+} from 'vue';
+import {useI18n} from 'vue-i18n';
 
+type SelectMode = 'original-preview' | 'preliminary-preview' | 'result-preview';
+
+export default defineComponent({
+  setup() {
+    const {t} = useI18n({useScope: 'global'});
+    const store = useStore();
+    const canvas = ref<HTMLCanvasElement>();
+
+    const selected = ref<SelectMode>('preliminary-preview');
+    const width = ref<number>(0);
+    const height = ref<number>(0);
+    const showProcessIndicator = ref<boolean>(false);
+    const size = ref<number>(0);
+    const type = ref<string>('');
+    const name = ref<string>('');
+    const fullSizePreview = ref<boolean>(false);
+
+    let updateTimeout = 0;
+    let imageBuilder: ImageBuilder; // FIXME !!!!!!!!!!!!!
+
+    const show = computed(() => store.state.showFileIndex !== null);
+    const sizeToMb = computed(() => (size.value / 1000 ** 2).toFixed(3));
+    const options = computed<
+      {
+        [K in SelectMode]: string;
+      }
+    >(() => {
+      return {
+        'original-preview': t('previewcanvas.viewselector.original.text'),
+        'preliminary-preview': t('previewcanvas.viewselector.preliminary.text'),
+        'result-preview': t('previewcanvas.viewselector.result.text'),
+      };
+    });
+
+    const updateCanvas = function() {
+      if (store.state.showFileIndex === null) {
+        canvas.value
+          ?.getContext('2d')
+          ?.clearRect(0, 0, canvas.value?.width, canvas.value?.height);
+        return;
+      }
+      showProcessIndicator.value = true;
+      window.clearTimeout(updateTimeout);
+      updateTimeout = window.setTimeout(async () => {
+        let imageBitmap: ImageBitmap;
+        if (store.state.showFileIndex === null) return;
+        let blob = store.state.fileList[store.state.showFileIndex];
+        console.log(selected.value);
+        if (selected.value === 'original-preview') {
+          imageBuilder.setFilterMap([]);
+          imageBitmap = await imageBuilder.buildImageBitmap();
+          imageBuilder.setFilterMap(store.state.filterMaps);
+        } else if (selected.value === 'preliminary-preview') {
+          imageBitmap = await imageBuilder.buildImageBitmap();
+        } else if (selected.value === 'result-preview') {
+          blob = await imageBuilder.buildFile();
+          imageBitmap = await new ImageBuilderWorkerProxy(
+            blob
+          ).buildImageBitmap();
+        } else {
+          throw new Error('call unknown preview mode');
+        }
+
+        width.value = imageBitmap.width;
+        height.value = imageBitmap.height;
+        size.value = blob.size;
+        type.value = blob.type;
+        name.value = blob.name;
+
+        canvas.value
+          ?.getContext('2d')
+          ?.clearRect(0, 0, canvas.value?.width, canvas.value?.height);
+
+        nextTick(() =>
+          canvas.value?.getContext('2d')?.drawImage(imageBitmap, 0, 0)
+        );
+        showProcessIndicator.value = false;
+      }, 200);
+    };
+
+    const unmountWatchFilterMaps = store.watch(
+      (state, getters) => getters.filterMaps,
+      async () => {
+        if (imageBuilder instanceof ImageBuilder) {
+          imageBuilder.setFilterMap(store.state.filterMaps);
+        }
+        await updateCanvas();
+      },
+      {deep: true}
+    );
+
+    const unmountWatchShowFileIndex = store.watch(
+      state => {
+        return state.showFileIndex;
+      },
+      async () => {
+        if (store.state.showFileIndex === null) {
+          await updateCanvas();
+          return;
+        }
+        const blob = store.state.fileList[store.state.showFileIndex];
+        if (!blob) {
+          await updateCanvas();
+          return;
+        }
+        imageBuilder = new ImageBuilderWorkerProxy(blob);
+        imageBuilder.setType(store.state.type);
+        imageBuilder.setQuality(store.state.quality);
+        imageBuilder.setNameTransformPattern(store.state.nameTransformPattern);
+        console.log('filterMaps', store.state.filterMaps);
+        imageBuilder.setFilterMap(store.state.filterMaps);
+        await updateCanvas();
+      }
+    );
+
+    const unmountWatchType = store.watch(
+      state => state.type,
+      async () => {
+        imageBuilder.setType(store.state.type);
+        await updateCanvas();
+      }
+    );
+
+    const unmountWatchQuality = store.watch(
+      state => state.quality,
+      async () => {
+        imageBuilder.setQuality(store.state.quality);
+        await updateCanvas();
+      }
+    );
+
+    const unmountWatchNameTransformPattern = store.watch(
+      state => state.nameTransformPattern,
+      async () => {
+        imageBuilder.setNameTransformPattern(store.state.nameTransformPattern);
+        await updateCanvas();
+      }
+    );
+
+    watch(selected, async () => {
+      await updateCanvas();
+    });
+
+    onBeforeUnmount(() => {
+      unmountWatchFilterMaps();
+      unmountWatchShowFileIndex();
+      unmountWatchType();
+      unmountWatchQuality();
+      unmountWatchNameTransformPattern();
+    });
+
+    return {
+      t,
+      selected,
+      width,
+      height,
+      showProcessIndicator,
+      size,
+      type,
+      name,
+      fullSizePreview,
+      show,
+      sizeToMb,
+      options,
+      updateCanvas,
+    };
+  },
+});
+/*
 export default Vue.extend({
   data() {
     return {
@@ -212,4 +391,6 @@ export default Vue.extend({
   //  this.updateCanvas();
   // }
 });
+
+*/
 </script>

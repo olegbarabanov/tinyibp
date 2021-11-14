@@ -59,7 +59,7 @@
           <file-list />
         </div>
         <div class="col-md-6 mh-100 p-1">
-          <!-- <preview-canvas /> -->
+          <preview-canvas />
         </div>
         <div class="col-md-3 mh-100 p-1">
           <!-- <filter-list /> -->
@@ -158,6 +158,7 @@
 import {defineComponent, provide, reactive} from 'vue';
 import {useI18n} from 'vue-i18n';
 import fileList from './components/file-list.vue';
+import previewCanvas from './components/preview-canvas.vue';
 import {useStore} from './store';
 import {Toast, key as toastKey} from './toast';
 
@@ -165,6 +166,7 @@ export default defineComponent({
   name: 'App',
   components: {
     fileList,
+    previewCanvas,
   },
   setup() {
     const {t, availableLocales, locale} = useI18n({useScope: 'global'});
