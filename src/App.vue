@@ -62,7 +62,7 @@
           <preview-canvas />
         </div>
         <div class="col-md-3 mh-100 p-1">
-          <!-- <filter-list /> -->
+          <filter-list />
         </div>
       </div>
       <div
@@ -70,7 +70,7 @@
         class="row flex-grow-1 overflow-hidden g-0 align-items-stretch"
       >
         <div class="col-12 mh-100 p-1">
-          <!-- <preview-canvas /> -->
+          <preview-canvas />
         </div>
       </div>
       <div class="row g-0 align-items-stretch">
@@ -112,7 +112,7 @@
           style="width: 250px; display: none;"
         >
           <div class="b-sidebar-body d-flex">
-            <!-- <filter-list /> -->
+            <filter-list />
           </div>
         </div>
       </div>
@@ -159,6 +159,7 @@ import {defineComponent, provide, reactive} from 'vue';
 import {useI18n} from 'vue-i18n';
 import fileList from './components/file-list.vue';
 import previewCanvas from './components/preview-canvas.vue';
+import filterList from './components/filter-list.vue';
 import {useStore} from './store';
 import {Toast, key as toastKey} from './toast';
 
@@ -167,6 +168,7 @@ export default defineComponent({
   components: {
     fileList,
     previewCanvas,
+    filterList,
   },
   setup() {
     const {t, availableLocales, locale} = useI18n({useScope: 'global'});

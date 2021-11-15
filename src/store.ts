@@ -30,6 +30,13 @@ export const store = createStore<State>({
     type: undefined,
     nameTransformPattern: '@file',
   },
+  actions: {
+    initFilter(store, name: string) {
+      const filter = filterProcessor.getFilterFactory().findFilter(name);
+      if (!filter) return false;
+      store.commit('setFilter', new filter().getPropertyMap());
+    },
+  },
   mutations: {
     setLang(_state, lang = DEFAULT_LANG) {
       i18n.global.locale.value = lang;
@@ -39,6 +46,14 @@ export const store = createStore<State>({
     },
     showFile(state, index: number | null) {
       state.showFileIndex = index;
+    },
+  },
+  getters: {
+    filterMaps: state => {
+      return state.filterMaps;
+    },
+    fileList: state => {
+      return state.fileList;
     },
   },
 });

@@ -1,4 +1,4 @@
-<i18n src="../common/locales.json"></i18n>
+<i18n global src="../common/locales.json"></i18n>
 
 <template>
   <div class="card h-100 text-center w-100 border-dark">
@@ -7,7 +7,7 @@
       style="min-height: 3rem;"
     >
       <h5 class="my-0 mx-4">
-        {{ $t('filterlist.header.text') }}
+        {{ t('filterlist.header.text') }}
       </h5>
       <div class="dropdown d-inline-flex mx-4">
         <button
@@ -24,7 +24,7 @@
             @click="initFilter(filter)"
           >
             <a href="#" target="_self" class="dropdown-item">
-              {{ $t(`filterlist.filter.${filter}.name`) }}
+              {{ t(`filterlist.filter.${filter}.name`) }}
             </a>
           </li>
         </ul>
@@ -45,7 +45,7 @@
             class="card mb-1 border-secondary"
           >
             <header
-              :title="$t('filterlist.event.draggable.title')"
+              :title="t('filterlist.event.draggable.title')"
               class="card-header handle py-1 bg-secondary text-white"
               style="cursor: move;"
             >
@@ -56,13 +56,13 @@
                   </span>
                 </div>
                 <div class="col-6">
-                  {{ $t(`filterlist.filter.${filter.name}.name`) }}
+                  {{ t(`filterlist.filter.${filter.name}.name`) }}
                 </div>
                 <div class="col-3">
                   <button
                     type="button"
                     class="btn close btn-secondary"
-                    @click="$store.commit('removeFilter', index)"
+                    @click="store.commit('removeFilter', index)"
                   >
                     <span>×</span>
                   </button>
@@ -76,8 +76,16 @@
                     filter.name.slice(1) +
                     'Filter'
                 "
-                v-bind.sync="filterMaps[index]"
+                v-model="filterMaps[index]"
               />
+              <!-- <component
+                :is="
+                  filter.name.charAt(0).toUpperCase() +
+                    filter.name.slice(1) +
+                    'Filter'
+                "
+                v-bind.sync="filterMaps[index]"
+              /> -->
             </div>
           </div>
         </draggable>
@@ -87,7 +95,7 @@
     <div v-else class="card-body">
       <div class="d-flex align-items-center justify-content-center h-100">
         <p>
-          {{ $t('filterlist.notice.emptylist') }}
+          {{ t('filterlist.notice.emptylist') }}
         </p>
       </div>
     </div>
@@ -95,6 +103,37 @@
 </template>
 
 <script lang="ts">
+import {useStore} from '@/store';
+import {computed, defineComponent} from 'vue';
+import {useI18n} from 'vue-i18n';
+import draggable from 'vuedraggable';
+
+export default defineComponent({
+  components: {
+    draggable,
+  },
+  setup() {
+    const {t} = useI18n({useScope: 'global'});
+
+    const store = useStore();
+    const registeredFilters = computed(() => store.state.registeredFilters);
+
+    const filterMaps = computed({
+      get() {
+        return store.state.filterMaps;
+      },
+      set() {
+        store.dispatch('setFilter');
+      },
+    });
+
+    const initFilter = (filter: any) => store.dispatch('initFilter', filter); //FIXME: check any !!!
+
+    return {t, filterMaps, store, initFilter, registeredFilters};
+  },
+});
+
+/*
 import Vue from 'vue';
 import {mapState, mapActions} from 'vuex';
 import draggable from 'vuedraggable';
@@ -126,4 +165,5 @@ export default Vue.extend({
     ...mapActions(['initFilter']),
   },
 });
+*/
 </script>

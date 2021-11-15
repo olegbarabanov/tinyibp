@@ -15,17 +15,27 @@ export class ImageBuilderWorkerProxy extends ImageBuilder {
   }
 
   setFilterMap(...args: Parameters<ImageBuilder['setFilterMap']>): this {
-    this.messagePort.postMessage({method: 'setFilterMap', params: args});
+    console.log('#args', args);
+    this.messagePort.postMessage({
+      method: 'setFilterMap',
+      params: JSON.parse(JSON.stringify(args)), // need plain objects or arrays to transfer data using postMessage. Proxy objects are not suitable
+    });
     return super.setFilterMap(...args);
   }
 
   setQuality(...args: Parameters<ImageBuilder['setQuality']>): this {
-    this.messagePort.postMessage({method: 'setQuality', params: args});
+    this.messagePort.postMessage({
+      method: 'setQuality',
+      params: JSON.parse(JSON.stringify(args)),
+    });
     return super.setQuality(...args);
   }
 
   setType(...args: Parameters<ImageBuilder['setType']>): this {
-    this.messagePort.postMessage({method: 'setType', params: args});
+    this.messagePort.postMessage({
+      method: 'setType',
+      params: JSON.parse(JSON.stringify(args)),
+    });
     return super.setType(...args);
   }
 
@@ -34,7 +44,7 @@ export class ImageBuilderWorkerProxy extends ImageBuilder {
   ): this {
     this.messagePort.postMessage({
       method: 'setNameTransformPattern',
-      params: args,
+      params: JSON.parse(JSON.stringify(args)),
     });
     return super.setNameTransformPattern(...args);
   }

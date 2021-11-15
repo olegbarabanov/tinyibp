@@ -139,7 +139,6 @@ export default defineComponent({
         let imageBitmap: ImageBitmap;
         if (store.state.showFileIndex === null) return;
         let blob = store.state.fileList[store.state.showFileIndex];
-        console.log(selected.value);
         if (selected.value === 'original-preview') {
           imageBuilder.setFilterMap([]);
           imageBitmap = await imageBuilder.buildImageBitmap();
@@ -165,15 +164,15 @@ export default defineComponent({
           ?.getContext('2d')
           ?.clearRect(0, 0, canvas.value?.width, canvas.value?.height);
 
-        nextTick(() =>
-          canvas.value?.getContext('2d')?.drawImage(imageBitmap, 0, 0)
-        );
+        nextTick(() => {
+          canvas.value?.getContext('2d')?.drawImage(imageBitmap, 0, 0);
+        });
         showProcessIndicator.value = false;
       }, 200);
     };
 
     const unmountWatchFilterMaps = store.watch(
-      (state, getters) => getters.filterMaps,
+      state => state.filterMaps,
       async () => {
         if (imageBuilder instanceof ImageBuilder) {
           imageBuilder.setFilterMap(store.state.filterMaps);
@@ -201,7 +200,7 @@ export default defineComponent({
         imageBuilder.setType(store.state.type);
         imageBuilder.setQuality(store.state.quality);
         imageBuilder.setNameTransformPattern(store.state.nameTransformPattern);
-        console.log('filterMaps', store.state.filterMaps);
+        console.log('array', Array.isArray(store.state.filterMaps));
         imageBuilder.setFilterMap(store.state.filterMaps);
         await updateCanvas();
       }
@@ -257,6 +256,7 @@ export default defineComponent({
       sizeToMb,
       options,
       updateCanvas,
+      canvas,
     };
   },
 });
