@@ -16,3 +16,4 @@ createApp(App)
   .use(VueScreen, 'bootstrap')
   .use(i18n)
   .mount('#app');
+console.log(store);

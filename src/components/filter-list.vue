@@ -33,52 +33,48 @@
 
     <div v-if="filterMaps.length > 0" class="card-body p-1">
       <div class="d-flex flex-column mh-100">
-        <draggable
-          tag="div"
-          :list="filterMaps"
-          class="list-group overflow-auto"
-          handle=".handle"
-        >
-          <div
-            v-for="(filter, index) in filterMaps"
-            :key="index"
-            class="card mb-1 border-secondary"
-          >
-            <header
-              :title="t('filterlist.event.draggable.title')"
-              class="card-header handle py-1 bg-secondary text-white"
-              style="cursor: move;"
+        <div>
+          <div class="list-group overflow-auto">
+            <div
+              v-for="(filter, index) in filterMaps"
+              :key="index"
+              class="card mb-1 border-secondary"
             >
-              <div class="row flex-nowrap align-items-center">
-                <div class="col-3">
-                  <span class="badge bg-light text-dark">
-                    {{ index + 1 }}
-                  </span>
+              <header
+                :title="t('filterlist.event.draggable.title')"
+                class="card-header handle py-1 bg-secondary text-white"
+                style="cursor: move;"
+              >
+                <div class="row flex-nowrap align-items-center">
+                  <div class="col-3">
+                    <span class="badge bg-light text-dark">
+                      {{ index + 1 }}
+                    </span>
+                  </div>
+                  <div class="col-6">
+                    {{ t(`filterlist.filter.${filter.name}.name`) }}
+                  </div>
+                  <div class="col-3">
+                    <button
+                      type="button"
+                      class="btn close btn-secondary"
+                      @click="store.commit('removeFilter', index)"
+                    >
+                      <span>×</span>
+                    </button>
+                  </div>
                 </div>
-                <div class="col-6">
-                  {{ t(`filterlist.filter.${filter.name}.name`) }}
-                </div>
-                <div class="col-3">
-                  <button
-                    type="button"
-                    class="btn close btn-secondary"
-                    @click="store.commit('removeFilter', index)"
-                  >
-                    <span>×</span>
-                  </button>
-                </div>
-              </div>
-            </header>
-            <div class="card-body">
-              <component
-                :is="
-                  filter.name.charAt(0).toUpperCase() +
-                    filter.name.slice(1) +
-                    'Filter'
-                "
-                v-model="filterMaps[index]"
-              />
-              <!-- <component
+              </header>
+              <div class="card-body">
+                <component
+                  :is="
+                    filter.name.charAt(0).toUpperCase() +
+                      filter.name.slice(1) +
+                      'Filter'
+                  "
+                  v-model="filterMaps[index]"
+                />
+                <!-- <component
                 :is="
                   filter.name.charAt(0).toUpperCase() +
                     filter.name.slice(1) +
@@ -86,9 +82,10 @@
                 "
                 v-bind.sync="filterMaps[index]"
               /> -->
+              </div>
             </div>
           </div>
-        </draggable>
+        </div>
       </div>
     </div>
 
@@ -106,15 +103,18 @@
 import {useStore} from '@/store';
 import {computed, defineComponent} from 'vue';
 import {useI18n} from 'vue-i18n';
-import draggable from 'vuedraggable';
+import Draggable from 'vuedraggable';
+import OpacityFilter from './opacity-filter.vue';
+import BlurFilter from './blur-filter.vue';
 
 export default defineComponent({
   components: {
-    draggable,
+    Draggable,
+    OpacityFilter,
+    BlurFilter,
   },
   setup() {
     const {t} = useI18n({useScope: 'global'});
-
     const store = useStore();
     const registeredFilters = computed(() => store.state.registeredFilters);
 
@@ -123,6 +123,7 @@ export default defineComponent({
         return store.state.filterMaps;
       },
       set() {
+        console.log('setFILTER!!!');
         store.dispatch('setFilter');
       },
     });

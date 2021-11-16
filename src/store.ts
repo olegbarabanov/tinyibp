@@ -44,6 +44,12 @@ export const store = createStore<State>({
     setFile(state, file: File) {
       state.fileList.push(file);
     },
+    removeFilter(state, index: number) {
+      state.filterMaps.splice(index, 1);
+    },
+    setFilter(state, filter: FilterMap) {
+      state.filterMaps.push(filter);
+    },
     showFile(state, index: number | null) {
       state.showFileIndex = index;
     },

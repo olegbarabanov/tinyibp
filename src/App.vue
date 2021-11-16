@@ -157,18 +157,18 @@
 <script lang="ts">
 import {defineComponent, provide, reactive} from 'vue';
 import {useI18n} from 'vue-i18n';
-import fileList from './components/file-list.vue';
-import previewCanvas from './components/preview-canvas.vue';
-import filterList from './components/filter-list.vue';
+import FileList from './components/file-list.vue';
+import PreviewCanvas from './components/preview-canvas.vue';
+import FilterList from './components/filter-list.vue';
 import {useStore} from './store';
 import {Toast, key as toastKey} from './toast';
 
 export default defineComponent({
   name: 'App',
   components: {
-    fileList,
-    previewCanvas,
-    filterList,
+    FileList,
+    PreviewCanvas,
+    FilterList,
   },
   setup() {
     const {t, availableLocales, locale} = useI18n({useScope: 'global'});
