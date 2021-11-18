@@ -88,6 +88,7 @@ import {
   nextTick,
   onBeforeUnmount,
   ref,
+  toRaw,
   watch,
 } from 'vue';
 import {useI18n} from 'vue-i18n';
@@ -142,7 +143,7 @@ export default defineComponent({
         if (selected.value === 'original-preview') {
           imageBuilder.setFilterMap([]);
           imageBitmap = await imageBuilder.buildImageBitmap();
-          imageBuilder.setFilterMap(store.state.filterMaps);
+          imageBuilder.setFilterMap(toRaw(store.state.filterMaps));
         } else if (selected.value === 'preliminary-preview') {
           imageBitmap = await imageBuilder.buildImageBitmap();
         } else if (selected.value === 'result-preview') {
@@ -175,7 +176,7 @@ export default defineComponent({
       state => state.filterMaps,
       async () => {
         if (imageBuilder instanceof ImageBuilder) {
-          imageBuilder.setFilterMap(store.state.filterMaps);
+          imageBuilder.setFilterMap(toRaw(store.state.filterMaps));
         }
         await updateCanvas();
       },
@@ -200,9 +201,12 @@ export default defineComponent({
         imageBuilder.setType(store.state.type);
         imageBuilder.setQuality(store.state.quality);
         imageBuilder.setNameTransformPattern(store.state.nameTransformPattern);
-        console.log('array', Array.isArray(store.state.filterMaps));
-        imageBuilder.setFilterMap(store.state.filterMaps);
+        console.log('array', toRaw(store.state.filterMaps));
+        console.log(1);
+        imageBuilder.setFilterMap(toRaw(store.state.filterMaps));
+        console.log(2);
         await updateCanvas();
+        console.log(3);
       }
     );
 

@@ -18,7 +18,7 @@ export class ImageBuilderWorkerProxy extends ImageBuilder {
     console.log('#args', args);
     this.messagePort.postMessage({
       method: 'setFilterMap',
-      params: JSON.parse(JSON.stringify(args)), // need plain objects or arrays to transfer data using postMessage. Proxy objects are not suitable
+      params: args, // need plain objects or arrays to transfer data using postMessage. Proxy objects are not suitable
     });
     return super.setFilterMap(...args);
   }

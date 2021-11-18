@@ -5,13 +5,12 @@
     <div class="form-group m-0">
       <div>
         <input
+          v-model.lazy="level"
           type="number"
           min="0"
           max="100"
           step="0.1"
           class="form-control"
-          :value="level"
-          @input="updateLevel(($event.target as HTMLInputElement).value)"
         />
         <small tabindex="-1" class="form-text text-muted">{{
           t('blurfilter.form.level.description')
@@ -22,27 +21,32 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue';
+import {computed, defineComponent} from 'vue';
 import SequenceId from '@/utils/sequence-id';
 import {useI18n} from 'vue-i18n';
 export default defineComponent({
   props: {
-    level: {
-      type: Number,
-      default: 0,
+    modelValue: {
+      type: Object,
+      default: () => {
+        return {level: 0};
+      },
     },
   },
-  emits: ['update:level'],
+  emits: ['update:modelValue'],
   setup(props, {emit}) {
     const componentID = SequenceId.getNew();
     const {t} = useI18n({useScope: 'global'});
-    const updateLevel = (value: string) => {
-      const numberValue = Number(value);
-      if (!isNaN(numberValue)) {
-        emit('update:level', numberValue);
-      }
-    };
-    return {t, componentID, updateLevel};
+    const level = computed({
+      get: () => props.modelValue.level,
+      set: value => {
+        const numberValue = Number(value);
+        if (!isNaN(numberValue)) {
+          emit('update:modelValue', {...props.modelValue, level: value});
+        }
+      },
+    });
+    return {t, componentID, level};
   },
 });
 

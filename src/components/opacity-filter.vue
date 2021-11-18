@@ -5,13 +5,12 @@
     <div class="form-group m-0">
       <div>
         <input
-          :value="level"
+          v-model.lazy="level"
           type="range"
           min="0"
           max="100"
           step="0.1"
           class="form-range"
-          @input="level = (($event.target as HTMLInputElement).value)"
         /><small tabindex="-1" class="form-text text-muted"
           >{{ t('opacityfilter.form.level.description') }}:{{ level }}%</small
         >
@@ -21,13 +20,18 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent} from 'vue';
+// type MappedType<T> = {
+//   [K in keyof T]: T[K];
+// };
+
+import {computed, defineComponent, PropType} from 'vue';
 import SequenceId from '@/utils/sequence-id';
 import {useI18n} from 'vue-i18n';
+import OpacityFilter from '@/image-processor/filters/opacity-filter';
 export default defineComponent({
   props: {
     modelValue: {
-      type: Object,
+      type: Object as PropType<Omit<OpacityFilter, 'name'>>,
       default: () => {
         return {level: 0};
       },

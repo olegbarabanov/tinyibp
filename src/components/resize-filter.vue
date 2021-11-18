@@ -4,7 +4,7 @@
   <form @submit.stop.prevent>
     <fieldset class="form-group m-0">
       <legend tabindex="-1" class="col-form-label pt-0">
-        {{ $t('resizefilter.form.size.label') }}
+        {{ t('resizefilter.form.size.label') }}
       </legend>
       <div>
         <div class="input-group">
@@ -12,27 +12,25 @@
             X:
           </div>
           <input
+            v-model="width"
             type="number"
             min="0"
             step="1"
             class="form-control"
-            :value="width"
-            @input="updateWidth($event.target.value)"
           />
           <div class="input-group-text">
             Y:
           </div>
           <input
+            v-model="height"
             type="number"
             min="0"
             step="1"
             class="form-control"
-            :value="height"
-            @input="updateHeight($event.target.value)"
           />
         </div>
         <small tabindex="-1" class="form-text text-muted">{{
-          $t('resizefilter.form.size.description')
+          t('resizefilter.form.size.description')
         }}</small>
       </div>
     </fieldset>
@@ -71,32 +69,33 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import {computed, defineComponent} from 'vue';
 import SequenceId from '@/utils/sequence-id';
-
-export default Vue.extend({
+import {useI18n} from 'vue-i18n';
+export default defineComponent({
   props: {
-    width: {
-      type: Number,
-      default: 1,
-    },
-    height: {
-      type: Number,
-      default: 1,
+    modelValue: {
+      type: Object,
+      default: () => {
+        return {width: 1, height: 1};
+      },
     },
   },
-  data() {
-    return {
-      componentID: SequenceId.getNew(),
-    };
-  },
-  methods: {
-    updateWidth: function(value: string) {
-      this.$emit('update:width', Number(value));
-    },
-    updateHeight: function(value: string) {
-      this.$emit('update:height', Number(value));
-    },
+  emits: ['update:modelValue'],
+  setup(props, {emit}) {
+    const componentID = SequenceId.getNew();
+    const {t} = useI18n({useScope: 'global'});
+    const width = computed({
+      get: () => props.modelValue.initColor,
+      set: value =>
+        emit('update:modelValue', {...props.modelValue, width: Number(value)}),
+    });
+    const height = computed({
+      get: () => props.modelValue.finalColor,
+      set: value =>
+        emit('update:modelValue', {...props.modelValue, height: Number(value)}),
+    });
+    return {t, componentID, width, height};
   },
 });
 </script>

@@ -5,15 +5,14 @@
     <div class="form-group m-0">
       <div>
         <input
+          v-model.lazy="level"
           type="range"
           min="0"
           max="100"
           step="0.1"
           class="form-range"
-          :value="level"
-          @input="updateLevel($event.target.value)"
         /><small tabindex="-1" class="form-text text-muted"
-          >{{ $t('grayscalefilter.form.level.description') }}:
+          >{{ t('grayscalefilter.form.level.description') }}:
           {{ level }}%</small
         >
       </div>
@@ -22,25 +21,32 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import {computed, defineComponent} from 'vue';
 import SequenceId from '@/utils/sequence-id';
-
-export default Vue.extend({
+import {useI18n} from 'vue-i18n';
+export default defineComponent({
   props: {
-    level: {
-      type: Number,
-      default: 0,
+    modelValue: {
+      type: Object,
+      default: () => {
+        return {level: 0};
+      },
     },
   },
-  data() {
-    return {
-      componentID: SequenceId.getNew(),
-    };
-  },
-  methods: {
-    updateLevel: function(value: string) {
-      this.$emit('update:level', Number(value));
-    },
+  emits: ['update:modelValue'],
+  setup(props, {emit}) {
+    const componentID = SequenceId.getNew();
+    const {t} = useI18n({useScope: 'global'});
+    const level = computed({
+      get: () => props.modelValue.level,
+      set: value => {
+        const numberValue = Number(value);
+        if (!isNaN(numberValue)) {
+          emit('update:modelValue', {...props.modelValue, level: value});
+        }
+      },
+    });
+    return {t, componentID, level};
   },
 });
 </script>

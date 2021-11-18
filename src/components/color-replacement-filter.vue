@@ -5,24 +5,22 @@
     <div class="form-group m-0">
       <div>
         <input
+          v-model.lazy="initColor"
           type="color"
           class="form-control"
-          :value="initColor"
-          @change="updateInitColor($event.target.value)"
         /><small tabindex="-1" class="form-text text-muted">{{
-          $t('colorreplacementfilter.form.initcolor.description')
+          t('colorreplacementfilter.form.initcolor.description')
         }}</small>
       </div>
     </div>
     <div class="form-group m-0 mt-3">
       <div>
         <input
+          v-model.lazy="finalColor"
           type="color"
           class="form-control"
-          :value="finalColor"
-          @change="updateFinalColor($event.target.value)"
         /><small tabindex="-1" class="form-text text-muted">{{
-          $t('colorreplacementfilter.form.finalcolor.description')
+          t('colorreplacementfilter.form.finalcolor.description')
         }}</small>
       </div>
     </div>
@@ -30,33 +28,33 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import {computed, defineComponent} from 'vue';
 import SequenceId from '@/utils/sequence-id';
-
-export default Vue.extend({
+import {useI18n} from 'vue-i18n';
+export default defineComponent({
   props: {
-    initColor: {
-      type: String,
-      default: '',
-    },
-    finalColor: {
-      type: String,
-      default: '',
+    modelValue: {
+      type: Object,
+      default: () => {
+        return {initColor: '', finalColor: ''};
+      },
     },
   },
-  data() {
-    return {
-      componentID: SequenceId.getNew(),
-    };
-  },
-  methods: {
-    updateInitColor: function(value: string) {
-      console.log(value);
-      this.$emit('update:initColor', value);
-    },
-    updateFinalColor: function(value: string) {
-      this.$emit('update:finalColor', value);
-    },
+  emits: ['update:modelValue'],
+  setup(props, {emit}) {
+    const componentID = SequenceId.getNew();
+    const {t} = useI18n({useScope: 'global'});
+    const initColor = computed({
+      get: () => props.modelValue.initColor,
+      set: value =>
+        emit('update:modelValue', {...props.modelValue, initColor: value}),
+    });
+    const finalColor = computed({
+      get: () => props.modelValue.finalColor,
+      set: value =>
+        emit('update:modelValue', {...props.modelValue, finalColor: value}),
+    });
+    return {t, componentID, initColor, finalColor};
   },
 });
 </script>

@@ -5,13 +5,12 @@
     <div class="form-group m-0">
       <div>
         <input
+          v-model.lazy="angle"
           type="number"
           step="0.1"
           class="form-control"
-          :value="angle"
-          @input="updateAngle($event.target.value)"
         /><small tabindex="-1" class="form-text text-muted"
-          >{{ $t('rotatefilter.form.angle.description') }}: {{ angle }}%</small
+          >{{ t('rotatefilter.form.angle.description') }}: {{ angle }}%</small
         >
       </div>
     </div>
@@ -19,25 +18,32 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import {computed, defineComponent} from 'vue';
 import SequenceId from '@/utils/sequence-id';
-
-export default Vue.extend({
+import {useI18n} from 'vue-i18n';
+export default defineComponent({
   props: {
-    angle: {
-      type: Number,
-      default: 0,
+    modelValue: {
+      type: Object,
+      default: () => {
+        return {angle: 0};
+      },
     },
   },
-  data() {
-    return {
-      componentID: SequenceId.getNew(),
-    };
-  },
-  methods: {
-    updateAngle: function(value: string) {
-      this.$emit('update:angle', Number(value));
-    },
+  emits: ['update:modelValue'],
+  setup(props, {emit}) {
+    const componentID = SequenceId.getNew();
+    const {t} = useI18n({useScope: 'global'});
+    const angle = computed({
+      get: () => props.modelValue.angle,
+      set: value => {
+        const numberValue = Number(value);
+        if (!isNaN(numberValue)) {
+          emit('update:modelValue', {...props.modelValue, angle: value});
+        }
+      },
+    });
+    return {t, componentID, angle};
   },
 });
 </script>

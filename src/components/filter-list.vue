@@ -106,28 +106,35 @@ import {useI18n} from 'vue-i18n';
 import Draggable from 'vuedraggable';
 import OpacityFilter from './opacity-filter.vue';
 import BlurFilter from './blur-filter.vue';
+import GrayscaleFilter from './grayscale-filter.vue';
+import ContrastFilter from './contrast-filter.vue';
+import RotateFilter from './rotate-filter.vue';
+import SaturateFilter from './saturate-filter.vue';
+import CropFilter from './crop-filter.vue';
+import ColorReplacementFilter from './color-replacement-filter.vue';
+import ResizeFilter from './resize-filter.vue';
+import OverlayFilter from './overlay-filter.vue';
 
 export default defineComponent({
   components: {
     Draggable,
     OpacityFilter,
     BlurFilter,
+    GrayscaleFilter,
+    ContrastFilter,
+    RotateFilter,
+    SaturateFilter,
+    CropFilter,
+    ColorReplacementFilter,
+    ResizeFilter,
+    OverlayFilter,
   },
   setup() {
     const {t} = useI18n({useScope: 'global'});
     const store = useStore();
     const registeredFilters = computed(() => store.state.registeredFilters);
 
-    const filterMaps = computed({
-      get() {
-        return store.state.filterMaps;
-      },
-      set() {
-        console.log('setFILTER!!!');
-        store.dispatch('setFilter');
-      },
-    });
-
+    const filterMaps = computed(() => store.state.filterMaps);
     const initFilter = (filter: any) => store.dispatch('initFilter', filter); //FIXME: check any !!!
 
     return {t, filterMaps, store, initFilter, registeredFilters};
