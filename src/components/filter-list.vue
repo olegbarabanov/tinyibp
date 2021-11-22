@@ -33,13 +33,14 @@
 
     <div v-if="filterMaps.length > 0" class="card-body p-1">
       <div class="d-flex flex-column mh-100">
-        <div>
-          <div class="list-group overflow-auto">
-            <div
-              v-for="(filter, index) in filterMaps"
-              :key="index"
-              class="card mb-1 border-secondary"
-            >
+        <draggable
+          v-model="filterMaps"
+          item-key="id"
+          handle=".handle"
+          class="list-group overflow-auto"
+        >
+          <template #item="{element, index}">
+            <div class="card mb-1 border-secondary">
               <header
                 :title="t('filterlist.event.draggable.title')"
                 class="card-header handle py-1 bg-secondary text-white"
@@ -52,7 +53,7 @@
                     </span>
                   </div>
                   <div class="col-6">
-                    {{ t(`filterlist.filter.${filter.name}.name`) }}
+                    {{ t(`filterlist.filter.${element.name}.name`) }}
                   </div>
                   <div class="col-3">
                     <button
@@ -68,24 +69,16 @@
               <div class="card-body">
                 <component
                   :is="
-                    filter.name.charAt(0).toUpperCase() +
-                      filter.name.slice(1) +
+                    element.name.charAt(0).toUpperCase() +
+                      element.name.slice(1) +
                       'Filter'
                   "
                   v-model="filterMaps[index]"
                 />
-                <!-- <component
-                :is="
-                  filter.name.charAt(0).toUpperCase() +
-                    filter.name.slice(1) +
-                    'Filter'
-                "
-                v-bind.sync="filterMaps[index]"
-              /> -->
               </div>
             </div>
-          </div>
-        </div>
+          </template>
+        </draggable>
       </div>
     </div>
 
@@ -134,7 +127,10 @@ export default defineComponent({
     const store = useStore();
     const registeredFilters = computed(() => store.state.registeredFilters);
 
-    const filterMaps = computed(() => store.state.filterMaps);
+    const filterMaps = computed({
+      get: () => store.state.filterMaps,
+      set: (filters: any) => store.commit('updateFilters', filters),
+    });
     const initFilter = (filter: any) => store.dispatch('initFilter', filter); //FIXME: check any !!!
 
     return {t, filterMaps, store, initFilter, registeredFilters};

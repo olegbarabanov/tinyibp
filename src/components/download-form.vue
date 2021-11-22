@@ -10,7 +10,7 @@
         class="btn dropdown-toggle btn-secondary"
         data-bs-toggle="dropdown"
       >
-        {{ $t('download.settings.label') }}
+        {{ t('download.settings.label') }}
       </button>
       <ul tabindex="-1" class="dropdown-menu">
         <li role="presentation" style="min-width: 250px;">
@@ -18,7 +18,7 @@
             <div class="input-group my-1 input-group-sm">
               <div class="input-group-prepend">
                 <div class="input-group-text">
-                  {{ $t('download.settings.form.type.label') }}
+                  {{ t('download.settings.form.type.label') }}
                 </div>
               </div>
               <select
@@ -26,18 +26,18 @@
                 class="text-nowrap custom-select form-select"
               >
                 <option
-                  v-for="type in supportTypes"
-                  :key="type.value"
-                  :value="type.value"
+                  v-for="[key, value] in supportTypes"
+                  :key="key"
+                  :value="key"
                 >
-                  {{ type.text }}
+                  {{ value }}
                 </option>
               </select>
             </div>
             <div class="input-group my-1 input-group-sm">
               <div class="input-group-prepend">
                 <div class="input-group-text">
-                  {{ $t('download.settings.form.quality.label') }}
+                  {{ t('download.settings.form.quality.label') }}
                 </div>
               </div>
               <input
@@ -52,7 +52,7 @@
             <div class="input-group my-1 input-group-sm">
               <div class="input-group-prepend">
                 <div class="input-group-text">
-                  {{ $t('download.settings.form.pattern.label') }}
+                  {{ t('download.settings.form.pattern.label') }}
                 </div>
               </div>
               <input
@@ -73,12 +73,12 @@
         class="btn dropdown-toggle btn-secondary btn-block"
         data-bs-toggle="dropdown"
       >
-        {{ $t('download.download.label') }}
+        {{ t('download.download.label') }}
       </button>
       <ul tabindex="-1" class="dropdown-menu dropdown-menu-right">
         <li>
           <button type="button" class="dropdown-item" @click="downloadAll()">
-            {{ $t('download.download.all.label') }}
+            {{ t('download.download.all.label') }}
           </button>
         </li>
         <li>
@@ -87,7 +87,7 @@
             class="dropdown-item"
             @click="downloadAll('zip')"
           >
-            {{ $t('download.download.zip.label') }}
+            {{ t('download.download.zip.label') }}
           </button>
         </li>
       </ul>
@@ -110,6 +110,96 @@
 </template>
 
 <script lang="ts">
+import {computed, defineComponent, inject, ref} from 'vue';
+import SequenceId from '@/utils/sequence-id';
+import {useI18n} from 'vue-i18n';
+import {useStore} from '@/store';
+import {supportTypes} from '@/image-processor';
+import {key as keyToast} from '@/toast';
+
+export default defineComponent({
+  setup() {
+    const {t} = useI18n({useScope: 'global'});
+    const store = useStore();
+
+    const componentID = SequenceId.getNew();
+    const busy = ref<boolean>(false);
+    const showToast = inject(keyToast);
+
+    const selectedType = computed({
+      get: () => store.state.type,
+      set: value => {
+        store.dispatch('setType', value);
+      },
+    });
+
+    const quality = computed({
+      get: () => store.state.quality,
+      set: value => {
+        store.dispatch('setQuality', value);
+      },
+    });
+
+    const nameTransformPattern = computed({
+      get: () => store.state.nameTransformPattern,
+      set(value) {
+        store.dispatch('setNameTransformPattern', value);
+      },
+    });
+
+    const disabledDownload = computed(() => store.state.fileList.length === 0);
+
+    const downloadAll = async (method = 'common') => {
+      if (showToast) {
+        showToast({
+          text: t('download.toast.createzip.text'),
+          type: 'info',
+          title: '',
+          duration: 3000,
+        });
+        await store.dispatch('downloadAll', method);
+      }
+    };
+    // this.$bvToast.toast(this.$tc('download.toast.createzip.text'), {
+    //   variant: 'info',
+    // });
+    // const modalId = `modal-download-${this.componentID}`;
+    // try {
+    //   this.busy = true;
+    //   this.$bvModal.show(modalId);
+    //   await this.$store.dispatch('downloadAll', method);
+    //   this.$bvToast.toast(this.$tc('download.toast.successzip.text'), {
+    //     variant: 'success',
+    //   });
+    // } catch (error) {
+    //   console.warn(error);
+    //   this.$bvToast.toast(this.$tc('download.toast.errorzip.text'), {
+    //     variant: 'danger',
+    //   });
+    // } finally {
+    //   this.busy = false;
+    //   this.$bvModal.hide(modalId);
+    // }
+    // },
+
+    return {
+      t,
+      supportTypes,
+      selectedType,
+      componentID,
+      busy,
+      quality,
+      nameTransformPattern,
+      disabledDownload,
+      downloadAll,
+    };
+  },
+});
+
+/*
+
+
+
 import {supportTypes} from '@/image-processor';
 import SequenceId from '@/utils/sequence-id';
 import Vue from 'vue';
@@ -182,4 +272,5 @@ export default Vue.extend({
     },
   },
 });
+*/
 </script>

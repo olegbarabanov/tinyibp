@@ -14,14 +14,12 @@
               type="button"
               class="navbar-toggler collapsed"
               style="overflow-anchor: none;"
+              data-bs-toggle="collapse"
+              data-bs-target="#nav-collapse2"
             >
               <span class="navbar-toggler-icon" />
             </button>
-            <div
-              id="nav-collapse"
-              class="navbar-collapse collapse"
-              style="display: none;"
-            >
+            <div id="nav-collapse2" class="navbar-collapse collapse">
               <ul class="navbar-nav ms-auto">
                 <li class="nav-item b-nav-dropdown dropdown">
                   <a
@@ -75,7 +73,7 @@
       </div>
       <div class="row g-0 align-items-stretch">
         <div class="col-12">
-          <!-- <download-form /> -->
+          <download-form />
         </div>
       </div>
     </div>
@@ -84,37 +82,53 @@
         type="button"
         class="btn btn-secondary collapsed position-fixed start-0 top-50"
         style="z-index: 99; overflow-anchor: none;"
+        @click="visibleMobileFilePanel = true"
       >
         {{ t('app.filelist.header') }}
       </button>
       <div tabindex="-1" class="b-sidebar-outer">
         <div
+          v-show="visibleMobileFilePanel"
           tabindex="-1"
           class="b-sidebar shadow bg-transparent text-dark"
-          style="width: 250px; display: none;"
+          style="width: 250px;"
         >
           <div class="b-sidebar-body d-flex">
             <file-list />
           </div>
         </div>
+        <div
+          v-show="visibleMobileFilePanel"
+          class="b-sidebar-backdrop bg-dark"
+          @click="visibleMobileFilePanel = false"
+        ></div>
       </div>
+
       <button
         type="button"
         class="btn btn-secondary collapsed position-fixed end-0 top-50"
         style="z-index: 99; overflow-anchor: none;"
+        @click="visibleMobileFilterPanel = true"
       >
         {{ t('app.filterlist.header') }}
       </button>
       <div tabindex="-1" class="b-sidebar-outer">
         <div
+          v-show="visibleMobileFilterPanel"
           tabindex="-1"
           class="b-sidebar shadow b-sidebar-right bg-transparent text-dark"
-          style="width: 250px; display: none;"
+          style="width: 250px;"
         >
           <div class="b-sidebar-body d-flex">
             <filter-list />
           </div>
         </div>
+
+        <div
+          v-show="visibleMobileFilterPanel"
+          class="b-sidebar-backdrop bg-dark"
+          @click="visibleMobileFilterPanel = false"
+        ></div>
       </div>
     </div>
   </div>
@@ -155,11 +169,12 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, provide, reactive} from 'vue';
+import {defineComponent, provide, reactive, ref} from 'vue';
 import {useI18n} from 'vue-i18n';
 import FileList from './components/file-list.vue';
 import PreviewCanvas from './components/preview-canvas.vue';
 import FilterList from './components/filter-list.vue';
+import DownloadForm from './components/download-form.vue';
 import {useStore} from './store';
 import {Toast, key as toastKey} from './toast';
 
@@ -169,6 +184,7 @@ export default defineComponent({
     FileList,
     PreviewCanvas,
     FilterList,
+    DownloadForm,
   },
   setup() {
     const {t, availableLocales, locale} = useI18n({useScope: 'global'});
@@ -180,7 +196,18 @@ export default defineComponent({
       setTimeout(() => toastList.delete(symbol), toast.duration);
     };
     provide(toastKey, showToast);
-    return {t, availableLocales, store, locale, showToast, toastList};
+    const visibleMobileFilePanel = ref<boolean>(false);
+    const visibleMobileFilterPanel = ref<boolean>(false);
+    return {
+      t,
+      availableLocales,
+      store,
+      locale,
+      showToast,
+      toastList,
+      visibleMobileFilePanel,
+      visibleMobileFilterPanel,
+    };
   },
 });
 </script>
