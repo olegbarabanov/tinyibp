@@ -9,3 +9,5 @@ SUPPORT_FILTERS.forEach(filter => {
 
 export const DEFAULT_LANG = 'en';
 i18n.global.locale.value = navigator.language.substr(0, 2).toLowerCase();
+
+export const APP_VERSION = __APP_VERSION__;

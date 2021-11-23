@@ -9,7 +9,7 @@
             class="navbar sticky-top navbar-dark bg-dark navbar-expand-lg px-3"
           >
             <a href="#" target="_self" class="navbar-brand"
-              ><span>TinyIBP (v0.1.6)</span></a
+              ><span>TinyIBP ({{ APP_VERSION }})</span></a
             ><button
               type="button"
               class="navbar-toggler collapsed"
@@ -177,6 +177,7 @@ import FilterList from './components/filter-list.vue';
 import DownloadForm from './components/download-form.vue';
 import {useStore} from './store';
 import {Toast, key as toastKey} from './toast';
+import {APP_VERSION} from './init';
 
 export default defineComponent({
   name: 'App',
@@ -207,6 +208,7 @@ export default defineComponent({
       toastList,
       visibleMobileFilePanel,
       visibleMobileFilterPanel,
+      APP_VERSION,
     };
   },
 });

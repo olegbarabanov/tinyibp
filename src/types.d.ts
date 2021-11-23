@@ -5,3 +5,6 @@ declare module 'worker-loader!*' {
 
   export default WebpackWorker;
 }
+
+// const __APP_VERSION__ is assigned from the webpack settings
+declare const __APP_VERSION__;

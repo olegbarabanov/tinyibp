@@ -1,4 +1,6 @@
 const path = require('path');
+// eslint-disable-next-line node/no-extraneous-require
+const webpack = require('webpack');
 
 module.exports = {
   publicPath: './',
@@ -12,6 +14,13 @@ module.exports = {
       compositionOnly: false,
       fullInstall: true,
     },
+  },
+  configureWebpack: {
+    plugins: [
+      new webpack.DefinePlugin({
+        __APP_VERSION__: JSON.stringify(require('./package.json').version),
+      }),
+    ],
   },
   chainWebpack: config => {
     config.module

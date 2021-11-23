@@ -10,10 +10,11 @@ import {store, key} from './store';
 import i18n from './i18n';
 import VueScreen from 'vue-screen';
 import App from './App.vue';
-console.log(VueScreen);
+// import * as pack from '../package.json';
+// console.log(pack.version);
+
 createApp(App)
   .use(store, key)
   .use(VueScreen, 'bootstrap')
   .use(i18n)
   .mount('#app');
-console.log(store);
