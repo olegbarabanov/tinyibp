@@ -23,14 +23,8 @@ import {createI18n} from 'vue-i18n';
 
 describe('blur-filter.vue', () => {
   test('emits the correct event with a numeric value when different "level" types are set.', async () => {
-    const i18n = createI18n({
-      // vue-i18n options here ...
-    });
+    const i18n = createI18n({});
     const wrapper = mount(BlurFilter, {
-      mocks: {
-        t: (msg: string) => msg,
-        tc: (msg: string) => msg,
-      },
       global: {
         plugins: [i18n],
       },
@@ -40,11 +34,14 @@ describe('blur-filter.vue', () => {
     input.setValue(0);
     expect(wrapper.emitted()['update:modelValue']?.[0]).toBeTruthy();
     expect(wrapper.emitted()['update:modelValue']?.[0]).toEqual([{level: 0}]);
-    // input.setValue('50');
-    // expect(wrapper.emitted()['update:level']?.[1]).toBeTruthy();
-    // expect(wrapper.emitted()['update:level']?.[1]).toEqual([50]);
+    input.setValue('50');
+    expect(wrapper.emitted()['update:modelValue']?.[1]).toBeTruthy();
+    expect(wrapper.emitted()['update:modelValue']?.[1]).toEqual([{level: 50}]);
+    input.setValue(-50);
+    expect(wrapper.emitted()['update:modelValue']?.[2]).toBeTruthy();
+    expect(wrapper.emitted()['update:modelValue']?.[2]).toEqual([{level: 0}]);
     // input.setValue('just a string');
-    // expect(wrapper.emitted()['update:level']?.[2]).toEqual([0]);
+    // expect(wrapper.emitted()['update:modelValue']?.[2]).toEqual([0]);
 
     wrapper.unmount();
   });

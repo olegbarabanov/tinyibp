@@ -42,7 +42,7 @@ export default defineComponent({
       set: value => {
         const numberValue = Number(value);
         if (!isNaN(numberValue)) {
-          emit('update:modelValue', {...props.modelValue, level: value});
+          emit('update:modelValue', {...props.modelValue, level: numberValue});
         }
       },
     });
