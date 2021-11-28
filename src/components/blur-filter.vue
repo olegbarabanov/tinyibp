@@ -6,6 +6,7 @@
       <div>
         <input
           v-model.lazy="level"
+          name="level"
           type="number"
           min="0"
           max="100"
@@ -21,24 +22,29 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent} from 'vue';
+import {computed, defineComponent, PropType} from 'vue';
 import SequenceId from '@/utils/sequence-id';
 import {useI18n} from 'vue-i18n';
+import BlurFilter from '@/image-processor/filters/blur-filter';
+import AbstractFilter from '@/image-processor/filters/abstract-filter';
+
+type BlurFilterProps = Omit<BlurFilter, keyof AbstractFilter>;
+
 export default defineComponent({
   props: {
     modelValue: {
-      type: Object,
-      default: () => {
+      type: Object as PropType<BlurFilterProps>,
+      default: (): BlurFilterProps => {
         return {level: 0};
       },
     },
   },
-  emits: ['update:modelValue'],
+  emits: {'update:modelValue': (data: BlurFilterProps) => !!data},
   setup(props, {emit}) {
     const componentID = SequenceId.getNew();
     const {t} = useI18n({useScope: 'global'});
     const level = computed({
-      get: () => props.modelValue.level,
+      get: () => Number(props.modelValue.level),
       set: value => {
         const numberValue = Number(value);
         if (!isNaN(numberValue)) {
@@ -49,28 +55,4 @@ export default defineComponent({
     return {t, componentID, level};
   },
 });
-
-/*
-export default Vue.extend({
-  props: {
-    level: {
-      type: Number,
-      default: 0,
-    },
-  },
-  data() {
-    return {
-      componentID: SequenceId.getNew(),
-    };
-  },
-  methods: {
-    updateLevel: function(value: string) {
-      const numberValue = Number(value);
-      if (!isNaN(numberValue)) {
-        this.$emit('update:level', numberValue);
-      }
-    },
-  },
-});
-*/
 </script>

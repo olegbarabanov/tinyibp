@@ -7,6 +7,7 @@
         <input
           v-model.lazy="level"
           type="number"
+          name="level"
           min="0"
           step="0.1"
           class="form-control"

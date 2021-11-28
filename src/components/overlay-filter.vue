@@ -72,7 +72,6 @@ export default defineComponent({
     });
 
     const updateImage = (image?: File) => {
-      console.log(image);
       emit('update:modelValue', {...props.modelValue, image});
     };
 

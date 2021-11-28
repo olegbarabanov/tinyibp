@@ -6,6 +6,7 @@
       <div>
         <input
           v-model.lazy="initColor"
+          name="init-color"
           type="color"
           class="form-control"
         /><small tabindex="-1" class="form-text text-muted">{{
@@ -17,6 +18,7 @@
       <div>
         <input
           v-model.lazy="finalColor"
+          name="final-color"
           type="color"
           class="form-control"
         /><small tabindex="-1" class="form-text text-muted">{{
@@ -28,19 +30,27 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent} from 'vue';
+import {computed, defineComponent, PropType} from 'vue';
 import SequenceId from '@/utils/sequence-id';
 import {useI18n} from 'vue-i18n';
+import ColorReplacementFilter from '@/image-processor/filters/color-replacement-filter';
+import AbstractFilter from '@/image-processor/filters/abstract-filter';
+
+type ColorReplacementFilterProps = Omit<
+  ColorReplacementFilter,
+  keyof AbstractFilter
+>;
+
 export default defineComponent({
   props: {
     modelValue: {
-      type: Object,
-      default: () => {
+      type: Object as PropType<ColorReplacementFilterProps>,
+      default: (): ColorReplacementFilterProps => {
         return {initColor: '', finalColor: ''};
       },
     },
   },
-  emits: ['update:modelValue'],
+  emits: {'update:modelValue': (data: ColorReplacementFilterProps) => !!data},
   setup(props, {emit}) {
     const componentID = SequenceId.getNew();
     const {t} = useI18n({useScope: 'global'});

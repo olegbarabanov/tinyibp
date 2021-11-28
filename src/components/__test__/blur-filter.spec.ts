@@ -2,24 +2,6 @@
 import BlurFilter from '@/components/blur-filter.vue';
 import {mount} from '@vue/test-utils';
 import {createI18n} from 'vue-i18n';
-// import {useI18n} from 'vue-i18n';
-
-// config.global.stubs = {
-//   BlurFilter,
-// };
-
-// const MyComponent = defineComponent({
-//   template: '<div>My component<input></div>',
-// });
-// , {
-//   global: {
-//     plugins: [useI18n],
-//   },
-//   mocks: {
-//     t: (msg: string) => msg,
-//     tc: (msg: string) => msg,
-//   },
-// }
 
 describe('blur-filter.vue', () => {
   test('emits the correct event with a numeric value when different "level" types are set.', async () => {
@@ -29,20 +11,24 @@ describe('blur-filter.vue', () => {
         plugins: [i18n],
       },
     });
-    const input = wrapper.find('input');
-    expect(input.exists()).toBe(true);
-    input.setValue(0);
-    expect(wrapper.emitted()['update:modelValue']?.[0]).toBeTruthy();
-    expect(wrapper.emitted()['update:modelValue']?.[0]).toEqual([{level: 0}]);
-    input.setValue('50');
-    expect(wrapper.emitted()['update:modelValue']?.[1]).toBeTruthy();
-    expect(wrapper.emitted()['update:modelValue']?.[1]).toEqual([{level: 50}]);
-    input.setValue(-50);
-    expect(wrapper.emitted()['update:modelValue']?.[2]).toBeTruthy();
-    expect(wrapper.emitted()['update:modelValue']?.[2]).toEqual([{level: 0}]);
-    // input.setValue('just a string');
-    // expect(wrapper.emitted()['update:modelValue']?.[2]).toEqual([0]);
+    const inputLevel = wrapper.find('input[name="level"]');
+    expect(inputLevel.exists()).toBe(true);
 
+    if (inputLevel.exists()) {
+      await inputLevel.setValue(0);
+      expect(wrapper.emitted()['update:modelValue']?.[0]).toBeTruthy();
+      expect(wrapper.emitted()['update:modelValue']?.[0]).toEqual([{level: 0}]);
+      await inputLevel.setValue('50');
+      expect(wrapper.emitted()['update:modelValue']?.[1]).toBeTruthy();
+      expect(wrapper.emitted()['update:modelValue']?.[1]).toEqual([
+        {level: 50},
+      ]);
+
+      await wrapper.setProps({modelValue: {level: 75}});
+      expect(Number((inputLevel.element as HTMLInputElement).value)).toEqual(
+        75
+      );
+    }
     wrapper.unmount();
   });
 });
