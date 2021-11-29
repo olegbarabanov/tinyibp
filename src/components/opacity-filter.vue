@@ -6,6 +6,7 @@
       <div>
         <input
           v-model.lazy="level"
+          name="level"
           type="range"
           min="0"
           max="100"
@@ -20,24 +21,24 @@
 </template>
 
 <script lang="ts">
-// type MappedType<T> = {
-//   [K in keyof T]: T[K];
-// };
-
 import {computed, defineComponent, PropType} from 'vue';
 import SequenceId from '@/utils/sequence-id';
 import {useI18n} from 'vue-i18n';
 import OpacityFilter from '@/image-processor/filters/opacity-filter';
+import AbstractFilter from '@/image-processor/filters/abstract-filter';
+
+type OpacityFilterProps = Omit<OpacityFilter, keyof AbstractFilter>;
+
 export default defineComponent({
   props: {
     modelValue: {
-      type: Object as PropType<Omit<OpacityFilter, 'name'>>,
-      default: () => {
+      type: Object as PropType<OpacityFilterProps>,
+      default: (): OpacityFilterProps => {
         return {level: 0};
       },
     },
   },
-  emits: ['update:modelValue'],
+  emits: {'update:modelValue': (data: OpacityFilterProps) => !!data},
   setup(props, {emit}) {
     const componentID = SequenceId.getNew();
     const {t} = useI18n({useScope: 'global'});
@@ -53,27 +54,4 @@ export default defineComponent({
     return {t, componentID, level};
   },
 });
-
-/*
-import Vue from 'vue';
-import SequenceId from '@/utils/sequence-id';
-
-export default Vue.extend({
-  props: {
-    level: {
-      type: Number,
-      default: 0,
-    },
-  },
-  data() {
-    return {
-      componentID: SequenceId.getNew(),
-    };
-  },
-  methods: {
-    updateLevel: function(value: string) {
-      this.$emit('update:level', Number(value));
-    },
-  },
-}); */
 </script>

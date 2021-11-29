@@ -20,19 +20,24 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent} from 'vue';
+import {computed, defineComponent, PropType} from 'vue';
 import SequenceId from '@/utils/sequence-id';
 import {useI18n} from 'vue-i18n';
+import AbstractFilter from '@/image-processor/filters/abstract-filter';
+import ContrastFilter from '@/image-processor/filters/contrast-filter';
+
+type ContrastFilterProps = Omit<ContrastFilter, keyof AbstractFilter>;
+
 export default defineComponent({
   props: {
     modelValue: {
-      type: Object,
-      default: () => {
+      type: Object as PropType<ContrastFilterProps>,
+      default: (): ContrastFilterProps => {
         return {level: 100};
       },
     },
   },
-  emits: ['update:modelValue'],
+  emits: {'update:modelValue': (data: ContrastFilterProps) => !!data},
   setup(props, {emit}) {
     const componentID = SequenceId.getNew();
     const {t} = useI18n({useScope: 'global'});

@@ -6,6 +6,7 @@
       <label class="d-block">{{ t('overlayfilter.form.image.label') }}</label>
       <input
         type="file"
+        name="image"
         :accept="acceptImageTypeList"
         class="form-control form-control-sm"
         @input="updateImage(($event.target as HTMLInputElement).files?.[0])"
@@ -16,7 +17,11 @@
         t('overlayfilter.form.position.label')
       }}</label>
       <div>
-        <select v-model="position" class="form-select form-select-sm">
+        <select
+          v-model="position"
+          name="position"
+          class="form-select form-select-sm"
+        >
           <option
             v-for="positionItem in positionList"
             :key="positionItem.value"
@@ -30,33 +35,43 @@
     <div class="form-group">
       <label class="d-block">{{ t('overlayfilter.form.margin.label') }}</label>
       <div>
-        <input v-model="margin" type="number" step="1" class="form-control" />
+        <input
+          v-model="margin"
+          name="margin"
+          type="number"
+          step="1"
+          class="form-control"
+        />
       </div>
     </div>
   </form>
 </template>
 
 <script lang="ts">
-import {computed, defineComponent} from 'vue';
+import {computed, defineComponent, PropType} from 'vue';
 import SequenceId from '@/utils/sequence-id';
 import {useI18n} from 'vue-i18n';
-import {supportPositions} from '@/image-processor/filters/overlay-filter';
+import OverlayFilter, {
+  supportPositions,
+} from '@/image-processor/filters/overlay-filter';
 import {supportTypes} from '@/image-processor';
+import AbstractFilter from '@/image-processor/filters/abstract-filter';
+
+type OverlayFilterProps = Omit<OverlayFilter, keyof AbstractFilter>;
 
 export default defineComponent({
   props: {
     modelValue: {
-      type: Object,
-      default: () => {
+      type: Object as PropType<OverlayFilterProps>,
+      default: (): OverlayFilterProps => {
         return {
           position: supportPositions.MIDDLE_CENTER,
           margin: 0,
-          // image: undefined as Blob | undefined,
         };
       },
     },
   },
-  emits: ['update:modelValue'],
+  emits: {'update:modelValue': (data: OverlayFilterProps) => !!data},
   setup(props, {emit}) {
     const componentID = SequenceId.getNew();
     const {t} = useI18n({useScope: 'global'});
@@ -74,12 +89,6 @@ export default defineComponent({
     const updateImage = (image?: File) => {
       emit('update:modelValue', {...props.modelValue, image});
     };
-
-    // const image = computed({
-    //   get: () => props.modelValue.image,
-    //   set: value =>
-    //     emit('update:modelValue', {...props.modelValue, image: value}),
-    // });
 
     const positionList = computed(() =>
       Object.entries(supportPositions)
@@ -100,55 +109,8 @@ export default defineComponent({
       position,
       positionList,
       acceptImageTypeList,
-      // image,
       updateImage,
     };
   },
 });
-
-/*
-import Vue, {PropType} from 'vue';
-import SequenceId from '@/utils/sequence-id';
-import {supportPositions} from '@/image-processor/filters/overlay-filter';
-import {supportTypes} from '@/image-processor';
-
-export default Vue.extend({
-  props: {
-    position: {
-      type: Number as PropType<supportPositions>,
-      default: supportPositions.MIDDLE_CENTER,
-    },
-    margin: {
-      type: Number as PropType<number>,
-      default: 0,
-    },
-  },
-  data() {
-    return {
-      componentID: SequenceId.getNew(),
-      supportPositions: Object.entries(supportPositions)
-        .filter(([position]) => isNaN(Number(position)))
-        .map(([position, index]) => {
-          return {text: position, value: index};
-        }),
-    };
-  },
-  computed: {
-    acceptImageTypeList() {
-      return Array.from(supportTypes, type => type[0]).join(',');
-    },
-  },
-  methods: {
-    updateImage: function(value: File): void {
-      this.$emit('update:image', value);
-    },
-    updatePosition: function(value: string): void {
-      this.$emit('update:position', Number(value));
-    },
-    updateMargin: function(value: string): void {
-      this.$emit('update:margin', Number(value));
-    },
-  },
-});
-*/
 </script>

@@ -6,6 +6,7 @@
       <div>
         <input
           v-model.lazy="level"
+          name="level"
           type="range"
           min="0"
           max="100"
@@ -21,19 +22,24 @@
 </template>
 
 <script lang="ts">
-import {computed, defineComponent} from 'vue';
+import {computed, defineComponent, PropType} from 'vue';
 import SequenceId from '@/utils/sequence-id';
 import {useI18n} from 'vue-i18n';
+import AbstractFilter from '@/image-processor/filters/abstract-filter';
+import GrayscaleFilter from '@/image-processor/filters/grayscale-filter';
+
+type GrayscaleFilterProps = Omit<GrayscaleFilter, keyof AbstractFilter>;
+
 export default defineComponent({
   props: {
     modelValue: {
-      type: Object,
-      default: () => {
+      type: Object as PropType<GrayscaleFilterProps>,
+      default: (): GrayscaleFilterProps => {
         return {level: 0};
       },
     },
   },
-  emits: ['update:modelValue'],
+  emits: {'update:modelValue': (data: GrayscaleFilterProps) => !!data},
   setup(props, {emit}) {
     const componentID = SequenceId.getNew();
     const {t} = useI18n({useScope: 'global'});
