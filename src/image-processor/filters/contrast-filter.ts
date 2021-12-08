@@ -12,7 +12,7 @@ export default class ContrastFilter extends AbstractFilter {
 
     newCanvasCtx.filter = `contrast(${this.level * 0.01})`;
     newCanvasCtx.drawImage(canvas, 0, 0);
-    newCanvasCtx.filter = '';
+    newCanvasCtx.filter = 'none';
     return newCanvas;
   }
 }

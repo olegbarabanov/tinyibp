@@ -12,7 +12,7 @@ export default class BlurFilter extends AbstractFilter {
 
     newCanvasCtx.filter = `blur(${this.level}px)`;
     newCanvasCtx.drawImage(canvas, 0, 0);
-    newCanvasCtx.filter = '';
+    newCanvasCtx.filter = 'none';
     return newCanvas;
   }
 }

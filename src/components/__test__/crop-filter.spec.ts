@@ -1,58 +1,28 @@
 /* eslint-disable node/no-unpublished-import */
-import {createLocalVue, mount} from '@vue/test-utils';
-import CropFilter from '@/components/crop-filter.vue';
-import BootstrapVue, {BFormInput, BFormSelect} from 'bootstrap-vue';
-import {
-  supportModes,
-  supportPositions,
-} from '@/image-processor/filters/crop-filter';
+import {mount} from '@vue/test-utils';
+import {createI18n} from 'vue-i18n';
+import CropFilter from '../crop-filter.vue';
 
 describe('crop-filter.vue', () => {
-  test('emits the correct event "update:mode" with different values', async () => {
-    const localVue = createLocalVue();
-    localVue.use(BootstrapVue);
+  test('emits the correct event with different props', async () => {
+    const i18n = createI18n({});
     const wrapper = mount(CropFilter, {
-      localVue,
-      mocks: {
-        $t: (msg: string) => msg,
-        $tc: (msg: string) => msg,
+      global: {
+        plugins: [i18n],
       },
     });
-    const inputMode = wrapper.find('[name="mode"]');
-    expect(inputMode.exists()).toBe(true);
-    let i = 0;
-    for (const mode of Object.values(supportModes)) {
-      inputMode.setValue(mode);
-      await inputMode.vm.$nextTick();
-      const ev = wrapper.emitted()['update:mode']?.[i++];
-      expect(ev).toBeTruthy();
-      expect(ev).toEqual([mode]);
-    }
+    const selectMode = wrapper.find('select[name="mode"]');
+    expect(selectMode.exists()).toBe(true);
 
-    wrapper.destroy();
-  });
+    const selectPosition = wrapper.find('select[name="position"]');
+    expect(selectPosition.exists()).toBe(true);
 
-  test('emits the correct event "update:position" with different values', async () => {
-    const localVue = createLocalVue();
-    localVue.use(BootstrapVue);
-    const wrapper = mount(CropFilter, {
-      localVue,
-      mocks: {
-        $t: (msg: string) => msg,
-        $tc: (msg: string) => msg,
-      },
-    });
-    const inputPosition = wrapper.find('[name="position"]');
-    expect(inputPosition.exists()).toBe(true);
-    let i = 0;
-    for (const mode of Object.values(supportPositions)) {
-      inputPosition.setValue(mode);
-      await inputPosition.vm.$nextTick();
-      const ev = wrapper.emitted()['update:position']?.[i++];
-      expect(ev).toBeTruthy();
-      expect(ev).toEqual([mode]);
-    }
+    const inputWidth = wrapper.find('input[name="width"]');
+    expect(inputWidth.exists()).toBe(true);
 
-    wrapper.destroy();
+    const inputHeight = wrapper.find('input[name="height"]');
+    expect(inputHeight.exists()).toBe(true);
+
+    wrapper.unmount();
   });
 });

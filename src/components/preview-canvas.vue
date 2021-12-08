@@ -1,38 +1,42 @@
-<i18n src="../common/locales.json"></i18n>
+<i18n global src="../common/locales.json"></i18n>
 
 <template>
-  <b-card
-    bg-variant="transparent"
-    class="h-100 text-center"
-    border-variant="dark"
-    no-body
-  >
-    <b-card-header
-      header-bg-variant="dark"
-      header-text-variant="white"
-      class="d-flex flex-row flex-wrap align-items-center justify-content-center p-1"
-      style="min-height:3rem"
+  <div class="card h-100 text-center bg-transparent border-dark">
+    <div
+      class="card-header d-flex flex-row flex-wrap align-items-center justify-content-center p-1 bg-dark text-white"
+      style="min-height: 3rem;"
     >
       <h5 class="my-0 mx-4 d-none d-md-block">
-        {{ $t('previewcanvas.header.text') }}
+        {{ t('previewcanvas.header.text') }}
       </h5>
-      <b-form-group v-slot="{ariaDescribedby}" class="d-inline-flex m-0 mx-4">
-        <b-form-radio-group
-          id="btn-radios-1"
-          v-model="selected"
-          :options="options"
-          :aria-describedby="ariaDescribedby"
-          name="radios-btn-default"
-          size="sm"
-          buttons
-        />
-      </b-form-group>
-    </b-card-header>
-    <b-card-body class="h-100" @dblclick="fullSizePreview = !fullSizePreview">
+      <fieldset class="form-group d-inline-flex m-0 mx-4">
+        <div>
+          <div
+            tabindex="-1"
+            class="btn-group-toggle btn-group btn-group-sm bv-no-focus-ring"
+          >
+            <label v-for="(value, key) in options" :key="key">
+              <input
+                :id="key"
+                v-model="selected"
+                type="radio"
+                name="radios-btn-default"
+                class="btn-check"
+                :value="key"
+              />
+              <label class="btn btn-secondary btn-sm" :for="key">
+                {{ value }}</label
+              >
+            </label>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+    <div class="card-body h-100" @dblclick="fullSizePreview = !fullSizePreview">
       <div class="h-100 d-flex flex-column border border-left border-right">
-        <b-overlay
+        <div
+          class="b-overlay-wrap position-relative d-flex flex-grow-1 align-items-center justify-content-center overflow-auto p-1"
           :show="showProcessIndicator"
-          class="d-flex flex-grow-1 align-items-center justify-content-center overflow-auto p-1"
         >
           <canvas
             id="canvas"
@@ -43,46 +47,224 @@
             }"
             :width="width"
             :height="height"
+            rel="canvas"
           />
-        </b-overlay>
+        </div>
       </div>
-    </b-card-body>
-    <b-card-footer
-      v-show="show"
-      footer-bg-variant="dark"
-      footer-text-variant="white"
-      class="text"
-    >
+    </div>
+    <div v-show="show" class="card-footer text bg-dark text-white">
       <p class="text-nowrap">
-        <b-badge class="d-inline-flex text-truncate mw-100">
+        <span class="badge d-inline-flex text-truncate mw-100 badge-secondary">
           {{ name }}
-        </b-badge>
+        </span>
       </p>
       <p>
         <span class="m-3"
-          >{{ $t('previewcanvas.dimensions.label') }}
-          <b-badge>{{ width }}x{{ height }}</b-badge></span
-        >
-        <span v-show="selected !== 'preliminary-preview'" class="m-3"
-          >{{ $t('previewcanvas.size.label')
-          }}<b-badge
-            >{{ sizeToMb }} {{ $t('previewcanvas.size.value') }}</b-badge
+          >{{ t('previewcanvas.dimensions.label')
+          }}<span class="badge badge-secondary"
+            >{{ width }}x{{ height }}</span
           ></span
-        >
-        <span v-show="selected !== 'preliminary-preview'" class="m-3"
-          >{{ $t('previewcanvas.type.label')
-          }}<b-badge>{{ type }}</b-badge></span
+        ><span v-show="selected !== 'preliminary-preview'" class="m-3"
+          >{{ t('previewcanvas.size.label')
+          }}<span class="badge badge-secondary"
+            >{{ sizeToMb }} {{ t('previewcanvas.size.value') }}</span
+          ></span
+        ><span v-show="selected !== 'preliminary-preview'" class="m-3"
+          >{{ t('previewcanvas.type.label')
+          }}<span class="badge badge-secondary">{{ type }}</span></span
         >
       </p>
-    </b-card-footer>
-  </b-card>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
 import {ImageBuilder} from '@/image-processor';
 import {ImageBuilderWorkerProxy} from '@/image-processor/image-builder-worker-proxy';
-import Vue from 'vue';
+import {useStore} from '@/store';
+import {
+  computed,
+  defineComponent,
+  nextTick,
+  onBeforeUnmount,
+  ref,
+  toRaw,
+  watch,
+} from 'vue';
+import {useI18n} from 'vue-i18n';
 
+type SelectMode = 'original-preview' | 'preliminary-preview' | 'result-preview';
+
+export default defineComponent({
+  setup() {
+    const {t} = useI18n({useScope: 'global'});
+    const store = useStore();
+    const canvas = ref<HTMLCanvasElement>();
+
+    const selected = ref<SelectMode>('preliminary-preview');
+    const width = ref<number>(0);
+    const height = ref<number>(0);
+    const showProcessIndicator = ref<boolean>(false);
+    const size = ref<number>(0);
+    const type = ref<string>('');
+    const name = ref<string>('');
+    const fullSizePreview = ref<boolean>(false);
+
+    let updateTimeout = 0;
+    let imageBuilder: ImageBuilder; // FIXME !!!!!!!!!!!!!
+
+    const show = computed(() => store.state.showFileIndex !== null);
+    const sizeToMb = computed(() => (size.value / 1000 ** 2).toFixed(3));
+    const options = computed<
+      {
+        [K in SelectMode]: string;
+      }
+    >(() => {
+      return {
+        'original-preview': t('previewcanvas.viewselector.original.text'),
+        'preliminary-preview': t('previewcanvas.viewselector.preliminary.text'),
+        'result-preview': t('previewcanvas.viewselector.result.text'),
+      };
+    });
+
+    const updateCanvas = function() {
+      if (store.state.showFileIndex === null) {
+        canvas.value
+          ?.getContext('2d')
+          ?.clearRect(0, 0, canvas.value?.width, canvas.value?.height);
+        return;
+      }
+      showProcessIndicator.value = true;
+      window.clearTimeout(updateTimeout);
+      updateTimeout = window.setTimeout(async () => {
+        let imageBitmap: ImageBitmap;
+        if (store.state.showFileIndex === null) return;
+        let blob = store.state.fileList[store.state.showFileIndex];
+        if (selected.value === 'original-preview') {
+          imageBuilder.setFilterMap([]);
+          imageBitmap = await imageBuilder.buildImageBitmap();
+          imageBuilder.setFilterMap(toRaw(store.state.filterMaps));
+        } else if (selected.value === 'preliminary-preview') {
+          imageBitmap = await imageBuilder.buildImageBitmap();
+        } else if (selected.value === 'result-preview') {
+          blob = await imageBuilder.buildFile();
+          imageBitmap = await new ImageBuilderWorkerProxy(
+            blob
+          ).buildImageBitmap();
+        } else {
+          throw new Error('call unknown preview mode');
+        }
+
+        width.value = imageBitmap.width;
+        height.value = imageBitmap.height;
+        size.value = blob.size;
+        type.value = blob.type;
+        name.value = blob.name;
+
+        canvas.value
+          ?.getContext('2d')
+          ?.clearRect(0, 0, canvas.value?.width, canvas.value?.height);
+
+        nextTick(() => {
+          canvas.value?.getContext('2d')?.drawImage(imageBitmap, 0, 0);
+        });
+        showProcessIndicator.value = false;
+      }, 200);
+    };
+
+    const unmountWatchFilterMaps = store.watch(
+      state => state.filterMaps,
+      async () => {
+        if (imageBuilder instanceof ImageBuilder) {
+          imageBuilder.setFilterMap(toRaw(store.state.filterMaps));
+        }
+        await updateCanvas();
+      },
+      {deep: true}
+    );
+
+    const unmountWatchShowFileIndex = store.watch(
+      state => {
+        return state.showFileIndex;
+      },
+      async () => {
+        if (store.state.showFileIndex === null) {
+          await updateCanvas();
+          return;
+        }
+        const blob = store.state.fileList[store.state.showFileIndex];
+        if (!blob) {
+          await updateCanvas();
+          return;
+        }
+        imageBuilder = new ImageBuilderWorkerProxy(blob);
+        imageBuilder.setType(store.state.type);
+        imageBuilder.setQuality(store.state.quality);
+        imageBuilder.setNameTransformPattern(store.state.nameTransformPattern);
+        console.log('array', toRaw(store.state.filterMaps));
+        console.log(1);
+        imageBuilder.setFilterMap(toRaw(store.state.filterMaps));
+        console.log(2);
+        await updateCanvas();
+        console.log(3);
+      }
+    );
+
+    const unmountWatchType = store.watch(
+      state => state.type,
+      async () => {
+        imageBuilder.setType(store.state.type);
+        await updateCanvas();
+      }
+    );
+
+    const unmountWatchQuality = store.watch(
+      state => state.quality,
+      async () => {
+        imageBuilder.setQuality(store.state.quality);
+        await updateCanvas();
+      }
+    );
+
+    const unmountWatchNameTransformPattern = store.watch(
+      state => state.nameTransformPattern,
+      async () => {
+        imageBuilder.setNameTransformPattern(store.state.nameTransformPattern);
+        await updateCanvas();
+      }
+    );
+
+    watch(selected, async () => {
+      await updateCanvas();
+    });
+
+    onBeforeUnmount(() => {
+      unmountWatchFilterMaps();
+      unmountWatchShowFileIndex();
+      unmountWatchType();
+      unmountWatchQuality();
+      unmountWatchNameTransformPattern();
+    });
+
+    return {
+      t,
+      selected,
+      width,
+      height,
+      showProcessIndicator,
+      size,
+      type,
+      name,
+      fullSizePreview,
+      show,
+      sizeToMb,
+      options,
+      updateCanvas,
+      canvas,
+    };
+  },
+});
+/*
 export default Vue.extend({
   data() {
     return {
@@ -213,4 +395,6 @@ export default Vue.extend({
   //  this.updateCanvas();
   // }
 });
+
+*/
 </script>

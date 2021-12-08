@@ -1,47 +1,56 @@
 <i18n src="../common/locales.json"></i18n>
 
 <template>
-  <b-form @submit.stop.prevent>
-    <b-form-group
-      :description="$t('contrastfilter.form.level.description')"
-      :label-for="`input-${componentID}`"
-      class="m-0"
-    >
-      <b-form-input
-        :id="`input-${componentID}`"
-        :value="level"
-        type="number"
-        min="0"
-        step="0.1"
-        @input="updateLevel"
-      />
-    </b-form-group>
-  </b-form>
+  <form @submit.stop.prevent>
+    <div class="form-group m-0">
+      <div>
+        <input
+          v-model.lazy="level"
+          type="number"
+          name="level"
+          min="0"
+          step="0.1"
+          class="form-control"
+        /><small tabindex="-1" class="form-text text-muted">{{
+          t('contrastfilter.form.level.description')
+        }}</small>
+      </div>
+    </div>
+  </form>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import {computed, defineComponent, PropType} from 'vue';
 import SequenceId from '@/utils/sequence-id';
+import {useI18n} from 'vue-i18n';
+import AbstractFilter from '@/image-processor/filters/abstract-filter';
+import ContrastFilter from '@/image-processor/filters/contrast-filter';
 
-export default Vue.extend({
+type ContrastFilterProps = Omit<ContrastFilter, keyof AbstractFilter>;
+
+export default defineComponent({
   props: {
-    level: {
-      type: Number,
-      default: 100,
+    modelValue: {
+      type: Object as PropType<ContrastFilterProps>,
+      default: (): ContrastFilterProps => {
+        return {level: 100};
+      },
     },
   },
-  data() {
-    return {
-      componentID: SequenceId.getNew(),
-    };
-  },
-  methods: {
-    updateLevel: function(value: string) {
-      const numberValue = Number(value);
-      if (!isNaN(numberValue)) {
-        this.$emit('update:level', numberValue);
-      }
-    },
+  emits: {'update:modelValue': (data: ContrastFilterProps) => !!data},
+  setup(props, {emit}) {
+    const componentID = SequenceId.getNew();
+    const {t} = useI18n({useScope: 'global'});
+    const level = computed({
+      get: () => props.modelValue.level,
+      set: value => {
+        const numberValue = Number(value);
+        if (!isNaN(numberValue)) {
+          emit('update:modelValue', {...props.modelValue, level: value});
+        }
+      },
+    });
+    return {t, componentID, level};
   },
 });
 </script>

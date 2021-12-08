@@ -1,138 +1,169 @@
 <i18n src="../common/locales.json"></i18n>
 
 <template>
-  <b-form @submit.stop.prevent>
-    <b-form-group
-      :label="$t('cropfilter.form.mode.label')"
-      :label-for="`input-mode-${componentID}`"
-    >
-      <b-form-select
-        :id="`input-mode-${componentID}`"
-        name="mode"
-        :value="mode"
-        :options="supportModes"
-        size="sm"
-        class="mt-3"
-        @change="updateMode"
-      />
-    </b-form-group>
-    <b-form-group
-      :label="$t('cropfilter.form.position.label')"
-      :label-for="`input-position-${componentID}`"
-    >
-      <b-form-select
-        :id="`input-position-${componentID}`"
-        name="position"
-        :value="position"
-        :options="supportPositions"
-        size="sm"
-        class="mt-3"
-        @input="updatePosition"
-      />
-    </b-form-group>
-    <b-form-group
-      :label="$t('cropfilter.form.sizes.label')"
-      :label-for="`input-position-${componentID}`"
-      :description="$t('cropfilter.form.sizes.description')"
-    >
-      <b-input-group>
-        <b-input-group-text>
-          X:
-        </b-input-group-text>
-        <b-form-input
-          :value="width"
-          name="width"
-          type="number"
-          step="1"
-          min="0"
-          placeholder="auto"
-          :formatter="formatter"
-          @input="updateWidth"
-        />
-        <b-input-group-text>
-          Y:
-        </b-input-group-text>
-        <b-form-input
-          :value="height"
-          name="height"
-          type="number"
-          step="1"
-          min="0"
-          placeholder="auto"
-          :formatter="formatter"
-          @input="updateHeight"
-        />
-      </b-input-group>
-    </b-form-group>
-  </b-form>
+  <form @submit.stop.prevent>
+    <div class="form-group">
+      <label class="d-block">{{ t('cropfilter.form.mode.label') }}</label>
+      <div>
+        <select
+          v-model="mode"
+          name="mode"
+          class="mt-3 form-select form-select-sm"
+        >
+          <option
+            v-for="modeItem in modeList"
+            :key="modeItem.value"
+            :value="modeItem.value"
+          >
+            {{ modeItem.text }}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="d-block">{{ t('cropfilter.form.position.label') }}</label>
+      <div>
+        <select
+          v-model="position"
+          name="position"
+          class="mt-3 form-select form-select-sm"
+        >
+          <option
+            v-for="positionItem in positionList"
+            :key="positionItem.value"
+            :value="positionItem.value"
+          >
+            {{ positionItem.text }}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="d-block">{{ t('cropfilter.form.sizes.label') }}</label>
+      <div>
+        <div role="group" class="input-group">
+          <div class="input-group-text">
+            X:
+          </div>
+          <input
+            type="number"
+            name="width"
+            placeholder="auto"
+            min="0"
+            step="1"
+            class="form-control"
+            :value="inputSizeFormatter(width)"
+            @input="width = Number(($event.target as HTMLInputElement).value)"
+          />
+          <div class="input-group-text">
+            Y:
+          </div>
+          <input
+            type="number"
+            name="height"
+            placeholder="auto"
+            min="0"
+            step="1"
+            class="form-control"
+            :value="inputSizeFormatter(height)"
+            @input="height = Number(($event.target as HTMLInputElement).value)"
+          />
+        </div>
+        <small tabindex="-1" class="form-text text-muted">{{
+          t('cropfilter.form.sizes.description')
+        }}</small>
+      </div>
+    </div>
+  </form>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import {
+import {computed, defineComponent, PropType} from 'vue';
+import CropFilter, {
   supportPositions,
   supportModes,
 } from '@/image-processor/filters/crop-filter';
 import SequenceId from '@/utils/sequence-id';
+import {useI18n} from 'vue-i18n';
+import AbstractFilter from '@/image-processor/filters/abstract-filter';
 
-export default Vue.extend({
+type CropFilterProps = Omit<CropFilter, keyof AbstractFilter>;
+
+export default defineComponent({
   props: {
-    mode: {
-      type: String,
-      default: supportModes.RATIO,
-    },
-    position: {
-      type: String,
-      default: supportPositions.CENTER_MIDDLE,
-    },
-    width: {
-      type: Number,
-      default: 1,
-    },
-    height: {
-      type: Number,
-      default: 1,
+    modelValue: {
+      type: Object as PropType<CropFilterProps>,
+      default: (): CropFilterProps => {
+        return {
+          mode: supportModes.RATIO,
+          position: supportPositions.CENTER_MIDDLE,
+          width: 1,
+          height: 1,
+        };
+      },
     },
   },
-  data() {
-    return {
-      componentID: SequenceId.getNew(),
+  emits: {'update:modelValue': (data: CropFilterProps) => !!data},
+  setup(props, {emit}) {
+    const componentID = SequenceId.getNew();
+    const {t} = useI18n({useScope: 'global'});
+    const mode = computed({
+      get: () => props.modelValue.mode,
+      set: value =>
+        emit('update:modelValue', {...props.modelValue, mode: value}),
+    });
+
+    const position = computed({
+      get: () => props.modelValue.position,
+      set: value =>
+        emit('update:modelValue', {...props.modelValue, position: value}),
+    });
+
+    const width = computed({
+      get: () => Number(props.modelValue.width),
+      set: value =>
+        emit('update:modelValue', {...props.modelValue, width: value}),
+    });
+
+    const height = computed({
+      get: () => Number(props.modelValue.height),
+      set: value =>
+        emit('update:modelValue', {...props.modelValue, height: value}),
+    });
+
+    const inputSizeFormatter = (value: string | number): string => {
+      return Number(value) === 0 ? '' : String(value);
     };
-  },
-  computed: {
-    supportPositions: function() {
+
+    const positionList = computed(() => {
       return Object.values(supportPositions).map(position => {
         return {
-          text: this.$t(`cropfilter.form.position.value.${position}`),
+          text: t(`cropfilter.form.position.value.${position}`),
           value: position,
         };
       });
-    },
-    supportModes: function() {
+    });
+
+    const modeList = computed(() => {
       return Object.values(supportModes).map(mode => {
         return {
-          text: this.$t(`cropfilter.form.mode.value.${mode}`),
+          text: t(`cropfilter.form.mode.value.${mode}`),
           value: mode,
         };
       });
-    },
-  },
-  methods: {
-    formatter(value: string): string {
-      return Number(value) === 0 ? '' : value;
-    },
-    updateMode(value: string) {
-      this.$emit('update:mode', value);
-    },
-    updatePosition(value: string) {
-      this.$emit('update:position', value);
-    },
-    updateWidth(value: string) {
-      this.$emit('update:width', Number(value));
-    },
-    updateHeight(value: string) {
-      this.$emit('update:height', Number(value));
-    },
+    });
+
+    return {
+      t,
+      componentID,
+      mode,
+      position,
+      width,
+      height,
+      positionList,
+      modeList,
+      inputSizeFormatter,
+    };
   },
 });
 </script>

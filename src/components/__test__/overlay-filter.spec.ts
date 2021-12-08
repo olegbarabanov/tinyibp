@@ -1,12 +1,25 @@
 /* eslint-disable node/no-unpublished-import */
-import {createLocalVue, mount, shallowMount} from '@vue/test-utils';
-import OverlayFilter from '@/components/overlay-filter.vue';
-import BootstrapVue from 'bootstrap-vue';
+import {mount} from '@vue/test-utils';
+import {createI18n} from 'vue-i18n';
+import OverlayFilter from '../overlay-filter.vue';
 
 describe('overlay-filter.vue', () => {
-  /*
-    EMPTY TEST !
-    MUST BE CREATED FOR RELEASE !
-  */
-  test('empty test', async () => {});
+  test('emits the correct event with different props', async () => {
+    const i18n = createI18n({});
+    const wrapper = mount(OverlayFilter, {
+      global: {
+        plugins: [i18n],
+      },
+    });
+    const inputLevel = wrapper.find('input[name="image"]');
+    expect(inputLevel.exists()).toBe(true);
+
+    const inputPosition = wrapper.find('select[name="position"]');
+    expect(inputPosition.exists()).toBe(true);
+
+    const inputMargin = wrapper.find('input[name="margin"]');
+    expect(inputMargin.exists()).toBe(true);
+
+    wrapper.unmount();
+  });
 });

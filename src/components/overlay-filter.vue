@@ -1,88 +1,116 @@
 <i18n src="../common/locales.json"></i18n>
 
 <template>
-  <b-form @submit.stop.prevent>
-    <b-form-group
-      :label="$t('overlayfilter.form.image.label')"
-      :label-for="`input-image-${componentID}`"
-    >
-      <b-form-file
-        :id="`input-image-${componentID}`"
-        placeholder="Choose a file or drop it here..."
+  <form @submit.stop.prevent>
+    <div class="form-group">
+      <label class="d-block">{{ t('overlayfilter.form.image.label') }}</label>
+      <input
+        type="file"
+        name="image"
         :accept="acceptImageTypeList"
-        drop-placeholder="Drop file here..."
-        @input="updateImage"
+        class="form-control form-control-sm"
+        @input="updateImage(($event.target as HTMLInputElement).files?.[0])"
       />
-    </b-form-group>
-    <b-form-group
-      :label="$t('overlayfilter.form.position.label')"
-      :label-for="`input-position-${componentID}`"
-    >
-      <b-form-select
-        :value="position"
-        :options="supportPositions"
-        :label-for="`input-position-${componentID}`"
-        size="sm"
-        @input="updatePosition"
-      />
-    </b-form-group>
-    <b-form-group
-      :label="$t('overlayfilter.form.margin.label')"
-      :label-for="`input-margin-${componentID}`"
-    >
-      <b-form-input
-        :label-for="`input-margin-${componentID}`"
-        :value="margin"
-        type="number"
-        step="1"
-        @input="updateMargin"
-      />
-    </b-form-group>
-  </b-form>
+    </div>
+    <div class="form-group">
+      <label class="d-block">{{
+        t('overlayfilter.form.position.label')
+      }}</label>
+      <div>
+        <select
+          v-model="position"
+          name="position"
+          class="form-select form-select-sm"
+        >
+          <option
+            v-for="positionItem in positionList"
+            :key="positionItem.value"
+            :value="positionItem.value"
+          >
+            {{ positionItem.text }}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="d-block">{{ t('overlayfilter.form.margin.label') }}</label>
+      <div>
+        <input
+          v-model="margin"
+          name="margin"
+          type="number"
+          step="1"
+          class="form-control"
+        />
+      </div>
+    </div>
+  </form>
 </template>
 
 <script lang="ts">
-import Vue, {PropType} from 'vue';
+import {computed, defineComponent, PropType} from 'vue';
 import SequenceId from '@/utils/sequence-id';
-import {supportPositions} from '@/image-processor/filters/overlay-filter';
+import {useI18n} from 'vue-i18n';
+import OverlayFilter, {
+  supportPositions,
+} from '@/image-processor/filters/overlay-filter';
 import {supportTypes} from '@/image-processor';
+import AbstractFilter from '@/image-processor/filters/abstract-filter';
 
-export default Vue.extend({
+type OverlayFilterProps = Omit<OverlayFilter, keyof AbstractFilter>;
+
+export default defineComponent({
   props: {
-    position: {
-      type: Number as PropType<supportPositions>,
-      default: supportPositions.MIDDLE_CENTER,
-    },
-    margin: {
-      type: Number as PropType<number>,
-      default: 0,
+    modelValue: {
+      type: Object as PropType<OverlayFilterProps>,
+      default: (): OverlayFilterProps => {
+        return {
+          position: supportPositions.MIDDLE_CENTER,
+          margin: 0,
+        };
+      },
     },
   },
-  data() {
-    return {
-      componentID: SequenceId.getNew(),
-      supportPositions: Object.entries(supportPositions)
+  emits: {'update:modelValue': (data: OverlayFilterProps) => !!data},
+  setup(props, {emit}) {
+    const componentID = SequenceId.getNew();
+    const {t} = useI18n({useScope: 'global'});
+    const margin = computed({
+      get: () => props.modelValue.margin,
+      set: value =>
+        emit('update:modelValue', {...props.modelValue, margin: value}),
+    });
+    const position = computed({
+      get: () => props.modelValue.position,
+      set: value =>
+        emit('update:modelValue', {...props.modelValue, position: value}),
+    });
+
+    const updateImage = (image?: File) => {
+      emit('update:modelValue', {...props.modelValue, image});
+    };
+
+    const positionList = computed(() =>
+      Object.entries(supportPositions)
         .filter(([position]) => isNaN(Number(position)))
         .map(([position, index]) => {
           return {text: position, value: index};
-        }),
+        })
+    );
+
+    const acceptImageTypeList = computed(() =>
+      Array.from(supportTypes, type => type[0]).join(',')
+    );
+
+    return {
+      t,
+      componentID,
+      margin,
+      position,
+      positionList,
+      acceptImageTypeList,
+      updateImage,
     };
-  },
-  computed: {
-    acceptImageTypeList() {
-      return Array.from(supportTypes, type => type[0]).join(',');
-    },
-  },
-  methods: {
-    updateImage: function(value: File): void {
-      this.$emit('update:image', value);
-    },
-    updatePosition: function(value: string): void {
-      this.$emit('update:position', value);
-    },
-    updateMargin: function(value: string): void {
-      this.$emit('update:margin', Number(value));
-    },
   },
 });
 </script>

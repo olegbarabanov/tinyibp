@@ -1,80 +1,83 @@
-<i18n src="../common/locales.json"></i18n>
+<i18n global src="../common/locales.json"></i18n>
 
 <template>
-  <b-card
-    class="h-100 text-center w-100"
-    border-variant="dark"
-    body-bg-variant="light"
-    no-body
-  >
-    <b-card-header
-      header-text-variant="white"
-      header-bg-variant="dark"
-      class="d-flex flex-row align-items-center justify-content-center p-1"
-      style="min-height: 3rem"
+  <div class="card h-100 text-center w-100 border-dark">
+    <div
+      class="card-header d-flex flex-row align-items-center justify-content-center p-1 bg-dark text-white"
+      style="min-height: 3rem;"
     >
       <h5 class="my-0 mx-4">
-        {{ $t('filelist.header.text') }}
+        {{ t('filelist.header.text') }}
       </h5>
+      <div class="dropdown d-inline-flex mx-4">
+        <button
+          type="button"
+          class="btn btn-secondary btn-block"
+          data-bs-toggle="dropdown"
+        >
+          <i class="bi bi-plus-circle" />
+        </button>
+        <ul tabindex="-1" class="dropdown-menu">
+          <li @click="getImageFromFilePicker">
+            <a href="#" target="_self" class="dropdown-item">
+              {{ t('filelist.upload.from-device') }}
+            </a>
+          </li>
+          <li @click="getImageFromClipboard">
+            <a href="#" target="_self" class="dropdown-item">
+              {{ t('filelist.upload.from-clipboard') }}
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
 
-      <b-dropdown block class="d-inline-flex mx-4" no-caret>
-        <template #button-content>
-          <b-icon icon="plus-circle" />
-        </template>
-        <b-dropdown-item @click="getImageFromFilePicker()">
-          {{ $t('filelist.upload.from-device') }}
-        </b-dropdown-item>
-        <b-dropdown-item @click="getImageFromClipboard()">
-          {{ $t('filelist.upload.from-clipboard') }}
-        </b-dropdown-item>
-      </b-dropdown>
-    </b-card-header>
-    <b-card-body v-if="globalFileList.length > 0" class="p-1">
-      <b-form class="mh-100 d-flex flex-column" @submit.stop.prevent>
-        <b-list-group class="overflow-auto">
-          <b-list-group-item
-            v-for="(file, index) in globalFileList"
+    <div v-if="fileList.length > 0" class="card-body p-1">
+      <form class="mh-100 d-flex flex-column">
+        <div class="list-group overflow-auto">
+          <div
+            v-for="(file, index) in fileList"
             :key="index"
-            :active="$store.state.showFileIndex === index"
-            variant="light"
-            class="d-flex justify-content-between align-items-center p-1"
-            @click="$store.commit('showFile', index)"
+            class="list-group-item d-flex justify-content-between align-items-center p-1 list-group-item-light"
+            :active="store.state.showFileIndex === index"
+            @click="store.commit('showFile', index)"
           >
             <span class="text-truncate">{{ index + 1 }} - {{ file.name }}</span>
-            <b-button
+            <button
               aria-label="Close"
-              class="close"
-              @click.stop="$store.dispatch('deleteFile', index)"
+              type="button"
+              class="btn close btn-secondary"
+              @click.stop="store.dispatch('deleteFile', index)"
             >
-              <span aria-hidden="true">&times;</span>
-            </b-button>
-          </b-list-group-item>
-        </b-list-group>
-      </b-form>
-    </b-card-body>
-
-    <b-card-body v-else class="p-1">
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div v-else class="card-body p-1">
       <div class="d-flex align-items-center justify-content-center h-100">
-        <p>
-          {{ $t('filelist.notice.emptylist') }}
-        </p>
+        <p>{{ t('filelist.notice.emptylist') }}</p>
       </div>
-    </b-card-body>
-  </b-card>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
 import {SupportMimesTypes, supportTypes} from '@/image-processor';
-import Vue from 'vue';
+import {computed, defineComponent, inject, ref} from 'vue';
+import {useI18n} from 'vue-i18n';
+import {useStore} from '@/store';
+import {key as keyToast} from '@/toast';
 
-export default Vue.extend({
-  computed: {
-    globalFileList: function() {
-      return this.$store.state.fileList;
-    },
-  },
-  methods: {
-    getImageFromFilePicker: async function() {
+export default defineComponent({
+  setup() {
+    const {t, availableLocales, locale} = useI18n({useScope: 'global'});
+    const store = useStore();
+    const toastForbiddenClipboard = ref<HTMLElement>();
+    const showToast = inject(keyToast);
+    const fileList = computed(() => store.state.fileList);
+    const getImageFromFilePicker = async () => {
       const input = document.createElement('input');
       input.type = 'file';
       input.multiple = true;
@@ -83,24 +86,27 @@ export default Vue.extend({
         if (!input.files) return;
         for (const file of input.files) {
           if (supportTypes.has(file.type as SupportMimesTypes)) {
-            this.$store.commit('setFile', file);
+            store.commit('setFile', file);
           }
         }
       };
       input.click();
-    },
-    getImageFromClipboard: async function() {
+    };
+
+    const getImageFromClipboard = async () => {
       const permission = await navigator.permissions.query({
         name: 'clipboard-read' as PermissionName, //trouble with TS >= 4.4.2
       });
       if (permission.state === 'denied') {
-        this.$bvToast.toast(
-          this.$tc('filelist.notice.forbidden-clipboard.text'),
-          {
-            title: this.$tc('filelist.notice.forbidden-clipboard.title'),
-            variant: 'warning',
-          }
-        );
+        if (showToast) {
+          showToast({
+            title: t('filelist.notice.forbidden-clipboard.title'),
+            text: t('filelist.notice.forbidden-clipboard.text'),
+            type: 'warning',
+            duration: 5000,
+          });
+        }
+
         return;
       }
       const data = await navigator.clipboard.read();
@@ -109,21 +115,20 @@ export default Vue.extend({
 
       for (let i = 0; i < data.length; i++) {
         if (!data[i].types.includes(allowImageType)) {
-          this.$bvToast.toast(
-            this.$tc('filelist.notice.incompatible-clipboard-data.text'),
-            {
-              title: this.$tc(
-                'filelist.notice.incompatible-clipboard-data.title'
-              ),
-              variant: 'warning',
-            }
-          );
+          if (showToast) {
+            showToast({
+              title: t('filelist.notice.incompatible-clipboard-data.title'),
+              text: t('filelist.notice.incompatible-clipboard-data.text'),
+              type: 'warning',
+              duration: 5000,
+            });
+          }
           continue;
         }
         const blob = await data[i].getType(allowImageType);
         const file = new File(
           [blob],
-          this.$tc('filelist.clipboard.default-filename') +
+          t('filelist.clipboard.default-filename') +
             '_' +
             Date.now() +
             '.' +
@@ -132,9 +137,20 @@ export default Vue.extend({
             type: blob.type,
           }
         );
-        this.$store.commit('setFile', file);
+        store.commit('setFile', file);
       }
-    },
+    };
+
+    return {
+      t,
+      availableLocales,
+      store,
+      locale,
+      fileList,
+      getImageFromFilePicker,
+      getImageFromClipboard,
+      toastForbiddenClipboard,
+    };
   },
 });
 </script>

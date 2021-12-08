@@ -1,5 +1,18 @@
 # Change Log
 
+## [0.2.0] - 2021-08-12
+
+### Added
+- added support Bootstrap 5
+- added support Vue 3 & Vuex 4 & Vue-i18n 9
+### Changed 
+- the application version is taken only from package.json
+### Removed
+- removed Bootstrap-Vue
+- removed old version libraries: Vue2, Vuex3 and etc.
+### Fixed
+- fixed a lot of errors related to the transition to new versions of the library
+
 ## [0.1.6] - 2021-05-17
 
 ### Added

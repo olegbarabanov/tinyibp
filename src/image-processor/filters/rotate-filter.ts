@@ -9,7 +9,7 @@ export default class RotateFilter extends AbstractFilter {
    * @param degree - angle in degrees
    * @returns - angle in radians
    */
-  degToRad(degree: number): number {
+  protected degToRad(degree: number): number {
     return degree * (Math.PI / 180);
   }
 
@@ -18,7 +18,7 @@ export default class RotateFilter extends AbstractFilter {
    * @param degree - angle in any number range
    * @returns - normalize value between 0 and 359 degree
    */
-  normalizeAngle(degree: number): number {
+  protected normalizeAngle(degree: number): number {
     degree %= 360;
     if (degree < 0) degree += 360;
     return degree;

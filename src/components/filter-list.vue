@@ -1,103 +1,143 @@
-<i18n src="../common/locales.json"></i18n>
+<i18n global src="../common/locales.json"></i18n>
 
 <template>
-  <b-card
-    class="h-100 text-center w-100"
-    border-variant="dark"
-    body-bg-variant="light"
-    no-body
-  >
-    <b-card-header
-      header-bg-variant="dark"
-      header-text-variant="white"
-      class="d-flex flex-row align-items-center justify-content-center p-1"
-      style="min-height:3rem"
+  <div class="card h-100 text-center w-100 border-dark">
+    <div
+      class="card-header d-flex flex-row align-items-center justify-content-center p-1 bg-dark text-white"
+      style="min-height: 3rem;"
     >
       <h5 class="my-0 mx-4">
-        {{ $t('filterlist.header.text') }}
+        {{ t('filterlist.header.text') }}
       </h5>
-      <b-dropdown block class="d-inline-flex mx-4" no-caret>
-        <template #button-content>
-          <b-icon icon="plus-circle" />
-        </template>
-        <b-dropdown-item
-          v-for="filter in registeredFilters"
-          :key="filter"
-          @click="initFilter(filter)"
+      <div class="dropdown d-inline-flex mx-4">
+        <button
+          type="button"
+          class="btn btn-secondary btn-block"
+          data-bs-toggle="dropdown"
         >
-          {{ $t(`filterlist.filter.${filter}.name`) }}
-        </b-dropdown-item>
-      </b-dropdown>
-    </b-card-header>
+          <i class="bi bi-plus-circle" />
+        </button>
+        <ul tabindex="-1" class="dropdown-menu">
+          <li
+            v-for="filter in registeredFilters"
+            :key="filter"
+            @click="initFilter(filter)"
+          >
+            <a href="#" target="_self" class="dropdown-item">
+              {{ t(`filterlist.filter.${filter}.name`) }}
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
 
-    <b-card-body v-if="filterMaps.length > 0" class="p-1">
+    <div v-if="filterMaps.length > 0" class="card-body p-1">
       <div class="d-flex flex-column mh-100">
         <draggable
-          tag="div"
-          :list="filterMaps"
-          class="list-group overflow-auto"
+          v-model="filterMaps"
+          item-key="id"
           handle=".handle"
+          class="list-group overflow-auto"
         >
-          <b-card
-            v-for="(filter, index) in filterMaps"
-            :key="index"
-            no-body
-            border-variant="secondary"
-            class="mb-1"
-          >
-            <b-card-header
-              header-tag="header"
-              class="handle py-1"
-              header-bg-variant="secondary"
-              header-text-variant="white"
-              :title="$t('filterlist.event.draggable.title')"
-              style="cursor: move;"
-            >
-              <b-row align-v="center" class="flex-nowrap">
-                <b-col cols="3">
-                  <b-badge variant="light">
-                    {{ index + 1 }}
-                  </b-badge>
-                </b-col>
-                <b-col cols="6">
-                  {{ $t(`filterlist.filter.${filter.name}.name`) }}
-                </b-col>
-                <b-col cols="3">
-                  <b-button
-                    aria-label="Close"
-                    class="close"
-                    @click="$store.commit('removeFilter', index)"
-                  >
-                    <span aria-hidden="true">&times;</span>
-                  </b-button>
-                </b-col>
-              </b-row>
-            </b-card-header>
-            <b-card-body>
-              <component
-                :is="
-                  filter.name.charAt(0).toUpperCase() +
-                    filter.name.slice(1) +
-                    'Filter'
-                "
-                v-bind.sync="filterMaps[index]"
-              />
-            </b-card-body>
-          </b-card>
+          <template #item="{element, index}">
+            <div class="card mb-1 border-secondary">
+              <header
+                :title="t('filterlist.event.draggable.title')"
+                class="card-header handle py-1 bg-secondary text-white"
+                style="cursor: move;"
+              >
+                <div class="row flex-nowrap align-items-center">
+                  <div class="col-3">
+                    <span class="badge bg-light text-dark">
+                      {{ index + 1 }}
+                    </span>
+                  </div>
+                  <div class="col-6">
+                    {{ t(`filterlist.filter.${element.name}.name`) }}
+                  </div>
+                  <div class="col-3">
+                    <button
+                      type="button"
+                      class="btn close btn-secondary"
+                      @click="store.commit('removeFilter', index)"
+                    >
+                      <span>×</span>
+                    </button>
+                  </div>
+                </div>
+              </header>
+              <div class="card-body">
+                <component
+                  :is="
+                    element.name.charAt(0).toUpperCase() +
+                      element.name.slice(1) +
+                      'Filter'
+                  "
+                  v-model="filterMaps[index]"
+                />
+              </div>
+            </div>
+          </template>
         </draggable>
       </div>
-    </b-card-body>
-    <b-card-body v-else>
+    </div>
+
+    <div v-else class="card-body">
       <div class="d-flex align-items-center justify-content-center h-100">
         <p>
-          {{ $t('filterlist.notice.emptylist') }}
+          {{ t('filterlist.notice.emptylist') }}
         </p>
       </div>
-    </b-card-body>
-  </b-card>
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
+import {useStore} from '@/store';
+import {computed, defineComponent} from 'vue';
+import {useI18n} from 'vue-i18n';
+import Draggable from 'vuedraggable';
+import OpacityFilter from './opacity-filter.vue';
+import BlurFilter from './blur-filter.vue';
+import GrayscaleFilter from './grayscale-filter.vue';
+import ContrastFilter from './contrast-filter.vue';
+import RotateFilter from './rotate-filter.vue';
+import SaturateFilter from './saturate-filter.vue';
+import CropFilter from './crop-filter.vue';
+import ColorReplacementFilter from './color-replacement-filter.vue';
+import ResizeFilter from './resize-filter.vue';
+import OverlayFilter from './overlay-filter.vue';
+
+export default defineComponent({
+  components: {
+    Draggable,
+    OpacityFilter,
+    BlurFilter,
+    GrayscaleFilter,
+    ContrastFilter,
+    RotateFilter,
+    SaturateFilter,
+    CropFilter,
+    ColorReplacementFilter,
+    ResizeFilter,
+    OverlayFilter,
+  },
+  setup() {
+    const {t} = useI18n({useScope: 'global'});
+    const store = useStore();
+    const registeredFilters = computed(() => store.state.registeredFilters);
+
+    const filterMaps = computed({
+      get: () => store.state.filterMaps,
+      set: (filters: any) => store.commit('updateFilters', filters),
+    });
+    const initFilter = (filter: any) => store.dispatch('initFilter', filter); //FIXME: check any !!!
+
+    return {t, filterMaps, store, initFilter, registeredFilters};
+  },
+});
+
+/*
 import Vue from 'vue';
 import {mapState, mapActions} from 'vuex';
 import draggable from 'vuedraggable';
@@ -129,4 +169,5 @@ export default Vue.extend({
     ...mapActions(['initFilter']),
   },
 });
+*/
 </script>

@@ -1,48 +1,58 @@
-<i18n src="../common/locales.json"></i18n>
+<i18n global src="../common/locales.json"></i18n>
 
 <template>
-  <b-form @submit.stop.prevent>
-    <b-form-group
-      :description="$t('blurfilter.form.level.description')"
-      :label-for="`input-${componentID}`"
-      class="m-0"
-    >
-      <b-form-input
-        :id="`input-${componentID}`"
-        :value="level"
-        type="number"
-        min="0"
-        max="100"
-        step="0.1"
-        @input="updateLevel"
-      />
-    </b-form-group>
-  </b-form>
+  <form @submit.stop.prevent>
+    <div class="form-group m-0">
+      <div>
+        <input
+          v-model.lazy="level"
+          name="level"
+          type="number"
+          min="0"
+          max="100"
+          step="0.1"
+          class="form-control"
+        />
+        <small tabindex="-1" class="form-text text-muted">{{
+          t('blurfilter.form.level.description')
+        }}</small>
+      </div>
+    </div>
+  </form>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import {computed, defineComponent, PropType} from 'vue';
 import SequenceId from '@/utils/sequence-id';
+import {useI18n} from 'vue-i18n';
+import BlurFilter from '@/image-processor/filters/blur-filter';
+import AbstractFilter from '@/image-processor/filters/abstract-filter';
 
-export default Vue.extend({
+type BlurFilterProps = Omit<BlurFilter, keyof AbstractFilter>;
+
+export default defineComponent({
   props: {
-    level: {
-      type: Number,
-      default: 0,
+    modelValue: {
+      type: Object as PropType<BlurFilterProps>,
+      default: (): BlurFilterProps => {
+        return {level: 0};
+      },
     },
   },
-  data() {
-    return {
-      componentID: SequenceId.getNew(),
-    };
-  },
-  methods: {
-    updateLevel: function(value: string) {
-      const numberValue = Number(value);
-      if (!isNaN(numberValue)) {
-        this.$emit('update:level', numberValue);
-      }
-    },
+  emits: {'update:modelValue': (data: BlurFilterProps) => !!data},
+  setup(props, {emit}) {
+    const componentID = SequenceId.getNew();
+    const {t} = useI18n({useScope: 'global'});
+    const level = computed({
+      get: () => Number(props.modelValue.level),
+      set: value => {
+        const numberValue = Number(value);
+        if (!isNaN(numberValue)) {
+          emit('update:modelValue', {...props.modelValue, level: numberValue});
+        }
+      },
+    });
+    return {t, componentID, level};
   },
 });
 </script>

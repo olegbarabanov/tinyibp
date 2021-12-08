@@ -1,133 +1,215 @@
-<i18n src="./common/locales.json"></i18n>
+<i18n global src="./common/locales.json"></i18n>
 
 <template>
   <div id="app">
-    <b-container fluid class="p-0 d-flex flex-column">
-      <b-row no-gutters>
-        <b-col>
-          <b-navbar sticky toggleable="lg" type="dark" variant="dark">
-            <b-navbar-brand href="#">
-              <span>TinyIBP (v0.1.6)</span>
-            </b-navbar-brand>
-            <b-navbar-toggle target="nav-collapse" />
-            <b-collapse id="nav-collapse" is-nav>
-              <b-navbar-nav class="ml-auto">
-                <b-nav-item-dropdown :text="$t('app.chooselang')" right>
-                  <b-dropdown-item
-                    v-for="lang in supportLangs"
-                    :key="lang"
-                    class="text-uppercase"
-                    @click="$store.commit('setLang', lang)"
+    <div class="p-0 d-flex flex-column container-fluid">
+      <div class="row g-0">
+        <div class="col">
+          <nav
+            class="navbar sticky-top navbar-dark bg-dark navbar-expand-lg px-3"
+          >
+            <a href="#" target="_self" class="navbar-brand"
+              ><span>TinyIBP ({{ APP_VERSION }})</span></a
+            ><button
+              type="button"
+              class="navbar-toggler collapsed"
+              style="overflow-anchor: none;"
+              data-bs-toggle="collapse"
+              data-bs-target="#nav-collapse2"
+            >
+              <span class="navbar-toggler-icon" />
+            </button>
+            <div id="nav-collapse2" class="navbar-collapse collapse">
+              <ul class="navbar-nav ms-auto">
+                <li class="nav-item b-nav-dropdown dropdown">
+                  <a
+                    href="#"
+                    target="_self"
+                    class="nav-link dropdown-toggle"
+                    data-bs-toggle="dropdown"
+                    ><span>{{ t('app.chooselang') }}</span></a
                   >
-                    {{ lang }}
-                  </b-dropdown-item>
-                </b-nav-item-dropdown>
-              </b-navbar-nav>
-            </b-collapse>
-          </b-navbar>
-        </b-col>
-      </b-row>
-
-      <b-row
-        v-if="$screen.md"
-        align-v="stretch"
-        no-gutters
-        class="flex-grow-1 overflow-hidden"
+                  <ul tabindex="-1" class="dropdown-menu dropdown-menu-end">
+                    <li class="text-uppercase">
+                      <a
+                        v-for="lang in availableLocales"
+                        :key="lang"
+                        href="#"
+                        target="_self"
+                        class="dropdown-item text-uppercase"
+                        @click="locale = lang"
+                      >
+                        {{ lang }}
+                      </a>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+          </nav>
+        </div>
+      </div>
+      <div
+        v-if="$grid.md"
+        class="row flex-grow-1 overflow-hidden g-0 align-items-stretch"
       >
-        <b-col md="3" class="mh-100 p-1">
+        <div class="col-md-3 mh-100 p-1">
           <file-list />
-        </b-col>
-
-        <b-col md="6" class="mh-100 p-1">
+        </div>
+        <div class="col-md-6 mh-100 p-1">
           <preview-canvas />
-        </b-col>
-
-        <b-col md="3" class="mh-100 p-1">
+        </div>
+        <div class="col-md-3 mh-100 p-1">
           <filter-list />
-        </b-col>
-      </b-row>
-      <b-row
+        </div>
+      </div>
+      <div
         v-else
-        align-v="stretch"
-        no-gutters
-        class="flex-grow-1 overflow-hidden"
+        class="row flex-grow-1 overflow-hidden g-0 align-items-stretch"
       >
-        <b-col cols="12" class="mh-100 p-1">
+        <div class="col-12 mh-100 p-1">
           <preview-canvas />
-        </b-col>
-      </b-row>
-
-      <b-row align-v="stretch" no-gutters>
-        <b-col md="12">
+        </div>
+      </div>
+      <div class="row g-0 align-items-stretch">
+        <div class="col-12">
           <download-form />
-        </b-col>
-      </b-row>
-    </b-container>
-    <div v-if="!$screen.md">
-      <b-button
-        v-b-toggle.sidebar-files-backdrop
-        style="position: fixed; left: 0; top: 50%; z-index: 99;"
+        </div>
+      </div>
+    </div>
+    <div v-if="!$grid.md">
+      <button
+        type="button"
+        class="btn btn-secondary collapsed position-fixed start-0 top-50"
+        style="z-index: 99; overflow-anchor: none;"
+        @click="visibleMobileFilePanel = true"
       >
-        {{ $t('app.filelist.header') }}
-      </b-button>
+        {{ t('app.filelist.header') }}
+      </button>
+      <div tabindex="-1" class="b-sidebar-outer">
+        <div
+          v-show="visibleMobileFilePanel"
+          tabindex="-1"
+          class="b-sidebar shadow bg-transparent text-dark"
+          style="width: 250px;"
+        >
+          <div class="b-sidebar-body d-flex">
+            <file-list />
+          </div>
+        </div>
+        <div
+          v-show="visibleMobileFilePanel"
+          class="b-sidebar-backdrop bg-dark"
+          @click="visibleMobileFilePanel = false"
+        ></div>
+      </div>
 
-      <b-sidebar
-        id="sidebar-files-backdrop"
-        backdrop
-        bg-variant="transparent"
-        body-class="d-flex"
-        shadow
-        no-header
-        width="250px"
+      <button
+        type="button"
+        class="btn btn-secondary collapsed position-fixed end-0 top-50"
+        style="z-index: 99; overflow-anchor: none;"
+        @click="visibleMobileFilterPanel = true"
       >
-        <file-list />
-      </b-sidebar>
+        {{ t('app.filterlist.header') }}
+      </button>
+      <div tabindex="-1" class="b-sidebar-outer">
+        <div
+          v-show="visibleMobileFilterPanel"
+          tabindex="-1"
+          class="b-sidebar shadow b-sidebar-right bg-transparent text-dark"
+          style="width: 250px;"
+        >
+          <div class="b-sidebar-body d-flex">
+            <filter-list />
+          </div>
+        </div>
 
-      <b-button
-        v-b-toggle.sidebar-filters-backdrop
-        style="position: fixed; right: 0; top: 50%; z-index: 99;"
-      >
-        {{ $t('app.filterlist.header') }}
-      </b-button>
-
-      <b-sidebar
-        id="sidebar-filters-backdrop"
-        backdrop
-        bg-variant="transparent"
-        body-class="d-flex"
-        right
-        shadow
-        no-header
-        width="250px"
-      >
-        <filter-list />
-      </b-sidebar>
+        <div
+          v-show="visibleMobileFilterPanel"
+          class="b-sidebar-backdrop bg-dark"
+          @click="visibleMobileFilterPanel = false"
+        ></div>
+      </div>
     </div>
   </div>
+
+  <teleport to="#toast-container">
+    <!-- <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 11"> -->
+    <transition-group name="toast">
+      <div
+        v-for="[symbol, toast] in toastList"
+        :key="symbol"
+        class="toast show"
+      >
+        <div
+          :class="
+            `toast-header bg-${toast.type} bg-opacity-25 text-dark text-opacity-75`
+          "
+        >
+          <strong class="me-auto">
+            {{ toast.title }}
+          </strong>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="toast"
+          ></button>
+        </div>
+        <div
+          :class="
+            `toast-body bg-${toast.type} bg-opacity-25 text-dark text-opacity-75`
+          "
+        >
+          {{ toast.text }}
+        </div>
+      </div>
+    </transition-group>
+    <!-- </div> -->
+  </teleport>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-import previewCanvas from './components/preview-canvas.vue';
-import fileList from './components/file-list.vue';
-import filterList from './components/filter-list.vue';
-import downloadForm from '@/components/download-form.vue';
+import {defineComponent, provide, reactive, ref} from 'vue';
+import {useI18n} from 'vue-i18n';
+import FileList from './components/file-list.vue';
+import PreviewCanvas from './components/preview-canvas.vue';
+import FilterList from './components/filter-list.vue';
+import DownloadForm from './components/download-form.vue';
+import {useStore} from './store';
+import {Toast, key as toastKey} from './toast';
+import {APP_VERSION} from './init';
 
-export default Vue.extend({
+export default defineComponent({
   name: 'App',
   components: {
-    previewCanvas,
-    fileList,
-    filterList,
-    downloadForm,
+    FileList,
+    PreviewCanvas,
+    FilterList,
+    DownloadForm,
   },
-  data: function() {
-    return {};
-  },
-  computed: {
-    supportLangs() {
-      return Object.keys(this.$i18n.messages);
-    },
+  setup() {
+    const {t, availableLocales, locale} = useI18n({useScope: 'global'});
+    const store = useStore();
+    const toastList = reactive(new Map<symbol, Toast>());
+    const showToast = (toast: Toast) => {
+      const symbol = Symbol();
+      toastList.set(symbol, toast);
+      setTimeout(() => toastList.delete(symbol), toast.duration);
+    };
+    provide(toastKey, showToast);
+    const visibleMobileFilePanel = ref<boolean>(false);
+    const visibleMobileFilterPanel = ref<boolean>(false);
+    return {
+      t,
+      availableLocales,
+      store,
+      locale,
+      showToast,
+      toastList,
+      visibleMobileFilePanel,
+      visibleMobileFilterPanel,
+      APP_VERSION,
+    };
   },
 });
 </script>
@@ -149,5 +231,18 @@ body {
   height: 100%;
   background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2 2"><path d="M1 2V0h1v1H0v1z" fill-opacity=".15"/></svg>');
   background-size: 2rem;
+}
+
+.card-body {
+  min-height: 0;
+}
+
+.toast-enter-active,
+.toast-leave-active {
+  transition: all 0.5s ease;
+}
+.toast-enter-from,
+.toast-leave-to {
+  opacity: 0;
 }
 </style>

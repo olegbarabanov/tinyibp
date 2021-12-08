@@ -1,66 +1,100 @@
 <i18n src="../common/locales.json"></i18n>
 
 <template>
-  <b-card
-    bg-variant="dark"
-    text-variant="white"
-    class="h-100 text-center rounded-0 p-1 d-flex flex-row justify-content-between"
-    border-variant="dark"
-    no-body
+  <div
+    class="card h-100 text-center rounded-0 p-1 flex-row justify-content-between bg-dark border-dark text-white"
   >
-    <b-dropdown :text="$t('download.settings.label')" dropup class="mx-md-4">
-      <b-dropdown-form style="min-width: 250px;">
-        <b-input-group
-          size="sm"
-          :prepend="$t('download.settings.form.type.label')"
-          class="m-1"
-        >
-          <b-form-select
-            v-model="selectedType"
-            :options="supportTypes"
-            class="text-nowrap"
-          />
-        </b-input-group>
-        <b-input-group
-          size="sm"
-          :prepend="$t('download.settings.form.quality.label')"
-          class="m-1"
-        >
-          <b-form-input
-            v-model="quality"
-            type="number"
-            min="1"
-            max="100"
-            step="1"
-          />
-        </b-input-group>
-        <b-input-group
-          size="sm"
-          :prepend="$t('download.settings.form.pattern.label')"
-          class="m-1"
-        >
-          <b-form-input v-model="nameTransformPattern" placeholder="" trim />
-        </b-input-group>
-      </b-dropdown-form>
-    </b-dropdown>
+    <div class="dropdown b-dropdown mx-md-4 dropup btn-group">
+      <button
+        type="button"
+        class="btn dropdown-toggle btn-secondary"
+        data-bs-toggle="dropdown"
+      >
+        {{ t('download.settings.label') }}
+      </button>
+      <ul tabindex="-1" class="dropdown-menu">
+        <li role="presentation" style="min-width: 250px;">
+          <form tabindex="-1" class="px-3">
+            <div class="input-group my-1 input-group-sm">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  {{ t('download.settings.form.type.label') }}
+                </div>
+              </div>
+              <select
+                v-model="selectedType"
+                class="text-nowrap custom-select form-select"
+              >
+                <option
+                  v-for="[key, value] in supportTypes"
+                  :key="key"
+                  :value="key"
+                >
+                  {{ value }}
+                </option>
+              </select>
+            </div>
+            <div class="input-group my-1 input-group-sm">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  {{ t('download.settings.form.quality.label') }}
+                </div>
+              </div>
+              <input
+                v-model="quality"
+                type="number"
+                min="1"
+                max="100"
+                step="1"
+                class="form-control"
+              />
+            </div>
+            <div class="input-group my-1 input-group-sm">
+              <div class="input-group-prepend">
+                <div class="input-group-text">
+                  {{ t('download.settings.form.pattern.label') }}
+                </div>
+              </div>
+              <input
+                v-model="nameTransformPattern"
+                type="text"
+                placeholder=""
+                class="form-control"
+              />
+            </div>
+          </form>
+        </li>
+      </ul>
+    </div>
+    <div class="dropdown b-dropdown mx-md-4 dropup">
+      <button
+        type="button"
+        :disabled="disabledDownload"
+        class="btn dropdown-toggle btn-secondary btn-block"
+        data-bs-toggle="dropdown"
+      >
+        {{ t('download.download.label') }}
+      </button>
+      <ul tabindex="-1" class="dropdown-menu dropdown-menu-right">
+        <li>
+          <button type="button" class="dropdown-item" @click="downloadAll()">
+            {{ t('download.download.all.label') }}
+          </button>
+        </li>
+        <li>
+          <button
+            type="button"
+            class="dropdown-item"
+            @click="downloadAll('zip')"
+          >
+            {{ t('download.download.zip.label') }}
+          </button>
+        </li>
+      </ul>
+    </div>
+  </div>
 
-    <b-dropdown
-      right
-      variant="secondary"
-      block
-      :text="$t('download.download.label')"
-      class="mx-md-4"
-      dropup
-      :disabled="disabledDownload"
-    >
-      <b-dropdown-item-button @click="downloadAll()">
-        {{ $t('download.download.all.label') }}
-      </b-dropdown-item-button>
-      <b-dropdown-item-button @click="downloadAll('zip')">
-        {{ $t('download.download.zip.label') }}
-      </b-dropdown-item-button>
-    </b-dropdown>
-
+  <!--
     <b-modal
       :id="`modal-download-${componentID}`"
       centered
@@ -72,10 +106,100 @@
         {{ $t('download.modal.progress.text') }}
       </p>
     </b-modal>
-  </b-card>
+  </b-card> -->
 </template>
 
 <script lang="ts">
+import {computed, defineComponent, inject, ref} from 'vue';
+import SequenceId from '@/utils/sequence-id';
+import {useI18n} from 'vue-i18n';
+import {useStore} from '@/store';
+import {supportTypes} from '@/image-processor';
+import {key as keyToast} from '@/toast';
+
+export default defineComponent({
+  setup() {
+    const {t} = useI18n({useScope: 'global'});
+    const store = useStore();
+
+    const componentID = SequenceId.getNew();
+    const busy = ref<boolean>(false);
+    const showToast = inject(keyToast);
+
+    const selectedType = computed({
+      get: () => store.state.type,
+      set: value => {
+        store.dispatch('setType', value);
+      },
+    });
+
+    const quality = computed({
+      get: () => store.state.quality,
+      set: value => {
+        store.dispatch('setQuality', value);
+      },
+    });
+
+    const nameTransformPattern = computed({
+      get: () => store.state.nameTransformPattern,
+      set(value) {
+        store.dispatch('setNameTransformPattern', value);
+      },
+    });
+
+    const disabledDownload = computed(() => store.state.fileList.length === 0);
+
+    const downloadAll = async (method = 'common') => {
+      if (showToast) {
+        showToast({
+          text: t('download.toast.createzip.text'),
+          type: 'info',
+          title: '',
+          duration: 3000,
+        });
+        await store.dispatch('downloadAll', method);
+      }
+    };
+    // this.$bvToast.toast(this.$tc('download.toast.createzip.text'), {
+    //   variant: 'info',
+    // });
+    // const modalId = `modal-download-${this.componentID}`;
+    // try {
+    //   this.busy = true;
+    //   this.$bvModal.show(modalId);
+    //   await this.$store.dispatch('downloadAll', method);
+    //   this.$bvToast.toast(this.$tc('download.toast.successzip.text'), {
+    //     variant: 'success',
+    //   });
+    // } catch (error) {
+    //   console.warn(error);
+    //   this.$bvToast.toast(this.$tc('download.toast.errorzip.text'), {
+    //     variant: 'danger',
+    //   });
+    // } finally {
+    //   this.busy = false;
+    //   this.$bvModal.hide(modalId);
+    // }
+    // },
+
+    return {
+      t,
+      supportTypes,
+      selectedType,
+      componentID,
+      busy,
+      quality,
+      nameTransformPattern,
+      disabledDownload,
+      downloadAll,
+    };
+  },
+});
+
+/*
+
+
+
 import {supportTypes} from '@/image-processor';
 import SequenceId from '@/utils/sequence-id';
 import Vue from 'vue';
@@ -123,28 +247,30 @@ export default Vue.extend({
     },
   },
   methods: {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     downloadAll: async function(method = 'common') {
-      this.$bvToast.toast(this.$tc('download.toast.createzip.text'), {
-        variant: 'info',
-      });
-      const modalId = `modal-download-${this.componentID}`;
-      try {
-        this.busy = true;
-        this.$bvModal.show(modalId);
-        await this.$store.dispatch('downloadAll', method);
-        this.$bvToast.toast(this.$tc('download.toast.successzip.text'), {
-          variant: 'success',
-        });
-      } catch (error) {
-        console.warn(error);
-        this.$bvToast.toast(this.$tc('download.toast.errorzip.text'), {
-          variant: 'danger',
-        });
-      } finally {
-        this.busy = false;
-        this.$bvModal.hide(modalId);
-      }
+      // this.$bvToast.toast(this.$tc('download.toast.createzip.text'), {
+      //   variant: 'info',
+      // });
+      // const modalId = `modal-download-${this.componentID}`;
+      // try {
+      //   this.busy = true;
+      //   this.$bvModal.show(modalId);
+      //   await this.$store.dispatch('downloadAll', method);
+      //   this.$bvToast.toast(this.$tc('download.toast.successzip.text'), {
+      //     variant: 'success',
+      //   });
+      // } catch (error) {
+      //   console.warn(error);
+      //   this.$bvToast.toast(this.$tc('download.toast.errorzip.text'), {
+      //     variant: 'danger',
+      //   });
+      // } finally {
+      //   this.busy = false;
+      //   this.$bvModal.hide(modalId);
+      // }
     },
   },
 });
+*/
 </script>
