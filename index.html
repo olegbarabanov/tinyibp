@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang=""><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="favicon.ico"><title>tinyibp</title><link href="css/app.ad86aae4.css" rel="preload" as="style"><link href="css/chunk-vendors.55204a1e.css" rel="preload" as="style"><link href="js/app.082d48ef.js" rel="preload" as="script"><link href="js/chunk-vendors.a515479c.js" rel="preload" as="script"><link href="css/chunk-vendors.55204a1e.css" rel="stylesheet"><link href="css/app.ad86aae4.css" rel="stylesheet"></head><body><noscript><strong>We're sorry but tinyibp doesn't work properly without JavaScript enabled. Please enable it to continue.</strong></noscript><div id="app"><div class="preloader-spinner"><div></div><div></div><div></div><div></div><div></div></div><style>#app {
+<!DOCTYPE html><html lang=""><head><meta charset="utf-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><link rel="icon" href="favicon.ico"><title>tinyibp</title><link href="css/app.7750a2c0.css" rel="preload" as="style"><link href="css/chunk-vendors.29ab3c99.css" rel="preload" as="style"><link href="js/app.0425ea0c.js" rel="preload" as="script"><link href="js/chunk-vendors.cedc9b4f.js" rel="preload" as="script"><link href="css/chunk-vendors.29ab3c99.css" rel="stylesheet"><link href="css/app.7750a2c0.css" rel="stylesheet"></head><body><noscript><strong>We're sorry but tinyibp doesn't work properly without JavaScript enabled. Please enable it to continue.</strong></noscript><div id="app"><div class="preloader-spinner"><div></div><div></div><div></div><div></div><div></div></div><style>#app {
           background: transparent !important;
         }
 
@@ -45,4 +45,85 @@
           20% {
             -webkit-transform: scaleY(1);
           }
-        }</style></div><script src="js/chunk-vendors.a515479c.js"></script><script src="js/app.082d48ef.js"></script></body></html>
+        }</style></div><div id="toast-container" class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 11"></div><style>.b-sidebar-outer {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 0;
+        overflow: visible;
+        z-index: 1035;
+      }
+      .b-sidebar-backdrop {
+        left: 0;
+        z-index: -1;
+        width: 100vw;
+        opacity: 0.6;
+      }
+      .b-sidebar,
+      .b-sidebar-backdrop {
+        position: fixed;
+        top: 0;
+        height: 100vh;
+      }
+      .b-sidebar {
+        display: flex;
+        flex-direction: column;
+        width: 320px;
+        max-width: 100%;
+        max-height: 100%;
+        margin: 0;
+        outline: 0;
+        transform: translateX(0);
+      }
+      .b-sidebar.slide {
+        transition: transform 0.3s ease-in-out;
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .b-sidebar.slide {
+          transition: none;
+        }
+      }
+      .b-sidebar:not(.b-sidebar-right) {
+        left: 0;
+        right: auto;
+      }
+      .b-sidebar:not(.b-sidebar-right).slide:not(.show) {
+        transform: translateX(-100%);
+      }
+      .b-sidebar:not(.b-sidebar-right) > .b-sidebar-header .close {
+        margin-left: auto;
+      }
+      .b-sidebar.b-sidebar-right {
+        left: auto;
+        right: 0;
+      }
+      .b-sidebar.b-sidebar-right.slide:not(.show) {
+        transform: translateX(100%);
+      }
+      .b-sidebar.b-sidebar-right > .b-sidebar-header .close {
+        margin-right: auto;
+      }
+      .b-sidebar > .b-sidebar-header {
+        font-size: 1.5rem;
+        padding: 0.5rem 1rem;
+        display: flex;
+        flex-direction: row;
+        flex-grow: 0;
+        align-items: center;
+      }
+      [dir='rtl'] .b-sidebar > .b-sidebar-header {
+        flex-direction: row-reverse;
+      }
+      .b-sidebar > .b-sidebar-header .close {
+        float: none;
+        font-size: 1.5rem;
+      }
+      .b-sidebar > .b-sidebar-body {
+        flex-grow: 1;
+        height: 100%;
+        overflow-y: auto;
+      }
+      .b-sidebar > .b-sidebar-footer {
+        flex-grow: 0;
+      }</style><script src="js/chunk-vendors.cedc9b4f.js"></script><script src="js/app.0425ea0c.js"></script></body></html>
