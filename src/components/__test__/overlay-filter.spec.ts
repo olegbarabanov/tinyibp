@@ -14,7 +14,7 @@ describe('overlay-filter.vue', () => {
     const inputLevel = wrapper.find('input[name="image"]');
     expect(inputLevel.exists()).toBe(true);
 
-    const inputPosition = wrapper.find('input[name="position"]');
+    const inputPosition = wrapper.find('select[name="position"]');
     expect(inputPosition.exists()).toBe(true);
 
     const inputMargin = wrapper.find('input[name="margin"]');

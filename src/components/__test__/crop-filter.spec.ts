@@ -1,7 +1,7 @@
 /* eslint-disable node/no-unpublished-import */
 import {mount} from '@vue/test-utils';
 import {createI18n} from 'vue-i18n';
-import CropFilter from '../contrast-filter.vue';
+import CropFilter from '../crop-filter.vue';
 
 describe('crop-filter.vue', () => {
   test('emits the correct event with different props', async () => {
