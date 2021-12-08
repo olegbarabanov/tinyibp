@@ -15,7 +15,6 @@ export class ImageBuilderWorkerProxy extends ImageBuilder {
   }
 
   setFilterMap(...args: Parameters<ImageBuilder['setFilterMap']>): this {
-    console.log('#args', args);
     this.messagePort.postMessage({
       method: 'setFilterMap',
       params: args, // need plain objects or arrays to transfer data using postMessage. Proxy objects are not suitable
