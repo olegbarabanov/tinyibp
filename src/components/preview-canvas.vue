@@ -41,6 +41,7 @@
           <canvas
             id="canvas"
             ref="canvas"
+            class="mx-auto"
             :class="{
               'mw-100': !fullSizePreview,
               'mh-100': !fullSizePreview,
