@@ -1,5 +1,14 @@
 # Change Log
 
+## [0.2.1] - 2022-02-22
+
+### Added
+- added app version display in title
+
+### Fixed
+- fixed show modal dialog when saving file
+- fixed problem with image magnification in preview
+
 ## [0.2.0] - 2021-08-12
 
 ### Added
