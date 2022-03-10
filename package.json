@@ -1,6 +1,6 @@
 {
   "name": "tinyibp",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "private": true,
   "description": "TinyIBP - Tiny Image Batch Processor",
   "author": {
@@ -17,7 +17,6 @@
   },
   "dependencies": {
     "@popperjs/core": "^2.10.2",
-    "@types/bootstrap": "^5.1.6",
     "bootstrap": "^5.1.3",
     "bootstrap-icons": "^1.7.0",
     "core-js": "^3.6.5",
@@ -30,6 +29,7 @@
     "vuex": "^4.0.2"
   },
   "devDependencies": {
+    "@types/bootstrap": "^5.1.6",
     "@babel/core": "^7.16.0",
     "@intlify/vue-i18n-loader": "^3.0.0",
     "@types/file-saver": "^2.0.4",

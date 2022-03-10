@@ -35,12 +35,13 @@
     <div class="card-body h-100" @dblclick="fullSizePreview = !fullSizePreview">
       <div class="h-100 d-flex flex-column border border-left border-right">
         <div
-          class="b-overlay-wrap position-relative d-flex flex-grow-1 align-items-center justify-content-center overflow-auto p-1"
+          class="preview-layer b-overlay-wrap position-relative d-flex flex-column flex-grow-1 align-items-center justify-content-between overflow-auto p-1"
           :show="showProcessIndicator"
         >
           <canvas
             id="canvas"
             ref="canvas"
+            class="mx-auto"
             :class="{
               'mw-100': !fullSizePreview,
               'mh-100': !fullSizePreview,
@@ -398,3 +399,14 @@ export default Vue.extend({
 
 */
 </script>
+
+<style>
+.preview-layer {
+  contain: size;
+}
+
+.preview-layer:before,
+.preview-layer:after {
+  content: '';
+}
+</style>
